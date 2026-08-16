@@ -1,0 +1,13 @@
+{
+  "name": "rs-main-hub",
+  "version": "1.0.0",
+  "description": "Root package.json for Heroku to detect the MAIN HUB backend",
+  "scripts": {
+    "postinstall": "cd MAIN_HUB/backend && npm install",
+    "start": "cd MAIN_HUB/backend && npm start"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {}
+}
