@@ -1,0 +1,301 @@
+/* ========== EDIT IMEI PAGE ========== */
+.imei-edit-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ========== HEADER ========== */
+.imei-edit-header {
+  margin-bottom: 24px;
+}
+
+.imei-edit-header .btn-back {
+  background: none;
+  border: none;
+  color: #4a6cf7;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.imei-edit-header .btn-back:hover {
+  text-decoration: underline;
+}
+
+.imei-edit-header h2 {
+  margin: 8px 0 4px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.imei-edit-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* ========== PRODUCT INFO ========== */
+.product-info-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.product-icon {
+  font-size: 32px;
+}
+
+.product-details h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.product-specs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.product-specs span {
+  font-size: 13px;
+  color: #666;
+  background: #f5f6f8;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+/* ========== FORM ========== */
+.edit-form {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.current-info {
+  background: #fafbfc;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #f0f2f5;
+  margin-top: 20px;
+}
+
+.current-info h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #1a1a2e;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.status-badge {
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.available {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-badge.sold {
+  background: #fce8e6;
+  color: #c62828;
+}
+
+.status-badge.reserved {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status-badge.repair {
+  background: #e8eaf6;
+  color: #283593;
+}
+
+/* ========== FORM ACTIONS ========== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #eef2f7;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+}
+
+.btn-cancel:hover {
+  background: #e4e7ec;
+}
+
+.btn-submit {
+  padding: 10px 28px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #3a56d4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========== ERROR STATE ========== */
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+}
+
+.error-state p {
+  font-size: 16px;
+  color: #c62828;
+  margin-bottom: 16px;
+}
+
+.error-state button {
+  padding: 8px 24px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.error-state button:hover {
+  background: #3a56d4;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .imei-edit-page {
+    padding: 12px;
+  }
+  
+  .edit-form {
+    padding: 16px;
+  }
+  
+  .imei-edit-header h2 {
+    font-size: 20px;
+  }
+  
+  .product-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .product-specs {
+    justify-content: center;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-cancel,
+  .btn-submit {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .imei-edit-page {
+    padding: 8px;
+  }
+  
+  .edit-form {
+    padding: 12px;
+  }
+  
+  .product-specs span {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}

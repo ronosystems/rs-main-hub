@@ -1,0 +1,801 @@
+/* /home/kk/RS/TRONIC_MASTER/frontend/src/pages/Electronics.css */
+
+/* ============================================
+   ELECTRONICS PAGE - COMPLETE STYLES
+   ============================================ */
+
+.electronics-page {
+  padding: 24px;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   CONTROLS ROW - Branch + Filters in 1 Row
+   ============================================ */
+.electronics-controls-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 16px;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Branch Selector */
+.branch-selector-group {
+  min-width: 180px;
+  flex: 0 0 auto;
+}
+
+.branch-select-dropdown {
+  padding: 8px 12px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  width: 100%;
+  min-width: 160px;
+  height: 38px;
+  transition: border-color 0.2s;
+}
+
+.branch-select-dropdown:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(0, 2, 8, 0.1);
+}
+
+/* Search Group */
+.search-group {
+  flex: 2;
+  min-width: 200px;
+  position: relative;
+}
+
+.search-group .filter-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.search-group .search-input {
+  width: 100%;
+  padding: 8px 36px 8px 36px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  color: #333;
+  height: 38px;
+  transition: border-color 0.2s;
+}
+
+.search-group .search-input::placeholder {
+  color: #aaa;
+}
+
+.search-group .search-input:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(0, 3, 14, 0.1);
+}
+
+.clear-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.clear-search:hover {
+  color: #333;
+  background: #f0f0f0;
+}
+
+/* Filter Groups */
+.filter-group {
+  min-width: 120px;
+  flex: 0 1 auto;
+}
+
+.filter-group .filter-select {
+  padding: 8px 32px 8px 12px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  font-size: 13px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  width: 100%;
+  height: 38px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  transition: border-color 0.2s;
+}
+
+.filter-group .filter-select:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(0, 3, 14, 0.1);
+}
+
+/* Filter Actions */
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
+.filter-actions .btn-clear-filters {
+  padding: 8px 16px;
+  background: #fce8e6;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-actions .btn-clear-filters:hover {
+  background: #ffcdd2;
+  border-color: #e57373;
+}
+
+/* ============================================
+   STATS
+   ============================================ */
+.electronics-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-item {
+  background: white;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.stat-item:hover {
+  box-shadow: 0 4px 12px rgba(20, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.stat-item .stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.stat-item .stat-label {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.stat-item .btn-refresh {
+  background: #f0f2f5;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+}
+
+.stat-item .btn-refresh:hover {
+  background: #e2e4e8;
+}
+
+/* ============================================
+   TABLE
+   ============================================ */
+.table-container {
+  background: #ffffff;
+  border-radius: 2px;
+  border: 1px solid #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.electronics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.electronics-table thead {
+  background: #0080ff;
+  border-bottom: 2px solid #000000;
+}
+
+.electronics-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #000000;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.electronics-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #000000;
+  vertical-align: middle;
+}
+
+.electronics-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.electronics-table tbody tr.row-out-of-stock {
+  opacity: 0.65;
+}
+
+.electronics-table tbody tr.row-out-of-stock .product-name {
+  color: #a0aec0;
+}
+
+/* Product Model Cell */
+.product-model-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #1a2332;
+  font-size: 14px;
+}
+
+.product-alias {
+  font-size: 12px;
+  color: #7a8a9e;
+  margin-top: 2px;
+}
+
+.product-sku {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+/* Specs */
+.product-specs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.spec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f1f3f5;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #000000;
+  font-weight: 500;
+}
+
+.spec-badge svg {
+  font-size: 12px;
+}
+
+.category-badge {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Available Units */
+.available-units {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.unit-count {
+  font-weight: 700;
+  font-size: 20px;
+  color: #22c55e;
+}
+
+.unit-count.zero {
+  color: #ef4444;
+}
+
+.unit-label {
+  font-size: 13px;
+  color: #7a8a9e;
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  height: 32px;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-action:active {
+  transform: translateY(0);
+}
+
+/* Details Button */
+.btn-details {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+}
+
+.btn-details:hover {
+  background: #bbdefb;
+  border-color: #64b5f6;
+}
+
+/* Edit Button */
+.btn-edit {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffe0b2;
+}
+
+.btn-edit:hover {
+  background: #ffe0b2;
+  border-color: #ffb74d;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-top: 1px solid #000000;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: #000000;
+}
+
+.entries-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.entries-selector select {
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 13px;
+  background: #ffffff;
+  cursor: pointer;
+  height: 30px;
+}
+
+.entries-selector select:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4a5568;
+  font-size: 13px;
+}
+
+.pagination-btn:hover:not(:disabled):not(.active) {
+  background: #f8fafc;
+  border-color: #4a6cf7;
+  color: #4a6cf7;
+}
+
+.pagination-btn.active {
+  background: #4a6cf7;
+  color: #ffffff;
+  border-color: #4a6cf7;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   STATE CONTAINERS
+   ============================================ */
+.state-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #000000;
+}
+
+.loading-state .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #000000;
+  border-top-color: #4a6cf7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-state p {
+  font-size: 16px;
+  color: #e53e3e;
+  margin-bottom: 12px;
+}
+
+.error-state button {
+  padding: 8px 28px;
+  background: #4a6cf7;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.error-state button:hover {
+  background: #3a56d4;
+}
+
+.empty-state .empty-icon {
+  font-size: 56px;
+  color: #cbd5e0;
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #1a2332;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #7a8a9e;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .electronics-controls-row {
+    gap: 10px;
+  }
+  
+  .branch-selector-group {
+    min-width: 150px;
+  }
+  
+  .filter-group {
+    min-width: 100px;
+  }
+  
+  .search-group {
+    min-width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .electronics-page {
+    padding: 16px;
+  }
+  
+  .electronics-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .branch-selector-group {
+    min-width: unset;
+    flex: 1;
+  }
+  
+  .branch-select-dropdown {
+    width: 100%;
+  }
+  
+  .search-group {
+    min-width: unset;
+    flex: 1;
+  }
+  
+  .filter-group {
+    min-width: unset;
+    flex: 1;
+  }
+  
+  .filter-actions {
+    justify-content: stretch;
+    flex: 1;
+  }
+  
+  .filter-actions .btn-clear-filters {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .electronics-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .pagination-info {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .pagination-controls {
+    justify-content: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn-action {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .electronics-table {
+    font-size: 12px;
+  }
+  
+  .electronics-table th,
+  .electronics-table td {
+    padding: 10px 12px;
+  }
+  
+  .unit-count {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .electronics-page {
+    padding: 12px;
+  }
+  
+  .electronics-controls-row {
+    padding: 10px 12px;
+  }
+  
+  .control-group label {
+    font-size: 10px;
+  }
+  
+  .branch-select-dropdown,
+  .search-group .search-input,
+  .filter-group .filter-select,
+  .filter-actions .btn-clear-filters {
+    height: 34px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
+  .search-group .search-input {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  
+  .search-group .filter-icon {
+    left: 10px;
+    font-size: 12px;
+  }
+  
+  .clear-search {
+    right: 10px;
+    font-size: 14px;
+  }
+  
+  .electronics-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .stat-item {
+    padding: 10px 12px;
+  }
+  
+  .stat-item .stat-number {
+    font-size: 18px;
+  }
+  
+  .stat-item .stat-label {
+    font-size: 10px;
+  }
+  
+  .electronics-table {
+    font-size: 11px;
+  }
+  
+  .electronics-table th,
+  .electronics-table td {
+    padding: 8px 10px;
+  }
+  
+  .spec-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+  
+  .unit-count {
+    font-size: 16px;
+  }
+  
+  .btn-action {
+    font-size: 10px;
+    padding: 4px 8px;
+    height: 28px;
+  }
+  
+  .pagination-container {
+    padding: 12px 14px;
+  }
+  
+  .pagination-info {
+    font-size: 12px;
+  }
+  
+  .pagination-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+  
+  .entries-selector select {
+    font-size: 12px;
+    height: 28px;
+  }
+  
+  .empty-state .empty-icon {
+    font-size: 40px;
+  }
+  
+  .empty-state h3 {
+    font-size: 17px;
+  }
+}
+
+/* ============================================
+   SERIALS BUTTON
+   ============================================ */
+.btn-serials {
+  background: #e3f2fd;
+  color: #0d47a1;
+  border: 1px solid #bbdefb;
+}
+
+.btn-serials:hover {
+  background: #bbdefb;
+  border-color: #64b5f6;
+}

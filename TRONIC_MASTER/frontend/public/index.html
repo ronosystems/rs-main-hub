@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <!-- ============================================
+         DEFAULT FAVICON: RS (MAIN HUB)
+         This is the system-wide default favicon
+         ============================================ -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230d6efd'/><text x='50' y='66' text-anchor='middle' font-size='44' font-weight='bold' font-family='Arial' fill='white'>RS</text></svg>" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="RS Hub - Central Management System for all projects" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <!-- ============================================
+         DEFAULT TITLE: RS ONLINE
+         This is the system-wide default title
+         ============================================ -->
+    <title>RS ONLINE</title>
+    
+    <script>
+        // ============================================
+        // DYNAMIC FAVICON & TITLE
+        // TRONIC_MASTER - Fetches from its own server (port 5001)
+        // ============================================
+        
+        // ============================================
+        // CONSTANTS
+        // ============================================
+        const DEFAULT_FAVICON = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="16" fill="%230d6efd"/><text x="50" y="66" text-anchor="middle" font-size="44" font-weight="bold" font-family="Arial" fill="white">RS</text></svg>';
+        const DEFAULT_TITLE = 'RS ONLINE';
+        
+        // ✅ TRONIC_MASTER's own API server (port 5001)
+        const STATIC_URL = 'http://localhost:5001';
+        
+        // ============================================
+        // GET USER DATA
+        // ============================================
+        function getUserData() {
+            try {
+                const userStr = localStorage.getItem('user');
+                if (userStr && userStr !== 'null' && userStr !== 'undefined') {
+                    return JSON.parse(userStr);
+                }
+                return null;
+            } catch (e) {
+                return null;
+            }
+        }
+        
+        // ============================================
+        // GET COMPANY LOGO - From TRONIC_MASTER's own server
+        // ============================================
+        function getCompanyLogo() {
+            const user = getUserData();
+            
+            if (user?.company?.logo) {
+                const logo = user.company.logo;
+                // If it's already a full URL, use it as-is
+                if (logo.startsWith('http://') || logo.startsWith('https://')) {
+                    return logo;
+                }
+                // ✅ Prepend TRONIC_MASTER's own URL (port 5001)
+                return `${STATIC_URL}${logo}`;
+            }
+            
+            return null;
+        }
+        
+        // ============================================
+        // GET COMPANY NAME
+        // ============================================
+        function getCompanyName() {
+            const user = getUserData();
+            return user?.company?.name || null;
+        }
+        
+        // ============================================
+        // UPDATE FAVICON AND TITLE
+        // ============================================
+        function updateFaviconAndTitle() {
+            const companyLogo = getCompanyLogo();
+            const companyName = getCompanyName();
+            
+            // ============================================
+            // FAVICON
+            // ============================================
+            const faviconLink = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            
+            if (companyLogo) {
+                // Use company logo from TRONIC_MASTER
+                faviconLink.type = 'image/x-icon';
+                faviconLink.rel = 'shortcut icon';
+                faviconLink.href = companyLogo;
+                console.log('🏢 Using company favicon from TRONIC_MASTER:', companyLogo);
+                
+                // Error handling - if logo fails, use default
+                const img = new Image();
+                img.onerror = function() {
+                    console.log('⚠️ Company logo failed to load, using default');
+                    faviconLink.type = 'image/svg+xml';
+                    faviconLink.rel = 'shortcut icon';
+                    faviconLink.href = DEFAULT_FAVICON;
+                    document.getElementsByTagName('head')[0].appendChild(faviconLink);
+                };
+                img.src = companyLogo;
+            } else {
+                // Use default
+                faviconLink.type = 'image/svg+xml';
+                faviconLink.rel = 'shortcut icon';
+                faviconLink.href = DEFAULT_FAVICON;
+                console.log('🏠 Using RS ONLINE default favicon');
+            }
+            
+            if (!document.querySelector("link[rel*='icon']")) {
+                document.getElementsByTagName('head')[0].appendChild(faviconLink);
+            }
+            
+            // ============================================
+            // TITLE
+            // ============================================
+            if (companyName) {
+                document.title = companyName;
+                console.log('🏢 Using company title:', companyName);
+            } else {
+                document.title = DEFAULT_TITLE;
+                console.log('🏠 Using RS ONLINE default title');
+            }
+        }
+        
+        // ============================================
+        // INITIAL LOAD
+        // ============================================
+        console.log('📁 TRONIC_MASTER Static URL:', STATIC_URL);
+        updateFaviconAndTitle();
+        
+        // ============================================
+        // LISTEN FOR STORAGE CHANGES
+        // ============================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'user' || e.key === 'token') {
+                console.log('🔄 Storage changed, updating favicon/title...');
+                setTimeout(updateFaviconAndTitle, 100);
+            }
+        });
+        
+        // ============================================
+        // LISTEN FOR SETTINGS UPDATES
+        // ============================================
+        window.addEventListener('settingsUpdated', function(e) {
+            console.log('🔄 Settings updated, updating favicon/title...');
+            if (e.detail) {
+                if (e.detail.platformName) {
+                    document.title = e.detail.platformName;
+                }
+                if (e.detail.logo !== undefined) {
+                    setTimeout(updateFaviconAndTitle, 100);
+                }
+            }
+        });
+        
+        // ============================================
+        // LISTEN FOR LOGIN/LOGOUT
+        // ============================================
+        window.addEventListener('authChange', function(e) {
+            console.log('🔄 Auth changed, updating favicon/title...');
+            setTimeout(updateFaviconAndTitle, 200);
+        });
+        
+        // ============================================
+        // CLEANUP ON LOGOUT
+        // ============================================
+        const originalRemoveItem = localStorage.removeItem;
+        localStorage.removeItem = function(key) {
+            if (key === 'token' || key === 'user') {
+                console.log('🚪 Logout detected, clearing company data');
+                document.title = DEFAULT_TITLE;
+                window.dispatchEvent(new CustomEvent('authChange'));
+            }
+            originalRemoveItem.call(this, key);
+        };
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f0f2f5;
+        }
+    </style>
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+node_modules/
+.cache/
+*.log
+.env
+node_modules/
+.cache/
+*.log
+.env
+node_modules/
+.cache/
+*.log
+.env
+node_modules/
+frontend/node_modules/
+.env
+*.log

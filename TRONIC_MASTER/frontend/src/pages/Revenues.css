@@ -1,0 +1,763 @@
+/* Revenues Page Styles */
+.revenues-page {
+  padding: 20px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+/* Header Styles */
+.revenues-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.header-left h2 {
+  margin: 0;
+  color: #1a202c;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-left p {
+  margin: 4px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-refresh:hover {
+  background: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  margin-top: 20px;
+  color: #718096;
+  font-size: 16px;
+}
+
+/* Error State */
+.error-state {
+  background: #fed7d7;
+  border: 1px solid #feb2b2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-state p {
+  margin: 0 0 15px;
+  color: #c53030;
+  font-size: 16px;
+}
+
+.error-state button {
+  padding: 8px 24px;
+  background: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.error-state button:hover {
+  background: #c53030;
+}
+
+/* General Stats */
+.general-stats {
+  margin-bottom: 24px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.stat-card.total-revenue .stat-icon {
+  background: #ebf8ff;
+  color: #4299e1;
+}
+
+.stat-card.total-profit .stat-icon {
+  background: #f0fff4;
+  color: #48bb78;
+}
+
+.stat-card.total-transactions .stat-icon {
+  background: #faf5ff;
+  color: #9f7aea;
+}
+
+.stat-card.inventory-value .stat-icon {
+  background: #fff5f5;
+  color: #fc8181;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #718096;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-top: 2px;
+}
+
+.stat-value.positive {
+  color: #48bb78;
+}
+
+.stat-value.negative {
+  color: #fc8181;
+}
+
+/* Tabs */
+.tabs-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.tabs-header {
+  display: flex;
+  background: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+  padding: 4px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  color: #718096;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  background: #edf2f7;
+  color: #2d3748;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #4299e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.tab-btn.payroll-tab-btn {
+  color: #9f7aea;
+}
+
+.tab-btn.payroll-tab-btn.active {
+  color: #6b46c1;
+  background: white;
+}
+
+.tab-content {
+  padding: 24px;
+}
+
+/* Period Cards */
+.period-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.period-card {
+  background: #f7fafc;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.period-card:hover {
+  background: #edf2f7;
+  transform: translateY(-2px);
+}
+
+.period-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.period-card-header h4 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.transaction-badge {
+  font-size: 12px;
+  background: #e2e8f0;
+  color: #4a5568;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.period-card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.period-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.period-stat-label {
+  font-size: 11px;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.period-stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.period-stat-value.positive {
+  color: #48bb78;
+}
+
+.period-stat-value.negative {
+  color: #fc8181;
+}
+
+.period-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-view-sales {
+  flex: 1;
+  padding: 8px 16px;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-view-sales:hover {
+  background: #3182ce;
+}
+
+.btn-export-small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: #48bb78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-export-small:hover {
+  background: #38a169;
+}
+
+/* Payroll Tab */
+.payroll-tab {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.payroll-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.payroll-summary-card {
+  background: #f7fafc;
+  padding: 16px 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.summary-label {
+  display: block;
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 4px;
+}
+
+.summary-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.payroll-table-container {
+  background: #f7fafc;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.table-header h4 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-export-payroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #48bb78;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-export-payroll:hover {
+  background: #38a169;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.payroll-table thead {
+  background: #edf2f7;
+}
+
+.payroll-table th {
+  padding: 12px 16px;
+  text-align: left;
+  color: #2d3748;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.payroll-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.payroll-table tbody tr:hover {
+  background: #edf2f7;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 2px 12px;
+  background: #e2e8f0;
+  color: #4a5568;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.salary-amount {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.salary-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.salary-input {
+  width: 120px;
+  padding: 6px 10px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.salary-input:focus {
+  border-color: #4299e1;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-edit-salary,
+.btn-save-salary,
+.btn-cancel-edit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-edit-salary {
+  background: #4299e1;
+  color: white;
+}
+
+.btn-edit-salary:hover {
+  background: #3182ce;
+}
+
+.btn-save-salary {
+  background: #48bb78;
+  color: white;
+}
+
+.btn-save-salary:hover {
+  background: #38a169;
+}
+
+.btn-save-salary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel-edit {
+  background: #fc8181;
+  color: white;
+}
+
+.btn-cancel-edit:hover {
+  background: #e53e3e;
+}
+
+.total-row {
+  background: #edf2f7;
+  font-weight: 600;
+}
+
+.total-row td {
+  padding: 12px 16px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px 16px;
+  color: #718096;
+}
+
+.no-data span {
+  display: block;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.no-data p {
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .revenues-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+
+  .btn-refresh {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .period-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .period-card-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tabs-header {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .tab-content {
+    padding: 16px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .table-actions {
+    width: 100%;
+  }
+
+  .btn-export-payroll {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .payroll-summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .salary-edit {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .salary-input {
+    width: 100%;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-edit-salary,
+  .btn-save-salary,
+  .btn-cancel-edit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .revenues-page {
+    padding: 12px;
+  }
+
+  .period-card-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .tab-btn span {
+    display: none;
+  }
+}
+
+/* Role Badge Styles */
+.role-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.badge-company-admin {
+  background: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.badge-company-manager {
+  background: #faf5ff;
+  color: #6b46c1;
+}
+
+.badge-company-cashier {
+  background: #f0fff4;
+  color: #276749;
+}
+
+.badge-company-agent {
+  background: #fff5f5;
+  color: #c53030;
+}
+
+.badge-company-staff {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.badge-admin {
+  background: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.badge-manager {
+  background: #faf5ff;
+  color: #6b46c1;
+}
+
+.badge-staff {
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.badge-super-admin {
+  background: #fefcbf;
+  color: #975a16;
+}

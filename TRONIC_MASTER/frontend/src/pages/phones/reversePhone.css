@@ -1,0 +1,307 @@
+/* ========== REVERSE PAGE ========== */
+.reverse-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ========== HEADER ========== */
+.reverse-header {
+  margin-bottom: 24px;
+}
+
+.reverse-header .btn-back {
+  background: none;
+  border: none;
+  color: #4a6cf7;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.reverse-header .btn-back:hover {
+  text-decoration: underline;
+}
+
+.reverse-header h2 {
+  margin: 8px 0 4px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.reverse-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* ========== PRODUCT INFO ========== */
+.product-info-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.product-icon {
+  font-size: 32px;
+}
+
+.product-details h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #1a1a2e;
+}
+
+.product-specs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.product-specs span {
+  font-size: 13px;
+  color: #666;
+  background: #f5f6f8;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+/* ========== FORM ========== */
+.reverse-form {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.reverse-info-box {
+  background: #fafbfc;
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid #f0f2f5;
+  margin-bottom: 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  color: #555;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.status-badge {
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.sold {
+  background: #fce8e6;
+  color: #c62828;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.warning-box {
+  background: #fff3e0;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #e65100;
+  border-left: 4px solid #ff9800;
+  margin-bottom: 20px;
+}
+
+/* ========== FORM ACTIONS ========== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eef2f7;
+}
+
+.btn-cancel {
+  padding: 10px 24px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+}
+
+.btn-cancel:hover {
+  background: #e4e7ec;
+}
+
+.btn-reverse {
+  padding: 10px 28px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reverse:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.btn-reverse:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========== ERROR STATE ========== */
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+}
+
+.error-state p {
+  font-size: 16px;
+  color: #c62828;
+  margin-bottom: 16px;
+}
+
+.error-state button {
+  padding: 8px 24px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.error-state button:hover {
+  background: #3a56d4;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .reverse-page {
+    padding: 12px;
+  }
+  
+  .reverse-form {
+    padding: 16px;
+  }
+  
+  .reverse-header h2 {
+    font-size: 20px;
+  }
+  
+  .product-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .product-specs {
+    justify-content: center;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-cancel,
+  .btn-reverse {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reverse-page {
+    padding: 8px;
+  }
+  
+  .reverse-form {
+    padding: 12px;
+  }
+  
+  .product-specs span {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+}
+
+/* ========== SALE TYPE BADGE ========== */
+.sale-type-badge {
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sale-type-badge.cash {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.sale-type-badge.credit {
+  background: #fff3e0;
+  color: #e65100;
+}

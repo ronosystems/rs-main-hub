@@ -1,0 +1,95 @@
+.coming-soon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.coming-soon-content {
+  background: white;
+  border-radius: 16px;
+  padding: 50px 60px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.coming-soon-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.coming-soon-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+
+.coming-soon-description {
+  font-size: 1rem;
+  color: #718096;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.coming-soon-progress {
+  margin-bottom: 30px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+.coming-soon-features {
+  text-align: left;
+  background: #f7fafc;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.coming-soon-features h4 {
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.coming-soon-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.coming-soon-features ul li {
+  padding: 6px 0;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .coming-soon-content {
+    padding: 30px 25px;
+  }
+  .coming-soon-title {
+    font-size: 1.5rem;
+  }
+}

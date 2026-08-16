@@ -50,7 +50,7 @@
 **/tmp/
 **/temp/
 
-# Package managers
+# Package locks
 **/package-lock.json
 **/yarn.lock
 
@@ -69,3 +69,22 @@
 **/*.pid
 **/*.seed
 **/*.pid.lock
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/venv/
+**/env/
+
+# MAIN HUB specific
+MAIN\ HUB/.env
+MAIN\ HUB/node_modules/
+MAIN\ HUB/__pycache__/
+
+# TRONIC_MASTER specific
+TRONIC_MASTER/.env
+TRONIC_MASTER/node_modules/
+TRONIC_MASTER/build/
+TRONIC_MASTER/frontend/build/
+TRONIC_MASTER/backend/node_modules/

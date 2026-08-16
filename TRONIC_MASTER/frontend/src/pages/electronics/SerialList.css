@@ -1,0 +1,437 @@
+/* /home/kk/RS/TRONIC_MASTER/frontend/src/pages/electronics/SerialList.css */
+
+.serial-list-page {
+  padding: 20px;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+/* Stats */
+.serial-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-box {
+  background: white;
+  padding: 14px 18px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #00000000;
+}
+
+.stat-box .stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.stat-box .stat-label {
+  font-size: 12px;
+  color: #000000;
+  margin-top: 2px;
+}
+
+.stat-box.available .stat-number {
+  color: #28a745;
+}
+
+.stat-box.sold .stat-number {
+  color: #dc3545;
+}
+
+.stat-box.reserved .stat-number {
+  color: #ffc107;
+}
+
+/* Filters */
+.serial-filters {
+  background: white;
+  padding: 16px 18px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #00000000;
+
+}
+
+.filter-row {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter-row.second-row {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #00000000;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #576886bb;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.search-input,
+.filter-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #1605fd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.search-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+.btn-clear-filters {
+  padding: 8px 16px;
+  background: #fce8e6;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.btn-clear-filters:hover {
+  background: #ffcdd2;
+}
+
+/* Table */
+.table-container {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #00000000;
+  overflow: hidden;
+  box-shadow: #000000 0px 2px 10px 0px;
+}
+
+.serial-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.serial-table thead {
+  background: #0180ff;
+  border-bottom: 2px solid #00000000;
+}
+
+.serial-table th {
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  color: #000000;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.serial-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #000000;
+  vertical-align: middle;
+}
+
+.serial-table tbody tr:hover {
+  background: #f7fafc;
+}
+
+.serial-table tbody tr.row-sold {
+  opacity: 1;
+}
+
+/* Serial Number */
+.serial-number {
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.available {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.sold {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.reserved {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.repair {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Age Badge */
+.age-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  background: #edf2f7;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  color: #000000;
+}
+
+/* Owner Info */
+.owner-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.owner-icon {
+  font-size: 0.9rem;
+}
+
+.owner-name {
+  font-size: 0.85rem;
+  color: #000000;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+}
+
+.btn-sell {
+  background: #28a745;
+  color: rgb(0, 0, 0);
+}
+
+.btn-sell:hover {
+  background: #218838;
+}
+
+.btn-transfer {
+  background: #17a2b8;
+  color: rgb(0, 0, 0);
+}
+
+.btn-transfer:hover {
+  background: #138496;
+}
+
+.btn-reverse {
+  background: #ffc107;
+  color: #1a202c;
+}
+
+.btn-reverse:hover {
+  background: #e0a800;
+}
+
+.btn-receipt {
+  background: #4f00e2;
+  color: rgb(0, 0, 0);
+}
+
+.btn-receipt:hover {
+  background: #0004ee;
+}
+
+.btn-edit {
+  background: #0d6efd;
+  color: rgb(0, 0, 0);
+}
+
+.btn-edit:hover {
+  background: #0b5ed7;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: white;
+  border-top: 1px solid #eef2f7;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pagination-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.entries-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.entries-selector select {
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4a5568;
+  font-size: 13px;
+}
+
+.pagination-btn:hover:not(:disabled):not(.active) {
+  background: #f8fafc;
+  border-color: #4a6cf7;
+  color: #4a6cf7;
+}
+
+.pagination-btn.active {
+  background: #4a6cf7;
+  color: white;
+  border-color: #4a6cf7;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+}
+
+.empty-state .empty-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.empty-state h3 {
+  color: #1a1a2e;
+  margin-bottom: 6px;
+}
+
+.empty-state p {
+  color: #718096;
+  margin-bottom: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .serial-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .filter-row {
+    flex-direction: column;
+  }
+  
+  .filter-group {
+    width: 100%;
+    min-width: unset;
+  }
+  
+  .serial-table {
+    font-size: 12px;
+  }
+  
+  .serial-table th,
+  .serial-table td {
+    padding: 6px 8px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .serial-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .stat-box {
+    padding: 10px 12px;
+  }
+  
+  .stat-box .stat-number {
+    font-size: 18px;
+  }
+}

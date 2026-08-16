@@ -1,0 +1,866 @@
+/* ============================================
+   DASHBOARD - COMPLETE STYLES
+   ============================================ */
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.dashboard-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px 20px;
+}
+
+.dashboard-loading .spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #4a6cf7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+.dashboard-loading p {
+  color: #4a5568;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+.dashboard-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.dashboard-error .error-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.dashboard-error h2 {
+  color: #1a1a2e;
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.dashboard-error p {
+  color: #718096;
+  margin-bottom: 20px;
+}
+
+.dashboard-error .btn-primary {
+  padding: 10px 32px;
+  background: #4a6cf7;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dashboard-error .btn-primary:hover {
+  background: #3a56d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgb(0, 0, 0);
+}
+
+/* ============================================
+   STATS GRID - COMMON
+   ============================================ */
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgb(0, 0, 0);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgb(0, 0, 0);
+}
+
+.stat-card .stat-icon {
+  font-size: 32px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7fafc;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.stat-card .stat-info {
+  flex: 1;
+}
+
+.stat-card .stat-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.stat-card .stat-label {
+  font-size: 13px;
+  color: #718096;
+  margin: 2px 0 0 0;
+}
+
+/* Stat Card Variants */
+.stat-card.warning .stat-icon {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.stat-card.danger .stat-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.stat-card.success .stat-icon {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.stat-card.info .stat-icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.stat-card.primary .stat-icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+/* ============================================
+   MANAGER STATS
+   ============================================ */
+.manager-stats .stat-card {
+  padding: 16px 20px;
+}
+
+.manager-stats .stat-number {
+  font-size: 20px;
+}
+
+/* ============================================
+   WELCOME MESSAGE
+   ============================================ */
+.dashboard-welcome {
+  background: linear-gradient(135deg, #00b7ff, #00fcef);
+  color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.dashboard-welcome h2 {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.dashboard-welcome p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Manager Welcome */
+.manager-welcome {
+  background: linear-gradient(135deg, #059669, #10b981);
+  padding: 20px 28px;
+}
+
+.manager-welcome h2 {
+  font-size: 20px;
+}
+
+/* ============================================
+   QUICK ACTIONS (Manager)
+   ============================================ */
+.dashboard-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.quick-action-card {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-4px);
+  border-color: #4a6cf7;
+  box-shadow: 0 8px 24px rgb(0, 0, 0);
+}
+
+.quick-action-card .action-icon {
+  font-size: 32px;
+}
+
+.quick-action-card .action-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+/* ============================================
+   TWO COLUMN LAYOUT
+   ============================================ */
+.dashboard-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* ============================================
+   DASHBOARD CARDS
+   ============================================ */
+.dashboard-card {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 2px 4px rgb(0, 0, 0);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.993);
+}
+
+.dashboard-card h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.dashboard-card.warning-card {
+  border-left: 4px solid #d97706;
+}
+
+.dashboard-card .empty-message {
+  color: #a0aec0;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ============================================
+   RECENT SALES
+   ============================================ */
+.recent-sales-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recent-sale-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #f7fafc;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.recent-sale-item:hover {
+  background: #edf2f7;
+}
+
+.recent-sale-item .sale-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-sale-item .sale-number {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.recent-sale-item .sale-customer {
+  font-size: 13px;
+  color: #718096;
+}
+
+.recent-sale-item .sale-details {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.recent-sale-item .sale-date {
+  font-size: 12px;
+  color: #a0aec0;
+}
+
+.recent-sale-item .sale-amount {
+  font-weight: 600;
+  color: #059669;
+  font-size: 14px;
+}
+
+/* ============================================
+   TOP PRODUCTS
+   ============================================ */
+.top-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.top-product-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: #f7fafc;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.top-product-item:hover {
+  background: #edf2f7;
+}
+
+.top-product-item .product-rank {
+  font-weight: 700;
+  color: #4a6cf7;
+  font-size: 14px;
+  min-width: 32px;
+}
+
+.top-product-item .product-name {
+  flex: 1;
+  font-weight: 500;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.top-product-item .product-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-product-item .product-qty {
+  font-size: 13px;
+  color: #718096;
+}
+
+.top-product-item .product-revenue {
+  font-weight: 600;
+  color: #059669;
+  font-size: 14px;
+}
+
+/* ============================================
+   LOW STOCK ITEMS
+   ============================================ */
+.low-stock-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.low-stock-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: #fefce8;
+  border-radius: 8px;
+  border-left: 3px solid #d97706;
+}
+
+.low-stock-item .product-name {
+  flex: 1;
+  font-weight: 500;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.low-stock-item .product-brand {
+  color: #718096;
+  font-size: 13px;
+}
+
+.low-stock-item .stock-status {
+  font-size: 13px;
+  font-weight: 500;
+  color: #d97706;
+}
+
+/* ============================================
+   BRANCH STATISTICS
+   ============================================ */
+.branch-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.branch-stat-item {
+  padding: 16px 20px;
+  background: #f7fafc;
+  border-radius: 10px;
+  border: 1px solid #eef2f7;
+  transition: all 0.2s;
+}
+
+.branch-stat-item:hover {
+  background: #edf2f7;
+}
+
+.branch-stat-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.branch-stat-item .branch-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.branch-stat-item .branch-stats span {
+  font-size: 13px;
+  color: #4a5568;
+}
+
+/* ============================================
+   COMPANY DETAILS
+   ============================================ */
+.dashboard-company {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #eef2f7;
+  margin-top: 20px;
+}
+
+.dashboard-company h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.company-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  background: #f7fafc;
+  border-radius: 8px;
+}
+
+.detail-item .detail-label {
+  font-size: 12px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-item .detail-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a2e;
+  margin-top: 2px;
+}
+
+/* ============================================
+   SIMPLE DASHBOARD (Fallback)
+   ============================================ */
+.dashboard-simple {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.dashboard-simple .dashboard-welcome {
+  background: #f7fafc;
+  color: #1a1a2e;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dashboard-simple .dashboard-welcome h2 {
+  color: #1a1a2e;
+}
+
+.dashboard-simple .dashboard-welcome p {
+  color: #4a5568;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .dashboard-two-column {
+    grid-template-columns: 1fr;
+  }
+  
+  .branch-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .company-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard-welcome {
+    padding: 18px 20px;
+  }
+  
+  .dashboard-welcome h2 {
+    font-size: 18px;
+  }
+  
+  .dashboard-welcome p {
+    font-size: 14px;
+  }
+  
+  .dashboard-quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .branch-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .company-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card .stat-number {
+    font-size: 20px;
+  }
+  
+  .stat-card .stat-icon {
+    font-size: 26px;
+    width: 42px;
+    height: 42px;
+  }
+  
+  .recent-sale-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .recent-sale-item .sale-details {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .top-product-item {
+    flex-wrap: wrap;
+  }
+  
+  .top-product-item .product-stats {
+    width: 100%;
+    justify-content: flex-start;
+    padding-left: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 14px 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .stat-card .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 22px;
+  }
+  
+  .stat-card .stat-number {
+    font-size: 18px;
+  }
+  
+  .stat-card .stat-label {
+    font-size: 11px;
+  }
+  
+  .dashboard-welcome {
+    padding: 14px 16px;
+  }
+  
+  .dashboard-welcome h2 {
+    font-size: 16px;
+  }
+  
+  .dashboard-welcome p {
+    font-size: 13px;
+  }
+  
+  .dashboard-card {
+    padding: 14px 16px;
+  }
+  
+  .dashboard-card h3 {
+    font-size: 14px;
+  }
+  
+  .quick-action-card {
+    padding: 14px 16px;
+  }
+  
+  .quick-action-card .action-icon {
+    font-size: 24px;
+  }
+  
+  .quick-action-card .action-label {
+    font-size: 12px;
+  }
+  
+  .recent-sale-item .sale-number {
+    font-size: 12px;
+  }
+  
+  .recent-sale-item .sale-amount {
+    font-size: 12px;
+  }
+  
+  .top-product-item .product-name {
+    font-size: 12px;
+  }
+  
+  .top-product-item .product-revenue {
+    font-size: 12px;
+  }
+  
+  .dashboard-company {
+    padding: 14px 16px;
+  }
+  
+  .detail-item .detail-value {
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   LOGIN AS COMPANY BANNER
+   ============================================ */
+.login-as-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.banner-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.banner-icon {
+    font-size: 22px;
+}
+
+.original-user {
+    opacity: 0.8;
+    font-size: 0.9em;
+    margin-left: 4px;
+}
+
+.user-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.banner-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-return {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.btn-return:hover {
+    background: white;
+    color: #764ba2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-dismiss {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-dismiss:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: rotate(90deg);
+}
+
+/* ============================================
+   HELP MODE NOTICE
+   ============================================ */
+.help-mode {
+    background: #f0f4ff;
+    padding: 14px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+    color: #2d3748;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.help-icon {
+    font-size: 20px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .banner-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .banner-left {
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .banner-right {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn-return {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .help-mode {
+        flex-direction: column;
+        text-align: center;
+    }
+}

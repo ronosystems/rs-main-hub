@@ -1,0 +1,331 @@
+/* /home/kk/RS/TRONIC_MASTER/frontend/src/pages/electronics/ElectronicReceipt.css */
+
+/* ============================================
+   RECEIPT PAGE
+   ============================================ */
+.receipt-page {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   RECEIPT PAGE HEADER
+   ============================================ */
+.receipt-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-back {
+  padding: 8px 18px;
+  background: #f1f3f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-back:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.btn-print {
+  padding: 10px 24px;
+  background: #1a73e8;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-print:hover {
+  background: #1557b0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(26, 115, 232, 0.3);
+}
+
+/* ============================================
+   RECEIPT CONTAINER
+   ============================================ */
+.receipt-container {
+  background: #ffffff;
+  padding: 30px 35px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a1a;
+}
+
+/* ============================================
+   RECEIPT COMPANY
+   ============================================ */
+.receipt-company {
+  text-align: center;
+  border-bottom: 2px dashed #ccc;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+
+.receipt-company-logo {
+  display: flex;
+  justify-content: center;
+}
+
+.receipt-company-logo img {
+  max-width: 80px;
+  max-height: 60px;
+  object-fit: contain;
+}
+
+.receipt-company h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 4px 0;
+  letter-spacing: 1px;
+  color: #1a1a1a;
+}
+
+.receipt-company p {
+  margin: 2px 0;
+  font-size: 12px;
+  color: #333;
+}
+
+/* ============================================
+   RECEIPT HEADER
+   ============================================ */
+.receipt-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0 12px 0;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.receipt-header-left p,
+.receipt-header-right p {
+  margin: 2px 0;
+  font-size: 12px;
+}
+
+.receipt-header-right {
+  text-align: right;
+}
+
+/* ============================================
+   CUSTOMER DETAILS
+   ============================================ */
+.receipt-customer h4,
+.receipt-items h4 {
+  font-size: 13px;
+  margin: 10px 0 6px 0;
+  color: #1a1a2e;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
+}
+
+.receipt-customer p {
+  margin: 3px 0;
+  font-size: 12px;
+}
+
+.receipt-customer p strong {
+  display: inline-block;
+  min-width: 120px;
+}
+
+/* ============================================
+   RECEIPT ITEMS
+   ============================================ */
+.receipt-items table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.receipt-items th {
+  text-align: left;
+  padding: 4px 4px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.receipt-items td {
+  padding: 6px 4px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.receipt-items td:last-child,
+.receipt-items th:last-child {
+  text-align: right;
+}
+
+.receipt-items td:nth-child(2),
+.receipt-items th:nth-child(2) {
+  text-align: left;
+}
+
+.receipt-items td:first-child,
+.receipt-items th:first-child {
+  text-align: center;
+}
+
+.receipt-serial {
+  font-size: 10px;
+  color: #666;
+  display: block;
+}
+
+.receipt-specs {
+  font-size: 10px;
+  color: #888;
+  display: block;
+}
+
+/* ============================================
+   RECEIPT TOTAL
+   ============================================ */
+.receipt-total {
+  border-top: 2px solid #333;
+  padding-top: 10px;
+  margin-top: 8px;
+}
+
+.receipt-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.receipt-total-row strong {
+  font-size: 15px;
+}
+
+/* ============================================
+   RECEIPT FOOTER
+   ============================================ */
+.receipt-footer {
+  text-align: center;
+  border-top: 2px dashed #ccc;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.receipt-thanks {
+  font-size: 12px;
+  color: #555;
+  margin: 4px 0;
+  font-weight: 500;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+.loading-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #eef2f7;
+  border-top-color: #4a6cf7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+.error-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.error-state p {
+  font-size: 16px;
+  color: #e53e3e;
+  margin-bottom: 16px;
+}
+
+.error-state button {
+  padding: 8px 24px;
+  background: #4a6cf7;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.error-state button:hover {
+  background: #3a56d4;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .receipt-page-header {
+    display: none !important;
+  }
+  
+  .receipt-container {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 20px !important;
+  }
+  
+  .receipt-page {
+    padding: 0 !important;
+  }
+  
+  body * {
+    visibility: hidden !important;
+  }
+  
+  .receipt-page,
+  .receipt-page * {
+    visibility: visible !important;
+  }
+  
+  .receipt-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

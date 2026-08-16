@@ -1,0 +1,339 @@
+/* /home/kk/RS/TRONIC_MASTER/frontend/src/pages/Support.css */
+
+.support-page {
+  padding: 20px;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+.support-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  color: #495057;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.btn-back:hover {
+  background: #e9ecef;
+  transform: translateX(-2px);
+}
+
+.support-header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.support-header-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6c5ce7, #0984e3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+}
+
+.support-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #1a1a2e;
+}
+
+.support-header p {
+  margin: 4px 0 0 0;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.support-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e9ecef;
+}
+
+.support-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #1a1a2e;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+/* Support Options Grid */
+.support-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.support-card {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.support-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #e9ecef;
+}
+
+.support-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  color: white;
+  font-size: 20px;
+}
+
+.support-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #1a1a2e;
+}
+
+.support-card p {
+  margin: 0 0 12px 0;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.support-btn {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 2px solid;
+  border-radius: 6px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.support-btn:hover {
+  background: var(--hover-color, #0d6efd);
+  color: white !important;
+  border-color: var(--hover-color, #0d6efd) !important;
+}
+
+/* Help Topics Grid */
+.help-topics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.help-card {
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.help-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  border-color: #4a6cf7;
+  background: white;
+}
+
+.help-card-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.help-card h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #1a1a2e;
+}
+
+.help-card p {
+  margin: 0;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Support Hours */
+.support-hours {
+  grid-column: 1 / -1;
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.hour-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.hour-item .day {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 13px;
+}
+
+.hour-item .time {
+  font-size: 13px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.support-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #e3f2fd;
+  border-radius: 8px;
+  color: #0d6efd;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.support-info .info-icon {
+  font-size: 18px;
+}
+
+/* Quick Actions */
+.quick-actions {
+  grid-column: 1 / -1;
+}
+
+.quick-actions-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  color: #1a1a2e;
+  font-weight: 500;
+}
+
+.quick-action-btn:hover {
+  background: #e9ecef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.quick-action-btn .action-icon {
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .support-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .support-hours,
+  .quick-actions {
+    grid-column: 1;
+  }
+  
+  .support-options-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .hours-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .support-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .support-options-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .help-topics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .hours-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .quick-actions-grid {
+    flex-direction: column;
+  }
+  
+  .quick-action-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .help-topics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hours-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .support-section {
+    padding: 16px;
+  }
+}
