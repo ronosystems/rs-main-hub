@@ -13,7 +13,6 @@ const roleRoutes = require('./routes/roleRoutes');
 const syncRoutes = require('./routes/syncRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
-// ✅ ADD CALENDAR ROUTES
 const calendarRoutes = require('./routes/calendarRoutes');
 
 dotenv.config();
@@ -21,15 +20,29 @@ dotenv.config();
 const app = express();
 
 // ============================================
-// ✅ CORS CONFIGURATION
+// ✅ CORS CONFIGURATION - FIXED FOR HEROKU
 // ============================================
 const corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://127.0.0.1:3000',
-        'http://127.0.0.1:3001'
-    ],
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:3001',
+            'https://main-hub-frontend-48e11f192f94.herokuapp.com'
+        ];
+        
+        // Check if origin is allowed
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.herokuapp.com')) {
+            callback(null, true);
+        } else {
+            console.log('❌ CORS blocked:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -72,7 +85,6 @@ app.use('/api/roles', roleRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/notifications', notificationRoutes);
-// ✅ ADD CALENDAR ROUTES
 app.use('/api/calendar', calendarRoutes);
 
 // ============================================
@@ -101,7 +113,7 @@ app.get('/', (req, res) => {
             sync: '/api/sync',
             settings: '/api/settings',
             notifications: '/api/notifications',
-            calendar: '/api/calendar' // ✅ ADDED
+            calendar: '/api/calendar'
         }
     });
 });
@@ -137,7 +149,7 @@ connectDB().then(() => {
         console.log(`📁 Uploads directory: ${uploadsDir}`);
         console.log(`🖼️  Profile pictures: ${profilePicturesDir}`);
         console.log(`🌐 http://localhost:${PORT}\n`);
-        console.log(`🔗 CORS enabled for: ${corsOptions.origin.join(', ')}`);
+        console.log(`🔗 CORS enabled for: ${corsOptions.origin}`);
         console.log(`📅 Calendar API available at: http://localhost:${PORT}/api/calendar`);
     });
 }).catch(err => {
