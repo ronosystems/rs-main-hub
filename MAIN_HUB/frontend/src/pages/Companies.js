@@ -14,9 +14,6 @@ const Companies = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterPlanType, setFilterPlanType] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -27,10 +24,6 @@ const Companies = () => {
   // Data from database
   const [projectTypesMap, setProjectTypesMap] = useState({});
   
-  // Dynamic filter options from database
-  const [statusOptions, setStatusOptions] = useState([]);
-  const [planTypeOptions, setPlanTypeOptions] = useState([]);
-
   // Icon components
   const Icons = {
     Create: () => (
@@ -214,10 +207,7 @@ const Companies = () => {
         headers: { Authorization: `Bearer ${token}` },
         params: {
           page: currentPage,
-          limit: entriesPerPage,
-          search: searchTerm || undefined,
-          status: filterStatus !== 'all' ? filterStatus : undefined,
-          planType: filterPlanType !== 'all' ? filterPlanType : undefined
+          limit: entriesPerPage
         }
       });
 
@@ -246,7 +236,7 @@ const Companies = () => {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, entriesPerPage, searchTerm, filterStatus, filterPlanType, API_URL]);
+  }, [currentPage, entriesPerPage, API_URL]);
 
   // Fetch filter options from database
   const fetchFilterOptions = useCallback(async () => {
@@ -260,38 +250,10 @@ const Companies = () => {
         const typesData = projectTypesRes.data.data;
         setProjectTypesMap(typesData);
       }
-
-      const plansRes = await axios.get(`${API_URL}/plans`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (plansRes.data.success) {
-        const planNames = [...new Set(plansRes.data.data.map(p => p.name.toLowerCase()))];
-        setPlanTypeOptions(planNames);
-      }
-
-      try {
-        const statusRes = await axios.get(`${API_URL}/companies/statuses`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (statusRes.data.success) {
-          setStatusOptions(statusRes.data.data);
-        } else {
-          setStatusOptions(['active', 'inactive', 'suspended', 'pending']);
-        }
-      } catch (err) {
-        setStatusOptions(['active', 'inactive', 'suspended', 'pending']);
-      }
     } catch (err) {
       console.error('Error fetching filter options:', err);
-      setStatusOptions(['active', 'inactive', 'suspended', 'pending']);
-      setPlanTypeOptions(['basic', 'standard', 'premium', 'enterprise']);
     }
   }, [API_URL]);
-
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, filterStatus, filterPlanType]);
 
   useEffect(() => {
     fetchCompanies();
@@ -320,7 +282,7 @@ const Companies = () => {
     }
   };
 
-  // ========== DEACTIVATE COMPANY ==========
+  // Deactivate company
   const handleDeactivateCompany = async (id) => {
     if (!window.confirm('⚠️ Deactivate Company\n\nAre you sure you want to deactivate this company?\n\nThis will:\n• Deactivate the company\n• Deactivate all users\n• Prevent access to the system\n\nThis action can be reversed by reactivating.')) return;
     
@@ -332,7 +294,6 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
-        fetchFilterOptions();
         alert('✅ Company deactivated successfully!');
       }
     } catch (err) {
@@ -341,7 +302,7 @@ const Companies = () => {
     }
   };
 
-  // ========== REACTIVATE COMPANY ==========
+  // Reactivate company
   const handleReactivateCompany = async (id) => {
     if (!window.confirm('🔄 Reactivate Company\n\nAre you sure you want to reactivate this company?\n\nThis will:\n• Reactivate the company\n• Reactivate all users\n• Restore access to the system')) return;
     
@@ -353,7 +314,6 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
-        fetchFilterOptions();
         alert('✅ Company reactivated successfully!');
       }
     } catch (err) {
@@ -362,7 +322,7 @@ const Companies = () => {
     }
   };
 
-  // ========== PERMANENT DELETE COMPANY ==========
+  // Permanent delete company
   const handlePermanentDeleteCompany = async (id) => {
     if (!window.confirm(
       '⚠️ PERMANENT DELETE\n\n' +
@@ -383,7 +343,6 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
-        fetchFilterOptions();
         alert('✅ Company permanently deleted successfully!');
       }
     } catch (err) {
@@ -654,7 +613,7 @@ const Companies = () => {
               )}
             </div>
 
-            {/* ✅ Enhanced Pagination with Entries Per Page */}
+            {/* Pagination */}
             {companies.length > 0 && (
               <div className="pagination-container">
                 <div className="pagination-info">
