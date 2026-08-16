@@ -14,14 +14,10 @@ const seedUsers = async () => {
         const companiesCollection = db.collection('companies');
         const plansCollection = db.collection('plans');
 
-        // ============================================
-        // CHECK IF SUPER ADMIN ALREADY EXISTS
-        // ============================================
         const existingAdmin = await usersCollection.findOne({ role: 'super_admin' });
         if (existingAdmin) {
             console.log('⚠️ Super Admin already exists');
             console.log('📧 Existing Super Admin:', existingAdmin.email);
-            await mongoose.disconnect();
             process.exit(0);
         }
 
@@ -29,9 +25,6 @@ const seedUsers = async () => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash('Kiprono@1997', salt);
 
-        // ============================================
-        // CREATE USERS
-        // ============================================
         console.log('👤 Creating users...');
         
         const users = [
@@ -98,9 +91,6 @@ const seedUsers = async () => {
             console.log(`✅ Created user: ${user.name} (${user.role})`);
         }
 
-        // ============================================
-        // CREATE DEFAULT PLANS (if needed)
-        // ============================================
         const existingPlans = await plansCollection.findOne({});
         if (!existingPlans) {
             console.log('📋 Creating default plans...');
@@ -192,9 +182,6 @@ const seedUsers = async () => {
             console.log(`✅ ${plans.length} default plans created`);
         }
 
-        // ============================================
-        // SUMMARY
-        // ============================================
         const userCount = await usersCollection.countDocuments();
         const planCount = await plansCollection.countDocuments();
         const companyCount = await companiesCollection.countDocuments();
@@ -209,12 +196,6 @@ const seedUsers = async () => {
         console.log('  Admin:       kiprotichtrevor@gmail.com / Kiprono@1997');
         console.log('  Manager:     elkanakiprono@gmail.com / Kiprono@1997');
         console.log('  Staff:       kiprotichkiprono@gmail.com / Kiprono@1997');
-        console.log('\n💡 Next Steps:');
-        console.log('  1. Login as Super Admin');
-        console.log('  2. Create companies through the frontend');
-        console.log('  3. Create company users through the frontend');
-        console.log('  4. Assign plans to companies');
-        console.log('\n✅ All done!');
 
         await mongoose.disconnect();
         console.log('🔌 Disconnected from MongoDB');
