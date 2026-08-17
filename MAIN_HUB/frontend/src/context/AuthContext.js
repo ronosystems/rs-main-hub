@@ -4,7 +4,10 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
-const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
+
+const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
+
+
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
