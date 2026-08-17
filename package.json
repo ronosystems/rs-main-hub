@@ -1,12 +1,14 @@
 {
-  "name": "rs-main-hub-backend",
+  "name": "rs-main-hub-frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd MAIN_HUB/backend && npm start",
-    "postinstall": "cd MAIN_HUB/backend && npm install"
+    "postinstall": "cd MAIN_HUB/frontend && npm install && npm run build",
+    "start": "cd MAIN_HUB/frontend && npx serve -s build -l $PORT"
   },
   "engines": {
     "node": "18.x"
   },
-  "dependencies": {}
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
 }
