@@ -1,14 +1,10 @@
 {
-  "name": "rs-main-hub-frontend",
+  "name": "tronic-master-frontend",
   "version": "1.0.0",
   "scripts": {
-    "postinstall": "cd MAIN_HUB/frontend && npm install && npm run build",
-    "start": "cd MAIN_HUB/frontend && npx serve -s build -l $PORT"
+    "postinstall": "cd TRONIC_MASTER/frontend && npm install && npm run build",
+    "start": "cd TRONIC_MASTER/frontend && npx serve -s build -l $PORT"
   },
-  "engines": {
-    "node": "18.x"
-  },
-  "dependencies": {
-    "serve": "^14.0.0"
-  }
+  "engines": {"node": "18.x"},
+  "dependencies": {"serve": "^14.0.0"}
 }
