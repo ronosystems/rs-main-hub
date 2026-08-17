@@ -599,3 +599,245 @@
     font-size: 0.75rem;
   }
 }
+
+/* ============================================
+   MOBILE NAVBAR FIX
+   ============================================ */
+@media (max-width: 768px) {
+  .rs-navbar {
+    padding: 0 12px;
+    height: 60px;
+  }
+
+  .navbar-brand .brand-text {
+    font-size: 1rem;
+  }
+
+  .navbar-user {
+    padding: 4px 8px;
+  }
+
+  .navbar-user .user-name {
+    display: none;
+  }
+
+  .navbar-user .user-role {
+    display: none;
+  }
+
+  .navbar-center {
+    display: none;
+  }
+
+  .navbar-right {
+    gap: 6px;
+  }
+
+  .navbar-logout {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .navbar-logout span {
+    display: none;
+  }
+
+  .navbar-logout svg {
+    margin-right: 0;
+  }
+
+  .header-btn {
+    padding: 6px 8px;
+  }
+
+  .notification-btn,
+  .calendar-btn {
+    padding: 6px 8px;
+  }
+
+  .notification-badge {
+    font-size: 8px;
+    min-width: 14px;
+    height: 14px;
+    top: -4px;
+    right: -4px;
+  }
+
+  .sidebar-toggle-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .notification-dropdown,
+  .calendar-dropdown {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    left: 10px;
+    min-width: unset;
+    max-width: unset;
+    width: auto;
+  }
+
+  .rs-sidebar {
+    top: 60px;
+  }
+
+  .rs-main {
+    margin-top: 60px;
+  }
+
+  .rs-content-header {
+    top: 60px;
+    padding: 12px 15px;
+  }
+
+  .header-title {
+    font-size: 1.2rem;
+  }
+
+  .rs-content-body {
+    padding: 12px 15px;
+  }
+
+  .rs-footer {
+    font-size: 0.7rem;
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .rs-footer .footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rs-footer .footer-separator {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .rs-navbar {
+    padding: 0 8px;
+    height: 55px;
+  }
+
+  .navbar-brand .brand-text {
+    font-size: 0.85rem;
+  }
+
+  .navbar-brand .system-logo svg,
+  .navbar-brand .system-logo img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .sidebar-toggle-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .navbar-user .user-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 12px !important;
+  }
+
+  .navbar-user .user-avatar img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .navbar-logout {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+
+  .header-btn {
+    padding: 4px 6px;
+  }
+
+  .notification-btn,
+  .calendar-btn {
+    padding: 4px 6px;
+  }
+
+  .notification-btn svg,
+  .calendar-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rs-sidebar {
+    width: 250px;
+  }
+
+  .rs-sidebar.closed {
+    width: 60px;
+  }
+
+  .rs-main.sidebar-closed {
+    margin-left: 60px;
+  }
+
+  .rs-content-header {
+    padding: 10px 12px;
+  }
+
+  .header-title {
+    font-size: 1rem;
+  }
+
+  .rs-content-body {
+    padding: 10px 12px;
+  }
+}
+
+
+
+/* ============================================
+   MOBILE SIDEBAR OVERLAY
+   ============================================ */
+@media (max-width: 768px) {
+  .rs-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px !important;
+  }
+
+  .rs-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .rs-sidebar.closed {
+    transform: translateX(-100%);
+    width: 280px !important;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .rs-main {
+    margin-left: 0 !important;
+  }
+
+  .rs-main.sidebar-closed {
+    margin-left: 0 !important;
+  }
+}

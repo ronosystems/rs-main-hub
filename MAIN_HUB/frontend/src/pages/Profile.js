@@ -20,8 +20,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'http://localhost:5000';
+  const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
+  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   useEffect(() => {
     if (user) {
