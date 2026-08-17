@@ -648,3 +648,346 @@
     font-size: 11px;
   }
 }
+
+
+/* ============================================ */
+/* MOBILE NAVBAR RESPONSIVE - TRONIC MASTER    */
+/* ============================================ */
+
+/* Mobile Navbar Fixes */
+@media (max-width: 768px) {
+  .tm-navbar {
+    height: 55px;
+    padding: 0 10px;
+  }
+
+  .navbar-left {
+    gap: 8px;
+  }
+
+  .sidebar-toggle-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .brand-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-logo span {
+    font-size: 14px !important;
+  }
+
+  .brand-text {
+    font-size: 0.75rem;
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Hide navbar title on mobile */
+  .navbar-center {
+    display: none;
+  }
+
+  /* Hide search bar on mobile */
+  .navbar-search {
+    display: none !important;
+  }
+
+  .navbar-right {
+    gap: 6px;
+  }
+
+  /* User dropdown button */
+  .user-dropdown-btn {
+    padding: 4px 8px 4px 4px !important;
+  }
+
+  .user-dropdown-btn .user-name-display {
+    display: none;
+  }
+
+  .user-dropdown-btn .user-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 11px !important;
+  }
+
+  .user-dropdown-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Navbar right buttons */
+  .navbar-right .header-btn {
+    padding: 4px 6px;
+  }
+
+  .navbar-right .header-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Dropdown menu */
+  .user-dropdown-menu {
+    position: fixed !important;
+    top: 55px !important;
+    right: 10px !important;
+    left: 10px !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    width: auto !important;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  /* Support Mode Banner */
+  .support-mode-banner {
+    padding: 8px 12px !important;
+    position: sticky;
+    top: 55px;
+    z-index: 999;
+  }
+
+  .support-mode-content {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+  }
+
+  .support-mode-left {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 6px !important;
+  }
+
+  .support-mode-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 18px !important;
+  }
+
+  .support-mode-title {
+    font-size: 0.8rem !important;
+  }
+
+  .support-mode-details {
+    font-size: 0.7rem !important;
+  }
+
+  .support-mode-badge {
+    justify-content: center !important;
+  }
+
+  .support-mode-badge span {
+    font-size: 0.5rem !important;
+    padding: 1px 6px !important;
+  }
+
+  .support-mode-right {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+  }
+
+  .btn-exit-support,
+  .btn-return-admin {
+    width: auto !important;
+    padding: 4px 12px !important;
+    font-size: 0.7rem !important;
+    justify-content: center !important;
+  }
+
+  .btn-dismiss-banner {
+    font-size: 0.9rem !important;
+    padding: 2px 6px !important;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .tm-navbar {
+    height: 50px;
+    padding: 0 8px;
+  }
+
+  .sidebar-toggle-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .brand-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .brand-logo span {
+    font-size: 12px !important;
+  }
+
+  .brand-text {
+    font-size: 0.65rem;
+    max-width: 60px;
+  }
+
+  .user-dropdown-btn .user-avatar {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 10px !important;
+  }
+
+  .user-dropdown-btn {
+    padding: 2px 6px 2px 2px !important;
+  }
+
+  .support-mode-title {
+    font-size: 0.7rem !important;
+  }
+
+  .support-mode-details {
+    font-size: 0.6rem !important;
+  }
+
+  .btn-exit-support,
+  .btn-return-admin {
+    font-size: 0.6rem !important;
+    padding: 3px 8px !important;
+  }
+
+  /* Sidebar on mobile - slides from left */
+  .tm-sidebar {
+    top: 50px !important;
+    width: 280px !important;
+  }
+
+  .tm-sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .tm-sidebar.closed {
+    transform: translateX(-100%) !important;
+  }
+
+  .tm-main {
+    margin-top: 50px !important;
+    margin-left: 0 !important;
+  }
+
+  .tm-content-header {
+    top: 50px !important;
+    padding: 10px 12px !important;
+  }
+
+  .header-title {
+    font-size: 0.9rem !important;
+  }
+
+  .header-breadcrumbs {
+    font-size: 0.65rem !important;
+  }
+
+  .tm-content-body {
+    padding: 10px !important;
+  }
+
+  .tm-footer {
+    padding: 6px 12px !important;
+    font-size: 0.6rem !important;
+  }
+
+  .tm-footer .footer-left,
+  .tm-footer .footer-right {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 2px !important;
+  }
+
+  .tm-footer .footer-separator {
+    display: none !important;
+  }
+
+  .rs-link {
+    font-size: 0.6rem !important;
+    padding: 2px 4px !important;
+  }
+}
+
+/* Landscape mobile phones */
+@media (max-width: 768px) and (orientation: landscape) {
+  .tm-navbar {
+    height: 45px;
+  }
+
+  .tm-main {
+    margin-top: 45px;
+  }
+
+  .tm-sidebar {
+    top: 45px !important;
+  }
+
+  .tm-content-header {
+    top: 45px !important;
+    padding: 6px 12px !important;
+  }
+
+  .support-mode-banner {
+    top: 45px !important;
+    padding: 4px 10px !important;
+  }
+
+  .support-mode-banner .support-mode-content {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+
+  .support-mode-left {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+  }
+
+  .support-mode-right {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* Fix for dropdown on mobile */
+@media (max-width: 768px) {
+  .user-dropdown-menu {
+    max-height: 60vh;
+  }
+
+  .dropdown-user-info {
+    padding: 8px 12px !important;
+  }
+
+  .dropdown-user-info > div:first-child {
+    font-size: 0.85rem !important;
+  }
+
+  .dropdown-user-info > div:nth-child(2) {
+    font-size: 0.7rem !important;
+  }
+
+  .dropdown-item {
+    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+  }
+
+  .dropdown-item svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .logout-btn {
+    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+  }
+}

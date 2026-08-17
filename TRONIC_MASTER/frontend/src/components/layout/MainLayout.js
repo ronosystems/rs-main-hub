@@ -279,6 +279,20 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+
+  // Add this after the existing useEffect hooks
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 768);
+    if (window.innerWidth <= 768) {
+      setSidebarOpen(false);
+    }
+  };
+  handleResize();
+  window.addEventListener('resize', handleResize);
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
+
   const handleLogout = () => {
     const isSupportMode = localStorage.getItem('loginAsCompany') === 'true';
     
