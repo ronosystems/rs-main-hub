@@ -60,10 +60,33 @@ console.log('========================================\n');
 
 const app = express();
 
-// Middleware
+// ============================================
+// ✅ FIXED CORS CONFIGURATION
+// ============================================
+
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'https://*.herokuapp.com'],
-    credentials: true
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:3002',
+            'https://tronic-master-frontend-bcc6a857611a.herokuapp.com'
+        ];
+        
+        // Check if origin is allowed or if it ends with .herokuapp.com
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.herokuapp.com')) {
+            callback(null, true);
+        } else {
+            console.log('❌ CORS blocked:', origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
 // Request logging
@@ -323,4 +346,3 @@ connectDB().then(() => {
     console.error('❌ Database connection failed:', err);
     process.exit(1);
 });
-
