@@ -497,20 +497,6 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Welcome Message */}
-            <div className="dashboard-welcome">
-                <h2>Welcome to TRONIC_MASTER!</h2>
-                <p>
-                    Manage your electronics inventory, sales, and customers from one place.
-                    {stats.overview.totalProducts > 0 && 
-                        ` You have ${stats.overview.totalProducts} products in your inventory across ${stats.overview.totalBranches} branches.`
-                    }
-                    {stats.sales.total.count > 0 && 
-                        ` Total sales: ${stats.sales.total.count} orders worth ${formatCurrency(stats.sales.total.total)}.`
-                    }
-                </p>
-            </div>
-
             {/* Recent Sales & Top Products */}
             <div className="dashboard-two-column">
                 <div className="dashboard-card">
