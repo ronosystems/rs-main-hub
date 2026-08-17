@@ -19,8 +19,8 @@ const Settings = () => {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const fileInputRef = useRef(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'http://localhost:5000';
+  const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
+  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   // ✅ Check if user has permission to view settings
   useEffect(() => {

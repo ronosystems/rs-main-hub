@@ -124,7 +124,8 @@ const Notifications = () => {
   const [filter, setFilter] = useState('all');
   const [error, setError] = useState(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
+  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   // Get icon component based on notification type - no useCallback needed
   const getIconComponent = (type) => {
