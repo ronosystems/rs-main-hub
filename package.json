@@ -1,9 +1,10 @@
 {
-  "name": "tronic-master-backend",
+  "name": "tronic-master-frontend",
   "version": "1.0.0",
   "scripts": {
-    "start": "cd TRONIC_MASTER/backend && npm start",
-    "postinstall": "cd TRONIC_MASTER/backend && npm install"
+    "postinstall": "cd TRONIC_MASTER/frontend && npm install && npm run build",
+    "start": "cd TRONIC_MASTER/frontend && npx serve -s build -l $PORT"
   },
-  "engines": {"node": "18.x"}
+  "engines": {"node": "18.x"},
+  "dependencies": {"serve": "^14.0.0"}
 }
