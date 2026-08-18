@@ -84,7 +84,6 @@ app.use('/api/plans', planRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/sync', syncRoutes);
 app.use('/api/settings', settingsRoutes);
-app.use('/super-admin/settings', settingsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/calendar', calendarRoutes);
 
