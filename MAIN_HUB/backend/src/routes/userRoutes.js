@@ -331,7 +331,7 @@ router.post('/', protect, superAdminOnly, async (req, res) => {
             company, 
             phone, 
             projectRole,
-            companyRole  // ✅ ADD companyRole for project users
+            companyRole 
         } = req.body;
         
         const existingUser = await User.findOne({ email });
@@ -402,7 +402,7 @@ router.put('/:id', protect, superAdminOnly, async (req, res) => {
             isActive, 
             settings, 
             projectRole,
-            companyRole  // ✅ ADD companyRole
+            companyRole 
         } = req.body;
         
         // Admin cannot change role to super_admin

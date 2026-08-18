@@ -47,8 +47,8 @@ router.get('/', protect, superAdminOnly, async (req, res) => {
     if (!settings) {
       // Create default settings if none exist
       settings = await Settings.create({
-        platformName: 'RS Hub',
-        platformEmail: 'support@rshub.com',
+        platformName: 'RONOSYSTEMS HUB',
+        platformEmail: 'support@ronosystems.com',
         timezone: 'Africa/Nairobi',
         currency: 'KES',
         language: 'en',

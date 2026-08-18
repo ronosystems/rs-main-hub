@@ -656,9 +656,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
             <span className="brand-text">{platformName}</span>
           </div>
         </div>
-        <div className="navbar-center">
-          <span className="navbar-title">{title || 'Dashboard'}</span>
-        </div>
+
         <div className="navbar-right">
           <div className="navbar-user">
             <span className="user-avatar" style={{ 
