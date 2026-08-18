@@ -21,12 +21,16 @@ const Products = () => {
   const [filterBranch, setFilterBranch] = useState('all');
   const [branches, setBranches] = useState([]);
   
+  // Action Modal
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
 
   const categories = ['Phones', 'Electronics', 'Accessories'];
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
 
   // ============================================
   // FETCH DATA
@@ -47,7 +51,7 @@ const Products = () => {
   const fetchBranches = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${STATIC_URL}/branches`, {
+      const response = await fetch(`${API_URL}/branches`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -83,7 +87,7 @@ const Products = () => {
       formData.append('image', imageFile);
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`${STATIC_URL}/products/${productId}/image`, {
+      const response = await fetch(`${API_URL}/products/${productId}/image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -127,6 +131,7 @@ const Products = () => {
       if (response.success) {
         await fetchProducts();
         setShowModal(false);
+        setShowActionModal(false);
         alert(editingProduct ? 'Product updated successfully!' : 'Product created successfully!');
       } else {
         alert(response.message || 'Failed to save product');
@@ -145,16 +150,19 @@ const Products = () => {
   const handleEditProduct = (product) => {
     setEditingProduct(product);
     setShowModal(true);
+    setShowActionModal(false);
   };
 
   const handleViewProduct = (product) => {
     setViewingProduct(product);
     setShowDetailModal(true);
+    setShowActionModal(false);
   };
 
   const handleRestockProduct = (product) => {
     setRestockProduct(product);
     setShowRestockModal(true);
+    setShowActionModal(false);
   };
 
   const handleDeleteProduct = async (id) => {
@@ -163,10 +171,24 @@ const Products = () => {
     try {
       await productService.deleteProduct(id);
       await fetchProducts();
+      setShowActionModal(false);
       alert('Product deleted successfully!');
     } catch (err) {
       alert(err.message);
     }
+  };
+
+  // ============================================
+  // ACTION MODAL HANDLERS
+  // ============================================
+  const openActionModal = (product) => {
+    setSelectedProduct(product);
+    setShowActionModal(true);
+  };
+
+  const closeActionModal = () => {
+    setShowActionModal(false);
+    setSelectedProduct(null);
   };
 
   // ============================================
@@ -224,6 +246,7 @@ const Products = () => {
 
       setShowRestockModal(false);
       setRestockProduct(null);
+      setShowActionModal(false);
     } catch (error) {
       console.error('Error restocking:', error);
       alert(error.message || 'Failed to restock product');
@@ -590,18 +613,18 @@ const Products = () => {
               <table className="products-table">
                 <thead>
                   <tr>
-                    <th style={{ width: '4%', textAlign: 'center' }}>#</th>
-                    <th style={{ width: '18%' }}>Product</th>
-                    <th style={{ width: '10%' }}>Category</th>
-                    <th style={{ width: '10%' }}>Brand</th>
-                    <th style={{ width: '10%' }}>Model</th>
-                    <th style={{ width: '8%' }}>SKU</th>
-                    <th style={{ width: '10%' }}>Specs</th>
-                    <th style={{ width: '10%' }}>Branch</th>
-                    <th style={{ width: '8%' }}>Stock</th>
-                    <th style={{ width: '8%' }}>Buying</th>
-                    <th style={{ width: '8%' }}>Selling</th>
-                    <th style={{ width: '6%' }}>Actions</th>
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>SKU</th>
+                    <th>Specs</th>
+                    <th>Branch</th>
+                    <th>Stock</th>
+                    <th>Buying</th>
+                    <th>Selling</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -612,7 +635,7 @@ const Products = () => {
                     
                     return (
                       <tr key={product._id}>
-                        <td style={{ textAlign: 'center' }}>{startIndex + index + 1}</td>
+                        <td>{startIndex + index + 1}</td>
                         <td>
                           <div className="product-name-cell">
                             <span className="product-name">{product.name}</span>
@@ -622,14 +645,14 @@ const Products = () => {
                           </div>
                         </td>
                         <td>
-                          <span className="category-badge">
+                          <span className={`category-badge category-${product.category?.toLowerCase()}`}>
                             {getCategoryIcon(product.category)} {product.category}
                           </span>
                         </td>
                         <td>{product.brand}</td>
                         <td>{product.model}</td>
                         <td>
-                          <span className="product-sku">{product.sku || '—'}</span>
+                          <span className="sku-cell">{product.sku || '—'}</span>
                         </td>
                         <td className="specs-cell">{formatSpecs(product)}</td>
                         <td>
@@ -658,36 +681,13 @@ const Products = () => {
                           {formatPrice(product.price?.sale, product)}
                         </td>
                         <td>
-                          <div className="action-buttons">
-                            <button 
-                              className="btn-action btn-view"
-                              onClick={() => handleViewProduct(product)}
-                              title="View Product Details"
-                            >
-                              👁️
-                            </button>
-                            <button 
-                              className="btn-action btn-edit"
-                              onClick={() => handleEditProduct(product)}
-                              title="Edit Product"
-                            >
-                              ✏️
-                            </button>
-                            <button 
-                              className="btn-action btn-restock"
-                              onClick={() => handleRestockProduct(product)}
-                              title="Restock Product"
-                            >
-                              📦
-                            </button>
-                            <button 
-                              className="btn-action btn-delete"
-                              onClick={() => handleDeleteProduct(product._id)}
-                              title="Delete Product"
-                            >
-                              🗑️
-                            </button>
-                          </div>
+                          <button 
+                            className="btn-action-menu"
+                            onClick={() => openActionModal(product)}
+                            title="Actions"
+                          >
+                            ⋮
+                          </button>
                         </td>
                       </tr>
                     );
@@ -750,6 +750,74 @@ const Products = () => {
               </div>
             )}
           </>
+        )}
+
+        {/* ============================================ */}
+        {/* ACTION MODAL - Clean Action Menu */}
+        {/* ============================================ */}
+        {showActionModal && selectedProduct && (
+          <div className="action-modal-overlay" onClick={closeActionModal}>
+            <div className="action-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="action-modal-header">
+                <h3>Product Actions</h3>
+                <button className="action-modal-close" onClick={closeActionModal}>✕</button>
+              </div>
+              <div className="action-modal-body">
+                <div className="action-product-info">
+                  <div className="action-product-name">{selectedProduct.name}</div>
+                  <div className="action-product-details">
+                    <span className="action-product-sku">SKU: {selectedProduct.sku || 'N/A'}</span>
+                    <span className={`category-badge category-${selectedProduct.category?.toLowerCase()}`}>
+                      {selectedProduct.category}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="action-buttons-grid">
+                  <button 
+                    className="action-btn action-btn-view"
+                    onClick={() => handleViewProduct(selectedProduct)}
+                  >
+                    <span className="action-btn-icon">👁️</span>
+                    <span className="action-btn-label">View Details</span>
+                    <span className="action-btn-desc">View full product information</span>
+                  </button>
+
+                  <button 
+                    className="action-btn action-btn-edit"
+                    onClick={() => handleEditProduct(selectedProduct)}
+                  >
+                    <span className="action-btn-icon">✏️</span>
+                    <span className="action-btn-label">Edit Product</span>
+                    <span className="action-btn-desc">Modify product details</span>
+                  </button>
+
+                  <button 
+                    className="action-btn action-btn-restock"
+                    onClick={() => handleRestockProduct(selectedProduct)}
+                  >
+                    <span className="action-btn-icon">📦</span>
+                    <span className="action-btn-label">Restock</span>
+                    <span className="action-btn-desc">Add stock or units</span>
+                  </button>
+
+                  <button 
+                    className="action-btn action-btn-delete"
+                    onClick={() => handleDeleteProduct(selectedProduct._id)}
+                  >
+                    <span className="action-btn-icon">🗑️</span>
+                    <span className="action-btn-label">Delete</span>
+                    <span className="action-btn-desc">Permanently remove product</span>
+                  </button>
+                </div>
+              </div>
+              <div className="action-modal-footer">
+                <button className="action-modal-cancel" onClick={closeActionModal}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         <ProductModal

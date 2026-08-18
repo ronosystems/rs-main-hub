@@ -1036,3 +1036,316 @@
 .table-container::-webkit-scrollbar-thumb:hover {
   background: #a0aec0;
 }
+
+/* ============================================ */
+/* ACTION MODAL - Professional Action Menu     */
+/* ============================================ */
+
+.action-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+.action-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.action-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+.action-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.action-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.action-modal-close:hover {
+  background: #f7fafc;
+  color: #dc3545;
+}
+
+.action-modal-body {
+  padding: 24px;
+}
+
+.action-product-info {
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.action-product-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+
+.action-product-details {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.action-product-sku {
+  background: #e9ecef;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.action-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.action-btn-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.action-btn-desc {
+  font-size: 11px;
+  color: #a0aec0;
+  margin-top: 2px;
+}
+
+/* View Button */
+.action-btn-view {
+  border-color: #e2e8f0;
+}
+
+.action-btn-view:hover {
+  border-color: #4a6cf7;
+  background: #f0f4ff;
+}
+
+.action-btn-view:hover .action-btn-label {
+  color: #4a6cf7;
+}
+
+/* Edit Button */
+.action-btn-edit {
+  border-color: #e2e8f0;
+}
+
+.action-btn-edit:hover {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.action-btn-edit:hover .action-btn-label {
+  color: #f59e0b;
+}
+
+/* Restock Button */
+.action-btn-restock {
+  border-color: #e2e8f0;
+}
+
+.action-btn-restock:hover {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.action-btn-restock:hover .action-btn-label {
+  color: #10b981;
+}
+
+/* Delete Button */
+.action-btn-delete {
+  border-color: #e2e8f0;
+}
+
+.action-btn-delete:hover {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.action-btn-delete:hover .action-btn-label {
+  color: #ef4444;
+}
+
+.action-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #f0f2f5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-modal-cancel {
+  padding: 8px 24px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.action-modal-cancel:hover {
+  background: #e2e8f0;
+}
+
+/* ============================================ */
+/* ACTION MENU BUTTON (Three Dots)             */
+/* ============================================ */
+
+.btn-action-menu {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #4a5568;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action-menu:hover {
+  background: #e2e8f0;
+  color: #0d6efd;
+  transform: scale(1.1);
+}
+
+/* ============================================ */
+/* ANIMATIONS                                  */
+/* ============================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================ */
+/* RESPONSIVE - ACTION MODAL                   */
+/* ============================================ */
+
+@media (max-width: 480px) {
+  .action-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-modal {
+    max-width: 100%;
+    width: 95%;
+    margin: 10px;
+  }
+
+  .action-product-name {
+    font-size: 14px;
+  }
+
+  .action-btn {
+    padding: 14px 12px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .action-btn-icon {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+
+  .action-btn-desc {
+    display: none;
+  }
+
+  .action-btn-label {
+    font-size: 13px;
+  }
+
+  .btn-action-menu {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+}
