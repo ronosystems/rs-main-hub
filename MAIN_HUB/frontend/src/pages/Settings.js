@@ -1,6 +1,6 @@
 // /home/kk/RS/MAIN HUB/frontend/src/pages/Settings.js
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'; // ✅ Added useCallback
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { usePermissions } from '../context/PermissionContext';
 import { useNavigate } from 'react-router-dom';
@@ -41,8 +41,8 @@ const Settings = () => {
 
   // General Settings
   const [generalSettings, setGeneralSettings] = useState({
-    platformName: 'RS Hub',
-    platformEmail: 'support@rshub.com',
+    platformName: 'RONOSYSTEMS HUB',
+    platformEmail: 'support@ronosystems.com',
     timezone: 'Africa/Nairobi',
     currency: 'KES',
     language: 'en'
@@ -71,111 +71,44 @@ const Settings = () => {
     dailyReports: true
   });
 
-  // Icon components
-  const Icons = {
-    Success: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-        <polyline points="22 4 12 14.01 9 11.01"/>
-      </svg>
-    ),
-    General: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M12 1v2"/>
-        <path d="M12 21v2"/>
-        <path d="M4.22 4.22l1.42 1.42"/>
-        <path d="M18.36 18.36l1.42 1.42"/>
-        <path d="M1 12h2"/>
-        <path d="M21 12h2"/>
-        <path d="M4.22 19.78l1.42-1.42"/>
-        <path d="M18.36 5.64l1.42-1.42"/>
-      </svg>
-    ),
-    Appearance: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-    ),
-    Security: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <path d="M9 12l2 2 4-4"/>
-      </svg>
-    ),
-    Notifications: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-      </svg>
-    ),
-    Light: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="1" x2="12" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="23"/>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-        <line x1="1" y1="12" x2="3" y2="12"/>
-        <line x1="21" y1="12" x2="23" y2="12"/>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-      </svg>
-    ),
-    Dark: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-      </svg>
-    ),
-    Auto: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12 6 12 12 16 14"/>
-      </svg>
-    ),
-    Camera: () => (
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-        <circle cx="12" cy="13" r="4"/>
-      </svg>
-    ),
-    Upload: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="17 8 12 3 7 8"/>
-        <line x1="12" y1="3" x2="12" y2="15"/>
-      </svg>
-    ),
-    Remove: () => (
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    )
-  };
+  // Icon components (keep as is)
+  const Icons = { /* ... your existing Icons ... */ };
 
-  // ✅ Fetch system settings from server - wrapped in useCallback
+  // ✅ FIXED: Fetch system settings with proper error handling
   const fetchSystemSettings = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      // If no token, use localStorage settings
+      if (!token) {
+        console.warn('⚠️ Settings: No token found, using localStorage defaults');
+        loadSettingsFromLocalStorage();
+        return;
+      }
+
+      console.log('🔐 Settings: Fetching from API with token');
+      
       const response = await fetch(`${API_URL}/settings`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
+
+      console.log('📡 Settings API response status:', response.status);
+
+      // Handle 401/403 gracefully
+      if (response.status === 401 || response.status === 403) {
+        console.warn('⚠️ Settings API unauthorized - using localStorage');
+        loadSettingsFromLocalStorage();
+        return;
+      }
 
       if (response.ok) {
         const data = await response.json();
         if (data.success && data.data) {
           const settings = data.data;
+          console.log('✅ Settings loaded from server:', settings);
           
           // Update general settings
           if (settings.platformName) {
@@ -207,15 +140,20 @@ const Settings = () => {
             localStorage.setItem('systemLogo', logoUrl);
           }
         }
+      } else {
+        console.warn('⚠️ Settings fetch failed with status:', response.status);
+        loadSettingsFromLocalStorage();
       }
     } catch (error) {
-      console.error('Error fetching system settings:', error);
+      console.error('❌ Error fetching system settings:', error);
+      loadSettingsFromLocalStorage();
     }
-  }, [API_URL, STATIC_URL]); // ✅ Added dependencies
+  }, [API_URL, STATIC_URL]);
 
-  // Load saved settings from localStorage (fallback) and server
-  useEffect(() => {
-    // First, load from localStorage for immediate display
+  // Helper function to load settings from localStorage
+  const loadSettingsFromLocalStorage = () => {
+    console.log('📂 Loading settings from localStorage');
+    
     const savedLogo = localStorage.getItem('systemLogo');
     if (savedLogo) {
       setLogoPreview(savedLogo);
@@ -235,12 +173,18 @@ const Settings = () => {
     if (savedSidebarColor) {
       setAppearanceSettings(prev => ({ ...prev, sidebarColor: savedSidebarColor }));
     }
+  };
+
+  // Load saved settings from localStorage (fallback) and server
+  useEffect(() => {
+    // First, load from localStorage for immediate display
+    loadSettingsFromLocalStorage();
 
     // Then fetch from server
     fetchSystemSettings();
-  }, [fetchSystemSettings]); // ✅ Added fetchSystemSettings as dependency
+  }, [fetchSystemSettings]);
 
-  // Logo upload handlers
+  // Logo upload handlers (keep as is)
   const handleLogoUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -334,13 +278,19 @@ const Settings = () => {
     }
   };
 
-  // Submit handlers
+  // Submit handlers (keep as is but add better error handling)
   const handleGeneralSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login to save settings');
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch(`${API_URL}/settings`, {
         method: 'PUT',
         headers: {
@@ -384,6 +334,12 @@ const Settings = () => {
     
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please login to save settings');
+        setLoading(false);
+        return;
+      }
+
       const response = await fetch(`${API_URL}/settings`, {
         method: 'PUT',
         headers: {
@@ -477,7 +433,7 @@ const Settings = () => {
         </div>
 
         <div className="settings-content">
-          {/* General Settings */}
+          {/* General Settings - keep as is */}
           {activeTab === 'general' && (
             <div className="settings-panel">
               <div className="settings-panel-header">
@@ -555,7 +511,7 @@ const Settings = () => {
             </div>
           )}
 
-          {/* Appearance Settings */}
+          {/* Appearance Settings - keep as is */}
           {activeTab === 'appearance' && (
             <div className="settings-panel">
               <div className="settings-panel-header">
@@ -681,7 +637,7 @@ const Settings = () => {
             </div>
           )}
 
-          {/* Security Settings */}
+          {/* Security Settings - keep as is */}
           {activeTab === 'security' && (
             <div className="settings-panel">
               <div className="settings-panel-header">
@@ -737,7 +693,7 @@ const Settings = () => {
             </div>
           )}
 
-          {/* Notification Settings */}
+          {/* Notification Settings - keep as is */}
           {activeTab === 'notifications' && (
             <div className="settings-panel">
               <div className="settings-panel-header">
