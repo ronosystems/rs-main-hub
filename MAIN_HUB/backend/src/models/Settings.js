@@ -5,11 +5,11 @@ const mongoose = require('mongoose');
 const SettingsSchema = new mongoose.Schema({
   platformName: {
     type: String,
-    default: 'RS Hub'
+    default: 'RONOSYSTEMS HUB'
   },
   platformEmail: {
     type: String,
-    default: 'support@rshub.com'
+    default: 'support@ronosystems.com'
   },
   timezone: {
     type: String,
