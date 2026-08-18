@@ -1,14 +1,17 @@
-/* ============================================
-   POS PAGE LAYOUT
-   ============================================ */
+/* ============================================ */
+/* POS PAGE LAYOUT - FIXED OVERLAPPING         */
+/* ============================================ */
 
 .pos-page {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
+/* ============================================ */
+/* HEADER                                      */
+/* ============================================ */
 
 .pos-header {
   display: flex;
@@ -82,9 +85,10 @@
   background: #c82333;
 }
 
-/* ============================================
-   CASHIER BRANCH DISPLAY
-   ============================================ */
+/* ============================================ */
+/* CASHIER BRANCH DISPLAY                      */
+/* ============================================ */
+
 .cashier-branch-display {
   display: flex;
   align-items: center;
@@ -117,20 +121,22 @@
   letter-spacing: 0.5px;
 }
 
-/* ============================================
-   POS LAYOUT
-   ============================================ */
+/* ============================================ */
+/* POS LAYOUT - FIXED OVERLAPPING              */
+/* ============================================ */
 
 .pos-layout {
   display: grid;
   grid-template-columns: 1fr 380px;
   gap: 20px;
-  height: calc(100vh - 200px);
+  min-height: 500px;
+  max-height: calc(100vh - 250px);
+  flex: 1;
 }
 
-/* ============================================
-   PRODUCTS SECTION
-   ============================================ */
+/* ============================================ */
+/* PRODUCTS SECTION                            */
+/* ============================================ */
 
 .pos-products {
   background: white;
@@ -139,6 +145,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
+  min-height: 400px;
+  max-height: calc(100vh - 280px);
+  overflow: hidden;
 }
 
 .pos-search {
@@ -184,6 +193,7 @@
   gap: 12px;
   align-content: start;
   padding-right: 4px;
+  max-height: 100%;
 }
 
 .products-grid::-webkit-scrollbar {
@@ -204,9 +214,9 @@
   background: #a0aec0;
 }
 
-/* ============================================
-   PRODUCT CARD WITH IMAGE
-   ============================================ */
+/* ============================================ */
+/* PRODUCT CARD WITH IMAGE                     */
+/* ============================================ */
 
 .product-card {
   background: #f8f9fa;
@@ -386,9 +396,9 @@
   opacity: 0.6;
 }
 
-/* ============================================
-   CART SECTION WITH IMAGES
-   ============================================ */
+/* ============================================ */
+/* CART SECTION WITH IMAGES                    */
+/* ============================================ */
 
 .pos-cart {
   background: white;
@@ -398,6 +408,8 @@
   display: flex;
   flex-direction: column;
   min-height: 400px;
+  max-height: calc(100vh - 280px);
+  overflow: hidden;
 }
 
 .cart-header {
@@ -407,6 +419,7 @@
   margin-bottom: 12px;
   padding-bottom: 12px;
   border-bottom: 2px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .cart-header h3 {
@@ -427,6 +440,7 @@
   flex: 1;
   overflow-y: auto;
   margin-bottom: 12px;
+  max-height: 100%;
 }
 
 .cart-items::-webkit-scrollbar {
@@ -606,9 +620,9 @@
   transform: scale(1.2);
 }
 
-/* ============================================
-   CART IMAGE PREVIEW - BETWEEN CART AND CUSTOMER
-   ============================================ */
+/* ============================================ */
+/* CART IMAGE PREVIEW                          */
+/* ============================================ */
 
 .cart-image-preview {
   background: #f8fafc;
@@ -616,6 +630,7 @@
   padding: 10px 12px;
   margin: 8px 0 12px 0;
   border: 1px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .image-preview-header {
@@ -639,85 +654,69 @@
   border-radius: 10px;
 }
 
-.image-preview-grid {
+.single-image-preview {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0;
 }
 
-.image-preview-item {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 2px solid #e9ecef;
-  background: white;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-
-.image-preview-item:hover {
-  transform: scale(1.05);
-  border-color: #0d6efd;
-}
-
-.preview-thumbnail {
-  width: 100%;
-  height: 100%;
+.single-preview-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
   object-fit: cover;
+  border: 2px solid #e9ecef;
+  flex-shrink: 0;
+  background: white;
 }
 
-.preview-fallback {
-  width: 100%;
-  height: 100%;
+.single-preview-fallback {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 28px;
   background: #f1f5f9;
+  border: 2px solid #e9ecef;
+  flex-shrink: 0;
   color: #94a3b8;
 }
 
-.preview-item-qty {
-  position: absolute;
-  bottom: -4px;
-  right: -4px;
-  background: #0d6efd;
-  color: white;
-  font-size: 9px;
-  font-weight: 700;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+.single-preview-info {
+  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid white;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
-.image-preview-more {
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  background: #e9ecef;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.single-preview-name {
   font-size: 14px;
-  font-weight: 700;
-  color: #6c757d;
-  border: 2px dashed #dee2e6;
+  font-weight: 600;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ============================================
-   CUSTOMER SECTION
-   ============================================ */
+.single-preview-price {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0d6efd;
+}
+
+/* ============================================ */
+/* CUSTOMER SECTION                            */
+/* ============================================ */
 
 .cart-customer {
   margin-bottom: 12px;
   padding-top: 12px;
   border-top: 1px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .cart-customer h4 {
@@ -745,14 +744,15 @@
   border-color: #0d6efd;
 }
 
-/* ============================================
-   DISCOUNT SECTION
-   ============================================ */
+/* ============================================ */
+/* DISCOUNT SECTION                            */
+/* ============================================ */
 
 .cart-discount {
   margin-bottom: 12px;
   padding-top: 12px;
   border-top: 1px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .discount-row {
@@ -793,13 +793,14 @@
   border-color: #0d6efd;
 }
 
-/* ============================================
-   TOTALS SECTION
-   ============================================ */
+/* ============================================ */
+/* TOTALS SECTION                              */
+/* ============================================ */
 
 .cart-totals {
   padding: 12px 0;
   border-top: 2px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .total-row {
@@ -823,13 +824,14 @@
   margin-top: 4px;
 }
 
-/* ============================================
-   PAYMENT SECTION
-   ============================================ */
+/* ============================================ */
+/* PAYMENT SECTION                             */
+/* ============================================ */
 
 .cart-payment {
   padding: 12px 0;
   border-top: 1px solid #e9ecef;
+  flex-shrink: 0;
 }
 
 .payment-row {
@@ -899,9 +901,9 @@
   font-size: 1.1rem;
 }
 
-/* ============================================
-   PROCESS BUTTON
-   ============================================ */
+/* ============================================ */
+/* PROCESS BUTTON                              */
+/* ============================================ */
 
 .btn-process {
   width: 100%;
@@ -919,6 +921,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn-process:hover:not(:disabled) {
@@ -939,13 +942,14 @@
   font-weight: 400;
 }
 
-/* ============================================
-   IMEI/SEARCH STYLES
-   ============================================ */
+/* ============================================ */
+/* IMEI/SEARCH STYLES                          */
+/* ============================================ */
 
 .imei-search-container {
   position: relative;
   margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .imei-search-wrapper {
@@ -1104,9 +1108,9 @@
   font-size: 14px;
 }
 
-/* ============================================
-   MODAL IMEI SEARCH
-   ============================================ */
+/* ============================================ */
+/* MODAL IMEI SEARCH                           */
+/* ============================================ */
 
 .modal-imei-search-wrapper {
   display: flex;
@@ -1233,9 +1237,9 @@
   margin: 8px 0 12px 0;
 }
 
-/* ============================================
-   PRODUCT MODAL
-   ============================================ */
+/* ============================================ */
+/* PRODUCT MODAL                               */
+/* ============================================ */
 
 .product-modal-overlay {
   position: fixed;
@@ -1390,9 +1394,9 @@
   cursor: not-allowed;
 }
 
-/* ============================================
-   UNITS TABLE
-   ============================================ */
+/* ============================================ */
+/* UNITS TABLE                                 */
+/* ============================================ */
 
 .product-modal-units-table {
   margin: 15px 0;
@@ -1545,9 +1549,9 @@
   color: #4a6cf7;
 }
 
-/* ============================================
-   SUCCESS TOAST
-   ============================================ */
+/* ============================================ */
+/* SUCCESS TOAST                               */
+/* ============================================ */
 
 .success-toast {
   position: fixed;
@@ -1610,9 +1614,9 @@
   border-radius: 12px;
 }
 
-/* ============================================
-   FULLSCREEN CONTROL
-   ============================================ */
+/* ============================================ */
+/* FULLSCREEN CONTROL                          */
+/* ============================================ */
 
 .pos-fullscreen-control {
   display: flex;
@@ -1662,9 +1666,9 @@
   background: #e2e8f0;
 }
 
-/* ============================================
-   M-PESA MODAL
-   ============================================ */
+/* ============================================ */
+/* M-PESA MODAL                                */
+/* ============================================ */
 
 .mpesa-modal-overlay {
   position: fixed;
@@ -1775,23 +1779,25 @@
   border-color: #198754;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* ============================================ */
+/* RESPONSIVE                                  */
+/* ============================================ */
 
 @media (max-width: 1024px) {
   .pos-layout {
     grid-template-columns: 1fr;
-    height: auto;
+    max-height: none;
+    min-height: auto;
   }
 
-  .pos-cart {
+  .pos-products {
+    max-height: 500px;
     min-height: 300px;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    max-height: 400px;
+  .pos-cart {
+    max-height: 500px;
+    min-height: 300px;
   }
 }
 
@@ -1819,6 +1825,16 @@
 
   .pos-search .category-filter {
     width: 100%;
+  }
+
+  .pos-products {
+    max-height: 400px;
+    min-height: 250px;
+  }
+
+  .pos-cart {
+    max-height: 400px;
+    min-height: 250px;
   }
 
   .products-grid {
@@ -1850,20 +1866,19 @@
     font-size: 16px;
   }
 
-  .image-preview-item,
-  .image-preview-more {
-    width: 36px;
-    height: 36px;
+  .single-preview-image,
+  .single-preview-fallback {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
   }
-  
-  .preview-fallback {
-    font-size: 16px;
+
+  .single-preview-name {
+    font-size: 13px;
   }
-  
-  .preview-item-qty {
-    width: 16px;
-    height: 16px;
-    font-size: 8px;
+
+  .single-preview-price {
+    font-size: 12px;
   }
 
   .success-toast {
@@ -1882,6 +1897,20 @@
 }
 
 @media (max-width: 480px) {
+  .pos-layout {
+    max-height: none;
+  }
+
+  .pos-products {
+    max-height: 350px;
+    min-height: 200px;
+  }
+
+  .pos-cart {
+    max-height: 350px;
+    min-height: 200px;
+  }
+
   .products-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -1926,22 +1955,19 @@
     font-size: 12px;
   }
 
-  .image-preview-item,
-  .image-preview-more {
-    width: 32px;
-    height: 32px;
+  .single-preview-image,
+  .single-preview-fallback {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
-  
-  .preview-fallback {
-    font-size: 14px;
+
+  .single-preview-name {
+    font-size: 12px;
   }
-  
-  .preview-item-qty {
-    width: 14px;
-    height: 14px;
-    font-size: 7px;
-    bottom: -3px;
-    right: -3px;
+
+  .single-preview-price {
+    font-size: 11px;
   }
 
   .no-image-text span {
@@ -1973,15 +1999,15 @@
     font-size: 11px;
     padding: 4px 10px;
   }
-  
+
   .cashier-branch-display .branch-icon {
     font-size: 14px;
   }
 }
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
+/* ============================================ */
+/* ANIMATIONS                                  */
+/* ============================================ */
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -2004,9 +2030,9 @@
   100% { transform: rotate(360deg); }
 }
 
-/* ============================================
-   PRINT STYLES
-   ============================================ */
+/* ============================================ */
+/* PRINT STYLES                                */
+/* ============================================ */
 
 @media print {
   .btn-fullscreen,
@@ -2019,9 +2045,9 @@
   }
 }
 
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
+/* ============================================ */
+/* SCROLLBAR STYLING                           */
+/* ============================================ */
 
 .units-table-container::-webkit-scrollbar {
   width: 6px;
@@ -2040,132 +2066,4 @@
 
 .units-table-container::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
-}
-
-/* Add this to your POS.css - Replace the existing cart-image-preview styles */
-
-/* ============================================
-   SINGLE IMAGE PREVIEW - Between Cart and Customer
-   ============================================ */
-
-.cart-image-preview {
-  background: #f8fafc;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin: 8px 0 12px 0;
-  border: 1px solid #e9ecef;
-}
-
-.image-preview-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.preview-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1a1a2e;
-}
-
-.preview-count {
-  font-size: 11px;
-  color: #6c757d;
-  background: #e9ecef;
-  padding: 1px 10px;
-  border-radius: 10px;
-}
-
-.single-image-preview {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 4px 0;
-}
-
-.single-preview-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 2px solid #e9ecef;
-  flex-shrink: 0;
-  background: white;
-}
-
-.single-preview-fallback {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  background: #f1f5f9;
-  border: 2px solid #e9ecef;
-  flex-shrink: 0;
-  color: #94a3b8;
-}
-
-.single-preview-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.single-preview-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a2e;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.single-preview-price {
-  font-size: 13px;
-  font-weight: 500;
-  color: #0d6efd;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .single-preview-image,
-  .single-preview-fallback {
-    width: 48px;
-    height: 48px;
-    font-size: 22px;
-  }
-  
-  .single-preview-name {
-    font-size: 13px;
-  }
-  
-  .single-preview-price {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .single-image-preview {
-    gap: 10px;
-  }
-  
-  .single-preview-image,
-  .single-preview-fallback {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
-  }
-  
-  .single-preview-name {
-    font-size: 12px;
-  }
-  
-  .single-preview-price {
-    font-size: 11px;
-  }
 }
