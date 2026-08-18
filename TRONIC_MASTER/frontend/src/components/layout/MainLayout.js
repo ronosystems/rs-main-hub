@@ -34,7 +34,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [originalUser, setOriginalUser] = useState(null);
   const [showSupportBanner, setShowSupportBanner] = useState(true);
 
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'http://localhost:5002';
+  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
 
   // ============================================
   // CHECK FOR SUPPORT MODE
@@ -883,9 +883,6 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="navbar-center">
-          <span className="navbar-title">{title || 'Dashboard'}</span>
-        </div>
 
         <div className="navbar-right">
           {/* ============================================ */}
