@@ -676,9 +676,7 @@ const Companies = () => {
                     className="action-btn action-btn-view"
                     onClick={() => handleViewCompany(actionCompany._id)}
                   >
-                    <span className="action-btn-icon">👁️</span>
                     <span className="action-btn-label">View Details</span>
-                    <span className="action-btn-desc">View full company information</span>
                   </button>
 
                   {canEdit && (
@@ -686,9 +684,7 @@ const Companies = () => {
                       className="action-btn action-btn-edit"
                       onClick={() => handleEditCompany(actionCompany._id)}
                     >
-                      <span className="action-btn-icon">✏️</span>
                       <span className="action-btn-label">Edit Company</span>
-                      <span className="action-btn-desc">Modify company details</span>
                     </button>
                   )}
 
@@ -697,9 +693,7 @@ const Companies = () => {
                       className="action-btn action-btn-deactivate"
                       onClick={() => handleDeactivateCompany(actionCompany._id)}
                     >
-                      <span className="action-btn-icon">⛔</span>
                       <span className="action-btn-label">Deactivate</span>
-                      <span className="action-btn-desc">Deactivate company access</span>
                     </button>
                   )}
 
@@ -708,9 +702,7 @@ const Companies = () => {
                       className="action-btn action-btn-reactivate"
                       onClick={() => handleReactivateCompany(actionCompany._id)}
                     >
-                      <span className="action-btn-icon">🔄</span>
                       <span className="action-btn-label">Reactivate</span>
-                      <span className="action-btn-desc">Restore company access</span>
                     </button>
                   )}
 
@@ -719,9 +711,7 @@ const Companies = () => {
                       className="action-btn action-btn-delete"
                       onClick={() => handlePermanentDeleteCompany(actionCompany._id)}
                     >
-                      <span className="action-btn-icon">🗑️</span>
                       <span className="action-btn-label">Permanent Delete</span>
-                      <span className="action-btn-desc">Remove company permanently</span>
                     </button>
                   )}
                 </div>
