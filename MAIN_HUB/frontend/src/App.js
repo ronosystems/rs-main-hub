@@ -53,6 +53,11 @@ function App() {
               } />
               
               {/* ============================================ */}
+              {/* ✅ REDIRECT - Fix old /super-admin/settings route */}
+              {/* ============================================ */}
+              <Route path="/super-admin/settings" element={<Navigate to="/settings" replace />} />
+              
+              {/* ============================================ */}
               {/* SUPER ADMIN ROUTES - Full System Access */}
               {/* ============================================ */}
               <Route path="/super-admin" element={
@@ -122,17 +127,10 @@ function App() {
               } />
               
               {/* ============================================ */}
-              {/* ✅ SETTINGS ROUTE - Fixed to use /settings */}
+              {/* ✅ SETTINGS ROUTE - Accessible by Super Admin and Admin */}
               {/* ============================================ */}
               <Route path="/settings" element={
                 <PrivateRoute allowedRoles={['super_admin', 'admin']}>
-                  <Settings />
-                </PrivateRoute>
-              } />
-              
-              {/* ✅ Keep this for backward compatibility but redirect */}
-              <Route path="/super-admin/settings" element={
-                <PrivateRoute allowedRoles={['super_admin']}>
                   <Settings />
                 </PrivateRoute>
               } />
