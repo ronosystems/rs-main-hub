@@ -16,15 +16,17 @@ const Products = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [viewingProduct, setViewingProduct] = useState(null);
   const [restockProduct, setRestockProduct] = useState(null);
-  // const [selectedCategory, setSelectedCategory] = useState('all'); // REMOVED - not used
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [filterBranch, setFilterBranch] = useState('all');
   const [branches, setBranches] = useState([]);
-  // const [uploadingImage, setUploadingImage] = useState(false); // REMOVED - not used
+  
+  // Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [entriesPerPage, setEntriesPerPage] = useState(10);
 
   const categories = ['Phones', 'Electronics', 'Accessories'];
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
+  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
 
   // ============================================
   // FETCH DATA
@@ -45,7 +47,7 @@ const Products = () => {
   const fetchBranches = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/branches`, {
+      const response = await fetch(`${STATIC_URL}/branches`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,19 +67,23 @@ const Products = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterBranch, activeTab]);
+
   // ============================================
   // UPLOAD PRODUCT IMAGE
   // ============================================
   const uploadProductImage = async (productId, imageFile) => {
     if (!imageFile) return null;
 
-    // setUploadingImage(true); // REMOVED
     try {
       const formData = new FormData();
       formData.append('image', imageFile);
 
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/products/${productId}/image`, {
+      const response = await fetch(`${STATIC_URL}/products/${productId}/image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -93,8 +99,6 @@ const Products = () => {
     } catch (error) {
       console.error('Error uploading image:', error);
       return null;
-    } finally {
-      // setUploadingImage(false); // REMOVED
     }
   };
 
@@ -103,22 +107,17 @@ const Products = () => {
   // ============================================
   const handleSaveProduct = async (productData, imageFile) => {
     try {
-      // setUploadingImage(true); // REMOVED
       let response;
 
       if (editingProduct) {
-        // Update existing product
         response = await productService.updateProduct(editingProduct._id, productData);
         
-        // If image was uploaded, upload it
         if (imageFile && response.success) {
           await uploadProductImage(editingProduct._id, imageFile);
         }
       } else {
-        // Create new product
         response = await productService.createProduct(productData);
         
-        // If image was uploaded, upload it
         if (imageFile && response.success && response.data) {
           const productId = response.data._id;
           await uploadProductImage(productId, imageFile);
@@ -135,8 +134,6 @@ const Products = () => {
     } catch (error) {
       console.error('Error saving product:', error);
       alert(error.message || 'Failed to save product');
-    } finally {
-      // setUploadingImage(false); // REMOVED
     }
   };
 
@@ -331,7 +328,9 @@ const Products = () => {
   const filteredProducts = getTabProducts().filter(product => {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.brand?.toLowerCase().includes(searchTerm.toLowerCase());
+                          product.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          product.sku?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          product.barcode?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesBranch = filterBranch === 'all' || product.branch?._id === filterBranch || product.branch === filterBranch;
     return matchesSearch && matchesBranch;
   });
@@ -405,7 +404,6 @@ const Products = () => {
   const formatSpecs = (product) => {
     if (!product) return '-';
     
-    // Check for different possible spec fields
     const ram = product.ram || product.RAM || product.specs?.ram || '';
     const rom = product.rom || product.ROM || product.storage || product.specs?.storage || product.specs?.rom || '';
     
@@ -417,7 +415,6 @@ const Products = () => {
       return `ROM: ${rom}`;
     }
     
-    // Check if specs is an object with multiple fields
     if (product.specs && typeof product.specs === 'object') {
       const specParts = [];
       if (product.specs.ram) specParts.push(`RAM: ${product.specs.ram}`);
@@ -445,6 +442,50 @@ const Products = () => {
   const getBranchLocation = (product) => {
     if (!product.branch) return '';
     return `${product.branch.city || ''}, ${product.branch.country || ''}`.trim();
+  };
+
+  // ============================================
+  // PAGINATION
+  // ============================================
+  const totalItems = filteredProducts.length;
+  const totalPages = Math.ceil(totalItems / entriesPerPage);
+  const startIndex = (currentPage - 1) * entriesPerPage;
+  const endIndex = Math.min(startIndex + entriesPerPage, totalItems);
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+
+  const handleEntriesChange = (e) => {
+    setEntriesPerPage(parseInt(e.target.value));
+    setCurrentPage(1);
+  };
+
+  // Render pagination buttons
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+    if (endPage - startPage < maxVisible - 1) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          className={`pagination-btn ${i === currentPage ? 'active' : ''}`}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+    return buttons;
   };
 
   return (
@@ -544,111 +585,171 @@ const Products = () => {
             </button>
           </div>
         ) : (
-          <div className="table-container">
-            <table className="products-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Product</th>
-                  <th>Category</th>
-                  <th>Brand</th>
-                  <th>Model</th>
-                  <th>Specs</th>
-                  <th>Branch</th>
-                  <th>Stock</th>
-                  <th>Buying</th>
-                  <th>Selling</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((product, index) => {
-                  const stockStatus = getStockStatus(product);
-                  const availableCount = getAvailableCount(product);
-                  const currency = getProductCurrency(product);
-                  
-                  return (
-                    <tr key={product._id}>
-                      <td>{index + 1}</td>
-                      <td>
-                        <div className="product-name-cell">
-                          <span className="product-name">{product.name}</span>
-                          {product.imei && <span className="product-identifier">IMEI: {product.imei}</span>}
-                          {product.serialNumber && <span className="product-identifier">SN: {product.serialNumber}</span>}
-                          {product.barcode && <span className="product-identifier">Barcode: {product.barcode}</span>}
-                        </div>
-                      </td>
-                      <td>
-                        <span className="category-badge">
-                          {getCategoryIcon(product.category)} {product.category}
-                        </span>
-                      </td>
-                      <td>{product.brand}</td>
-                      <td>{product.model}</td>
-                      <td className="specs-cell">{formatSpecs(product)}</td>
-                      <td>
-                        <div className="branch-cell">
-                          {product.branch ? (
-                            <>
-                              <span className="branch-name">{getBranchName(product)}</span>
-                              <span className="branch-location">{getBranchLocation(product)}</span>
-                              <span className="branch-currency">{currency.symbol}</span>
-                            </>
-                          ) : (
-                            <span className="no-branch">Not Assigned</span>
-                          )}
-                        </div>
-                      </td>
-                      <td>
-                        <div className="stock-cell">
-                          <span className="stock-quantity">{availableCount}</span>
-                          <span className={`stock-badge ${stockStatus.class}`}>{stockStatus.label}</span>
-                        </div>
-                      </td>
-                      <td className="price-cell">
-                        {formatPrice(product.price?.purchase, product)}
-                      </td>
-                      <td className="price-cell">
-                        {formatPrice(product.price?.sale, product)}
-                      </td>
-                      <td>
-                        <div className="action-buttons">
-                          <button 
-                            className="btn-action btn-view"
-                            onClick={() => handleViewProduct(product)}
-                            title="View Product Details"
-                          >
-                            👁️
-                          </button>
-                          <button 
-                            className="btn-action btn-edit"
-                            onClick={() => handleEditProduct(product)}
-                            title="Edit Product"
-                          >
-                            ✏️
-                          </button>
-                          <button 
-                            className="btn-action btn-restock"
-                            onClick={() => handleRestockProduct(product)}
-                            title="Restock Product"
-                          >
-                            📦
-                          </button>
-                          <button 
-                            className="btn-action btn-delete"
-                            onClick={() => handleDeleteProduct(product._id)}
-                            title="Delete Product"
-                          >
-                            🗑️
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <>
+            <div className="table-container">
+              <table className="products-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: '4%', textAlign: 'center' }}>#</th>
+                    <th style={{ width: '18%' }}>Product</th>
+                    <th style={{ width: '10%' }}>Category</th>
+                    <th style={{ width: '10%' }}>Brand</th>
+                    <th style={{ width: '10%' }}>Model</th>
+                    <th style={{ width: '8%' }}>SKU</th>
+                    <th style={{ width: '10%' }}>Specs</th>
+                    <th style={{ width: '10%' }}>Branch</th>
+                    <th style={{ width: '8%' }}>Stock</th>
+                    <th style={{ width: '8%' }}>Buying</th>
+                    <th style={{ width: '8%' }}>Selling</th>
+                    <th style={{ width: '6%' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedProducts.map((product, index) => {
+                    const stockStatus = getStockStatus(product);
+                    const availableCount = getAvailableCount(product);
+                    const currency = getProductCurrency(product);
+                    
+                    return (
+                      <tr key={product._id}>
+                        <td style={{ textAlign: 'center' }}>{startIndex + index + 1}</td>
+                        <td>
+                          <div className="product-name-cell">
+                            <span className="product-name">{product.name}</span>
+                            {product.imei && <span className="product-identifier">IMEI: {product.imei}</span>}
+                            {product.serialNumber && <span className="product-identifier">SN: {product.serialNumber}</span>}
+                            {product.barcode && <span className="product-identifier">Barcode: {product.barcode}</span>}
+                          </div>
+                        </td>
+                        <td>
+                          <span className="category-badge">
+                            {getCategoryIcon(product.category)} {product.category}
+                          </span>
+                        </td>
+                        <td>{product.brand}</td>
+                        <td>{product.model}</td>
+                        <td>
+                          <span className="product-sku">{product.sku || '—'}</span>
+                        </td>
+                        <td className="specs-cell">{formatSpecs(product)}</td>
+                        <td>
+                          <div className="branch-cell">
+                            {product.branch ? (
+                              <>
+                                <span className="branch-name">{getBranchName(product)}</span>
+                                <span className="branch-location">{getBranchLocation(product)}</span>
+                                <span className="branch-currency">{currency.symbol}</span>
+                              </>
+                            ) : (
+                              <span className="no-branch">Not Assigned</span>
+                            )}
+                          </div>
+                        </td>
+                        <td>
+                          <div className="stock-cell">
+                            <span className="stock-quantity">{availableCount}</span>
+                            <span className={`stock-badge ${stockStatus.class}`}>{stockStatus.label}</span>
+                          </div>
+                        </td>
+                        <td className="price-cell">
+                          {formatPrice(product.price?.purchase, product)}
+                        </td>
+                        <td className="price-cell">
+                          {formatPrice(product.price?.sale, product)}
+                        </td>
+                        <td>
+                          <div className="action-buttons">
+                            <button 
+                              className="btn-action btn-view"
+                              onClick={() => handleViewProduct(product)}
+                              title="View Product Details"
+                            >
+                              👁️
+                            </button>
+                            <button 
+                              className="btn-action btn-edit"
+                              onClick={() => handleEditProduct(product)}
+                              title="Edit Product"
+                            >
+                              ✏️
+                            </button>
+                            <button 
+                              className="btn-action btn-restock"
+                              onClick={() => handleRestockProduct(product)}
+                              title="Restock Product"
+                            >
+                              📦
+                            </button>
+                            <button 
+                              className="btn-action btn-delete"
+                              onClick={() => handleDeleteProduct(product._id)}
+                              title="Delete Product"
+                            >
+                              🗑️
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            {filteredProducts.length > 0 && (
+              <div className="pagination-container">
+                <div className="pagination-info">
+                  <span>
+                    Showing {startIndex + 1} to {endIndex} of {totalItems} entries
+                  </span>
+                  <div className="entries-selector">
+                    <label>Show</label>
+                    <select value={entriesPerPage} onChange={handleEntriesChange}>
+                      {[5, 10, 25, 50, 100].map(n => (
+                        <option key={n} value={n}>{n}</option>
+                      ))}
+                    </select>
+                    <label>entries</label>
+                  </div>
+                </div>
+
+                <div className="pagination-controls">
+                  <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(1)}
+                    disabled={currentPage === 1 || totalPages === 0}
+                  >
+                    ⟪
+                  </button>
+                  <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1 || totalPages === 0}
+                  >
+                    ‹
+                  </button>
+
+                  {renderPaginationButtons()}
+
+                  <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                  >
+                    ›
+                  </button>
+                  <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(totalPages)}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                  >
+                    ⟫
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         <ProductModal
