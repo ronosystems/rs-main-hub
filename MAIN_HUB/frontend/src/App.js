@@ -1,3 +1,5 @@
+// /home/kk/RS/MAIN HUB/frontend/src/App.js
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -118,6 +120,17 @@ function App() {
                   <Reports />
                 </PrivateRoute>
               } />
+              
+              {/* ============================================ */}
+              {/* ✅ SETTINGS ROUTE - Fixed to use /settings */}
+              {/* ============================================ */}
+              <Route path="/settings" element={
+                <PrivateRoute allowedRoles={['super_admin', 'admin']}>
+                  <Settings />
+                </PrivateRoute>
+              } />
+              
+              {/* ✅ Keep this for backward compatibility but redirect */}
               <Route path="/super-admin/settings" element={
                 <PrivateRoute allowedRoles={['super_admin']}>
                   <Settings />
