@@ -21,6 +21,10 @@ const Companies = () => {
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   
+  // Action Modal
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [actionCompany, setActionCompany] = useState(null);
+  
   // Data from database
   const [projectTypesMap, setProjectTypesMap] = useState({});
   
@@ -55,19 +59,6 @@ const Companies = () => {
         <circle cx="12" cy="12" r="10"/>
         <line x1="15" y1="9" x2="9" y2="15"/>
         <line x1="9" y1="9" x2="15" y2="15"/>
-      </svg>
-    ),
-    Search: () => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-    ),
-    Refresh: () => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="23 4 23 10 17 10"/>
-        <polyline points="1 20 1 14 7 14"/>
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
       </svg>
     ),
     View: () => (
@@ -141,6 +132,13 @@ const Companies = () => {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="13 17 18 12 13 7"/>
         <polyline points="6 17 11 12 6 7"/>
+      </svg>
+    ),
+    ThreeDots: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="1"/>
+        <circle cx="12" cy="5" r="1"/>
+        <circle cx="12" cy="19" r="1"/>
       </svg>
     )
   };
@@ -261,7 +259,22 @@ const Companies = () => {
     fetchFilterOptions();
   }, [fetchCompanies, fetchFilterOptions]);
 
-  // View company details
+  // ============================================
+  // ACTION MODAL HANDLERS
+  // ============================================
+  const openActionModal = (company) => {
+    setActionCompany(company);
+    setShowActionModal(true);
+  };
+
+  const closeActionModal = () => {
+    setShowActionModal(false);
+    setActionCompany(null);
+  };
+
+  // ============================================
+  // COMPANY ACTION HANDLERS
+  // ============================================
   const handleViewCompany = async (id) => {
     try {
       const token = getAuthToken();
@@ -274,6 +287,7 @@ const Companies = () => {
         const companyData = response.data.data.company;
         setSelectedCompany(companyData);
         setShowViewModal(true);
+        closeActionModal();
       } else {
         alert('Failed to fetch company details');
       }
@@ -283,7 +297,11 @@ const Companies = () => {
     }
   };
 
-  // Deactivate company
+  const handleEditCompany = (id) => {
+    navigate(`/companies/edit/${id}`);
+    closeActionModal();
+  };
+
   const handleDeactivateCompany = async (id) => {
     if (!window.confirm('⚠️ Deactivate Company\n\nAre you sure you want to deactivate this company?\n\nThis will:\n• Deactivate the company\n• Deactivate all users\n• Prevent access to the system\n\nThis action can be reversed by reactivating.')) return;
     
@@ -295,6 +313,7 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
+        closeActionModal();
         alert('✅ Company deactivated successfully!');
       }
     } catch (err) {
@@ -303,7 +322,6 @@ const Companies = () => {
     }
   };
 
-  // Reactivate company
   const handleReactivateCompany = async (id) => {
     if (!window.confirm('🔄 Reactivate Company\n\nAre you sure you want to reactivate this company?\n\nThis will:\n• Reactivate the company\n• Reactivate all users\n• Restore access to the system')) return;
     
@@ -315,6 +333,7 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
+        closeActionModal();
         alert('✅ Company reactivated successfully!');
       }
     } catch (err) {
@@ -323,7 +342,6 @@ const Companies = () => {
     }
   };
 
-  // Permanent delete company
   const handlePermanentDeleteCompany = async (id) => {
     if (!window.confirm(
       '⚠️ PERMANENT DELETE\n\n' +
@@ -344,6 +362,7 @@ const Companies = () => {
       
       if (response.data.success) {
         fetchCompanies();
+        closeActionModal();
         alert('✅ Company permanently deleted successfully!');
       }
     } catch (err) {
@@ -557,55 +576,13 @@ const Companies = () => {
                         </td>
                         <td>{formatDate(company.createdAt)}</td>
                         <td>
-                          <div className="action-buttons">
-                            <button 
-                              className="btn-action btn-view"
-                              onClick={() => handleViewCompany(company._id)}
-                              title="View Details"
-                            >
-                              <Icons.View />
-                            </button>
-                            
-                            {canEdit && (
-                              <button 
-                                className="btn-action btn-edit"
-                                onClick={() => navigate(`/companies/edit/${company._id}`)}
-                                title="Edit Company"
-                              >
-                                <Icons.Edit />
-                              </button>
-                            )}
-
-                            {company.status === 'active' && canDelete && (
-                              <button 
-                                className="btn-action btn-deactivate"
-                                onClick={() => handleDeactivateCompany(company._id)}
-                                title="Deactivate Company"
-                              >
-                                <Icons.Deactivate />
-                              </button>
-                            )}
-
-                            {company.status === 'inactive' && canDelete && (
-                              <button 
-                                className="btn-action btn-reactivate"
-                                onClick={() => handleReactivateCompany(company._id)}
-                                title="Reactivate Company"
-                              >
-                                <Icons.Reactivate />
-                              </button>
-                            )}
-
-                            {user?.role === 'super_admin' && (
-                              <button 
-                                className="btn-action btn-delete"
-                                onClick={() => handlePermanentDeleteCompany(company._id)}
-                                title="Permanently Delete Company"
-                              >
-                                <Icons.Delete />
-                              </button>
-                            )}
-                          </div>
+                          <button 
+                            className="btn-action-menu"
+                            onClick={() => openActionModal(company)}
+                            title="Actions"
+                          >
+                            <Icons.ThreeDots />
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -668,6 +645,93 @@ const Companies = () => {
               </div>
             )}
           </>
+        )}
+
+        {/* ============================================ */}
+        {/* ACTION MODAL - Clean Action Menu */}
+        {/* ============================================ */}
+        {showActionModal && actionCompany && (
+          <div className="action-modal-overlay" onClick={closeActionModal}>
+            <div className="action-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="action-modal-header">
+                <h3>Company Actions</h3>
+                <button className="action-modal-close" onClick={closeActionModal}>
+                  <Icons.Close />
+                </button>
+              </div>
+              <div className="action-modal-body">
+                <div className="action-company-info">
+                  <div className="action-company-name">{actionCompany.name}</div>
+                  <div className="action-company-details">
+                    <span className="action-company-code">Code: {actionCompany.code || 'N/A'}</span>
+                    <span className={`badge ${getStatusBadge(actionCompany.status)}`}>
+                      {actionCompany.status || 'N/A'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="action-buttons-grid">
+                  <button 
+                    className="action-btn action-btn-view"
+                    onClick={() => handleViewCompany(actionCompany._id)}
+                  >
+                    <span className="action-btn-icon">👁️</span>
+                    <span className="action-btn-label">View Details</span>
+                    <span className="action-btn-desc">View full company information</span>
+                  </button>
+
+                  {canEdit && (
+                    <button 
+                      className="action-btn action-btn-edit"
+                      onClick={() => handleEditCompany(actionCompany._id)}
+                    >
+                      <span className="action-btn-icon">✏️</span>
+                      <span className="action-btn-label">Edit Company</span>
+                      <span className="action-btn-desc">Modify company details</span>
+                    </button>
+                  )}
+
+                  {actionCompany.status === 'active' && canDelete && (
+                    <button 
+                      className="action-btn action-btn-deactivate"
+                      onClick={() => handleDeactivateCompany(actionCompany._id)}
+                    >
+                      <span className="action-btn-icon">⛔</span>
+                      <span className="action-btn-label">Deactivate</span>
+                      <span className="action-btn-desc">Deactivate company access</span>
+                    </button>
+                  )}
+
+                  {actionCompany.status === 'inactive' && canDelete && (
+                    <button 
+                      className="action-btn action-btn-reactivate"
+                      onClick={() => handleReactivateCompany(actionCompany._id)}
+                    >
+                      <span className="action-btn-icon">🔄</span>
+                      <span className="action-btn-label">Reactivate</span>
+                      <span className="action-btn-desc">Restore company access</span>
+                    </button>
+                  )}
+
+                  {user?.role === 'super_admin' && (
+                    <button 
+                      className="action-btn action-btn-delete"
+                      onClick={() => handlePermanentDeleteCompany(actionCompany._id)}
+                    >
+                      <span className="action-btn-icon">🗑️</span>
+                      <span className="action-btn-label">Permanent Delete</span>
+                      <span className="action-btn-desc">Remove company permanently</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="action-modal-footer">
+                <button className="action-modal-cancel" onClick={closeActionModal}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* View Company Modal */}
