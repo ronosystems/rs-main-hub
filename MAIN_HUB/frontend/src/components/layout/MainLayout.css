@@ -428,7 +428,7 @@
 }
 
 /* ============================================
-   MAIN CONTENT AREA
+   MAIN CONTENT AREA - FIXED FOOTER AT BOTTOM
    ============================================ */
 .rs-main {
   flex: 1;
@@ -465,6 +465,7 @@
   align-items: center;
   z-index: 100;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .header-title {
@@ -519,21 +520,19 @@
 }
 
 /* ============================================
-   FIXED MAIN CONTENT BODY
+   MAIN CONTENT BODY - EXPANDS TO FILL SPACE
    ============================================ */
 .rs-content-body {
   flex: 1;
   padding: 25px 30px;
   background: #f0f4f8;
-  min-height: calc(100vh - 210px);
 }
 
 /* ============================================
-   FIXED FOOTER
+   FOOTER - ALWAYS AT BOTTOM
    ============================================ */
 .rs-footer {
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0;
   background: #0a0a0a;
   padding: 15px 30px;
   border-top: 2px solid #00d4ff;
@@ -542,7 +541,7 @@
   align-items: center;
   font-size: 0.85rem;
   color: #a0aec0;
-  z-index: 100;
+  margin-top: auto;
 }
 
 .rs-footer .footer-left {
@@ -597,6 +596,7 @@
     text-align: center;
     padding: 10px 15px;
     font-size: 0.75rem;
+    margin-top: auto;
   }
 }
 
@@ -706,6 +706,7 @@
     flex-direction: column;
     gap: 4px;
     text-align: center;
+    margin-top: auto;
   }
 
   .rs-footer .footer-right {
@@ -795,9 +796,13 @@
   .rs-content-body {
     padding: 10px 12px;
   }
+
+  .rs-footer {
+    font-size: 0.65rem;
+    padding: 6px 10px;
+    margin-top: auto;
+  }
 }
-
-
 
 /* ============================================
    MOBILE SIDEBAR OVERLAY
