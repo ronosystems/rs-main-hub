@@ -14,7 +14,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   
   // System Settings
   const [systemLogo, setSystemLogo] = useState(null);
-  const [platformName, setPlatformName] = useState('RS Hub');
+  const [platformName, setPlatformName] = useState('RONOSYSTEMS HUB');
   const [primaryColor, setPrimaryColor] = useState('#00d4ff');
   const [sidebarColor, setSidebarColor] = useState('#0a0a0a');
 
@@ -63,7 +63,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
               localStorage.removeItem('systemLogo');
             }
 
-            localStorage.setItem('platformName', settings.platformName || 'RS Hub');
+            localStorage.setItem('platformName', settings.platformName || 'RONOSYSTEMS HUB');
             localStorage.setItem('primaryColor', settings.primaryColor || '#00d4ff');
             localStorage.setItem('sidebarColor', settings.sidebarColor || '#0a0a0a');
             return;
@@ -183,8 +183,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     };
 
     fetchNotifications();
-
-    // ✅ REMOVED: Auto-refresh interval - removed to prevent page misbehavior
     
     return () => {
       // Clean up any intervals
@@ -530,24 +528,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     { icon: 'Settings', label: 'Settings', path: '/settings', permission: 'viewSettings' },
   ];
 
-  // Get menu items based on hardcoded permissions
+  // Get menu items based on user role - FIXED TO AVOID LOADING SPINNER
   const getMenuItems = () => {
-    if (permissionsLoading || !permissions) {
-      console.log('⏳ Permissions still loading, showing only dashboard...');
-      return allMenuItems
-        .filter(item => item.label === 'Dashboard')
-        .map(item => ({
-          ...item,
-          path: user?.role === 'manager' ? '/manager' : 
-                user?.role === 'admin' ? '/admin' : 
-                user?.role === 'staff' ? '/staff' : '/dashboard'
-        }));
-    }
-
-    console.log('🔍 ===== DEBUGGING PERMISSIONS =====');
-    console.log('🔍 User role:', user?.role);
-    console.log('🔍 Permissions loaded:', !!permissions);
-
+    // Super Admin - show all items immediately
     if (user?.role === 'super_admin' || user?.role === 'Super Admin') {
       console.log('👑 Super Admin - showing all menu items');
       return allMenuItems.map(item => ({
@@ -556,6 +539,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
       }));
     }
 
+    // For other roles, check permissions
     const pathMap = {
       admin: {
         '/dashboard': '/admin',
@@ -578,6 +562,20 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
 
     const rolePaths = pathMap[user?.role?.toLowerCase()] || {};
 
+    // If permissions are still loading, show dashboard only (but don't show spinner)
+    if (permissionsLoading || !permissions) {
+      console.log('⏳ Permissions loading, showing dashboard only');
+      return allMenuItems
+        .filter(item => item.label === 'Dashboard')
+        .map(item => ({
+          ...item,
+          path: user?.role === 'manager' ? '/manager' : 
+                user?.role === 'admin' ? '/admin' : 
+                user?.role === 'staff' ? '/staff' : '/dashboard'
+        }));
+    }
+
+    // Filter items based on permissions
     const filteredItems = allMenuItems
       .filter(item => {
         if (item.label === 'Dashboard') return true;
