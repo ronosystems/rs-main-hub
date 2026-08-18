@@ -141,84 +141,230 @@
   background: #e9ecef;
 }
 
-/* Table */
+/* ============================================ */
+/* TABLE - PROFESSIONAL COMPRESSED LAYOUT      */
+/* ============================================ */
+
 .table-container {
   overflow-x: auto;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.993);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e9ecef;
 }
 
 .products-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13px;
+  table-layout: fixed;
 }
 
 .products-table thead {
-  background: #027df8;
+  background: #f8fafc;
   border-bottom: 2px solid #e9ecef;
 }
 
 .products-table th {
-  padding: 12px 16px;
+  padding: 10px 12px;
   text-align: left;
   font-weight: 600;
-  color: #0a0a0a;
+  color: #1a202c;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f8fafc;
 }
 
 .products-table td {
-  padding: 12px 16px;
+  padding: 10px 12px;
   border-bottom: 1px solid #f1f3f5;
   vertical-align: middle;
+  font-size: 13px;
+  color: #2d3748;
+}
+
+.products-table tbody tr {
+  transition: background 0.15s ease;
 }
 
 .products-table tbody tr:hover {
-  background: #f8f9fa;
+  background: #f7fafc;
 }
 
 .products-table tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* Product Name Cell */
+/* ============================================ */
+/* COLUMN WIDTHS - RESPONSIVE & COMPRESSED     */
+/* ============================================ */
+
+/* Column # */
+.products-table th:nth-child(1),
+.products-table td:nth-child(1) {
+  width: 3%;
+  text-align: center;
+  font-weight: 500;
+  color: #a0aec0;
+  font-size: 12px;
+}
+
+/* Column Product */
+.products-table th:nth-child(2),
+.products-table td:nth-child(2) {
+  width: 18%;
+  min-width: 140px;
+}
+
+/* Column Category */
+.products-table th:nth-child(3),
+.products-table td:nth-child(3) {
+  width: 9%;
+}
+
+/* Column Brand */
+.products-table th:nth-child(4),
+.products-table td:nth-child(4) {
+  width: 8%;
+  white-space: nowrap;
+}
+
+/* Column Model */
+.products-table th:nth-child(5),
+.products-table td:nth-child(5) {
+  width: 9%;
+  white-space: nowrap;
+}
+
+/* Column SKU */
+.products-table th:nth-child(6),
+.products-table td:nth-child(6) {
+  width: 8%;
+}
+
+/* Column Specs */
+.products-table th:nth-child(7),
+.products-table td:nth-child(7) {
+  width: 9%;
+}
+
+/* Column Branch */
+.products-table th:nth-child(8),
+.products-table td:nth-child(8) {
+  width: 12%;
+}
+
+/* Column Stock */
+.products-table th:nth-child(9),
+.products-table td:nth-child(9) {
+  width: 7%;
+}
+
+/* Column Buying */
+.products-table th:nth-child(10),
+.products-table td:nth-child(10) {
+  width: 7%;
+}
+
+/* Column Selling */
+.products-table th:nth-child(11),
+.products-table td:nth-child(11) {
+  width: 7%;
+}
+
+/* Column Actions */
+.products-table th:nth-child(12),
+.products-table td:nth-child(12) {
+  width: 6%;
+  text-align: center;
+}
+
+/* ============================================ */
+/* PRODUCT NAME CELL                           */
+/* ============================================ */
+
 .product-name-cell {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .product-name {
   font-weight: 600;
   color: #0a0a0a;
+  font-size: 13px;
 }
 
 .product-identifier {
-  font-size: 12px;
+  font-size: 10px;
   color: #6c757d;
+  font-family: 'Courier New', monospace;
+  background: #f8fafc;
+  padding: 1px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
 }
 
-/* Category Badge */
+/* ============================================ */
+/* CATEGORY BADGE                             */
+/* ============================================ */
+
 .category-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
-  background: #f8f9fa;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+  background: #f0f4ff;
+  color: #4a5568;
+}
+
+.category-badge.category-phones {
+  background: #ebf8ff;
+  color: #2b6cb0;
+}
+
+.category-badge.category-electronics {
+  background: #f0fff4;
+  color: #276749;
+}
+
+.category-badge.category-accessories {
+  background: #faf5ff;
+  color: #6b46c1;
 }
 
 /* ============================================ */
-/* SPECS COLUMN STYLES */
+/* SKU CELL                                   */
 /* ============================================ */
+
+.sku-cell {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #4a5568;
+  background: #f8fafc;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ============================================ */
+/* SPECS CELL                                  */
+/* ============================================ */
+
 .specs-cell {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: #2d3748;
-  min-width: 80px;
 }
 
 .specs-cell .specs-ram {
@@ -233,136 +379,77 @@
 
 .specs-cell .specs-separator {
   color: #6c757d;
-  margin: 0 4px;
+  margin: 0 3px;
 }
 
 .specs-cell .specs-empty {
   color: #adb5bd;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
 }
 
-.specs-cell .specs-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  background: #e9ecef;
-  color: #495057;
-}
+/* ============================================ */
+/* BRANCH CELL                                */
+/* ============================================ */
 
-.specs-cell .specs-badge.ram-badge {
-  background: #cfe2ff;
-  color: #0d6efd;
-}
-
-.specs-cell .specs-badge.rom-badge {
-  background: #d1e7dd;
-  color: #198754;
-}
-
-.specs-cell .specs-detail {
+.branch-cell {
   display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 12px;
+}
+
+.branch-cell .branch-name {
+  font-weight: 500;
+  color: #0a0a0a;
+  font-size: 12px;
+}
+
+.branch-cell .branch-location {
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.branch-cell .branch-currency {
+  font-size: 10px;
+  font-weight: 600;
+  color: #0d6efd;
+  background: #cfe2ff;
+  padding: 0 6px;
+  border-radius: 3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.branch-cell .no-branch {
+  font-size: 11px;
+  color: #6c757d;
+  font-style: italic;
 }
 
 /* ============================================ */
+/* STOCK CELL                                 */
+/* ============================================ */
 
-/* SKU Cell */
-.product-sku {
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  color: #4a5568;
-  background: #f8fafc;
-  padding: 2px 8px;
-  border-radius: 4px;
-  display: inline-block;
-}
-
-/* Stock Cell */
 .stock-cell {
-  min-width: 120px;
-}
-
-.units-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.units-stats {
-  display: flex;
-  gap: 8px;
-  font-size: 12px;
-}
-
-.units-stats span {
-  font-weight: 500;
-}
-
-.units-stats span.available {
-  color: #28a745;
-}
-
-.units-stats span.sold {
-  color: #dc3545;
-}
-
-.units-preview {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.unit-badge {
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: 500;
-  font-family: monospace;
-}
-
-.unit-badge.available {
-  background: #d1e7dd;
-  color: #0f5132;
-}
-
-.unit-badge.sold {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.unit-more {
-  font-size: 10px;
-  color: #6c757d;
-}
-
-.no-units {
-  font-size: 12px;
-  color: #6c757d;
-}
-
-.stock-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  text-align: center;
 }
 
 .stock-quantity {
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0a0a0a;
 }
 
 .stock-badge {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 12px;
+  font-size: 9px;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-left: 4px;
 }
 
 .stock-badge.in-stock {
@@ -380,55 +467,102 @@
   color: #721c24;
 }
 
-/* Price Cell */
+/* ============================================ */
+/* PRICE CELL                                 */
+/* ============================================ */
+
 .price-cell {
-  font-weight: 500;
+  font-weight: 600;
+  color: #0a0a0a;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.price-cell .price-symbol {
+  font-weight: 700;
+  color: #0d6efd;
+  font-size: 11px;
+  margin-right: 1px;
+}
+
+.price-cell .price-amount {
+  font-weight: 600;
   color: #0a0a0a;
 }
 
-/* Action Buttons */
+/* ============================================ */
+/* ACTION BUTTONS                             */
+/* ============================================ */
+
 .action-buttons {
   display: flex;
-  gap: 6px;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .btn-action {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #f8fafc;
+  color: #4a5568;
 }
 
 .btn-action:hover {
   transform: scale(1.1);
+  z-index: 1;
 }
 
-.btn-edit {
-  background: #e9ecef;
-  color: #0a0a0a;
+.btn-action.btn-view {
+  background: #ebf8ff;
+  color: #2b6cb0;
 }
 
-.btn-edit:hover {
-  background: #dee2e6;
+.btn-action.btn-view:hover {
+  background: #2b6cb0;
+  color: white;
 }
 
-.btn-delete {
-  background: #f8d7da;
-  color: #721c24;
+.btn-action.btn-edit {
+  background: #f0fff4;
+  color: #276749;
 }
 
-.btn-delete:hover {
-  background: #f5c6cb;
+.btn-action.btn-edit:hover {
+  background: #276749;
+  color: white;
+}
+
+.btn-action.btn-restock {
+  background: #faf5ff;
+  color: #6b46c1;
+}
+
+.btn-action.btn-restock:hover {
+  background: #6b46c1;
+  color: white;
+}
+
+.btn-action.btn-delete {
+  background: #fff5f5;
+  color: #9b2c2c;
+}
+
+.btn-action.btn-delete:hover {
+  background: #9b2c2c;
+  color: white;
 }
 
 /* ============================================ */
-/* PAGINATION STYLES */
+/* PAGINATION                                 */
 /* ============================================ */
 
 .pagination-container {
@@ -446,21 +580,22 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 14px;
+  font-size: 13px;
   color: #4a5568;
 }
 
 .entries-selector {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 13px;
 }
 
 .entries-selector select {
   padding: 4px 8px;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 12px;
   background: white;
   cursor: pointer;
 }
@@ -473,19 +608,19 @@
 .pagination-controls {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .pagination-btn {
-  padding: 6px 12px;
+  padding: 5px 10px;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
   background: white;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   color: #4a5568;
   transition: all 0.2s;
-  min-width: 36px;
+  min-width: 32px;
   text-align: center;
 }
 
@@ -506,7 +641,10 @@
   cursor: not-allowed;
 }
 
-/* Loading & Empty States */
+/* ============================================ */
+/* LOADING & EMPTY STATES                      */
+/* ============================================ */
+
 .loading-state,
 .error-state,
 .empty-state {
@@ -560,15 +698,42 @@
   cursor: pointer;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* ============================================ */
+/* RESPONSIVE                                  */
+/* ============================================ */
+
+@media (max-width: 1200px) {
   .products-table {
-    font-size: 13px;
+    font-size: 12px;
   }
   
   .products-table th,
   .products-table td {
-    padding: 10px 12px;
+    padding: 8px 10px;
+  }
+
+  .product-name {
+    font-size: 12px;
+  }
+
+  .stock-quantity {
+    font-size: 13px;
+  }
+
+  .price-cell {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .products-table th,
+  .products-table td {
+    padding: 6px 8px;
+  }
+  
+  .products-table th:nth-child(2),
+  .products-table td:nth-child(2) {
+    min-width: 120px;
   }
 
   .pagination-container {
@@ -584,6 +749,12 @@
 
   .pagination-controls {
     justify-content: center;
+  }
+
+  .btn-action {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
   }
 }
 
@@ -603,14 +774,14 @@
   }
 
   .tab-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 11px;
     flex: 1;
     justify-content: center;
   }
 
   .tab-btn .tab-count {
-    font-size: 10px;
+    font-size: 9px;
     padding: 1px 6px;
   }
 
@@ -628,33 +799,71 @@
   }
 
   .products-table {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .products-table th,
   .products-table td {
-    padding: 8px 10px;
+    padding: 6px 8px;
+  }
+
+  .products-table th:nth-child(2),
+  .products-table td:nth-child(2) {
+    min-width: 100px;
+  }
+
+  .products-table th:nth-child(3),
+  .products-table td:nth-child(3),
+  .products-table th:nth-child(6),
+  .products-table td:nth-child(6),
+  .products-table th:nth-child(7),
+  .products-table td:nth-child(7) {
+    display: none;
+  }
+
+  .product-name {
+    font-size: 11px;
   }
 
   .stock-cell {
-    min-width: 100px;
+    min-width: 60px;
+  }
+
+  .stock-quantity {
+    font-size: 12px;
+  }
+
+  .stock-badge {
+    font-size: 8px;
+    padding: 1px 6px;
+  }
+
+  .price-cell {
+    font-size: 11px;
   }
 
   .action-buttons {
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
   }
 
   .btn-action {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
   }
 
-  /* Specs responsive */
-  .specs-cell {
+  .branch-cell .branch-name {
     font-size: 11px;
-    min-width: 60px;
+  }
+
+  .branch-cell .branch-location {
+    font-size: 9px;
+  }
+
+  .branch-cell .branch-currency {
+    font-size: 9px;
+    padding: 0 4px;
   }
 
   .pagination-container {
@@ -665,7 +874,8 @@
   .pagination-info {
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    font-size: 12px;
   }
 
   .pagination-controls {
@@ -674,55 +884,108 @@
   }
 
   .pagination-btn {
-    padding: 4px 10px;
-    font-size: 12px;
-    min-width: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .products-table {
-    font-size: 11px;
-  }
-
-  .products-table th,
-  .products-table td {
-    padding: 6px 8px;
-  }
-
-  .tab-btn {
-    font-size: 11px;
-    padding: 6px 10px;
-  }
-
-  .price-cell {
-    font-size: 12px;
-  }
-
-  .specs-cell {
-    font-size: 10px;
-    min-width: 50px;
-  }
-
-  .product-sku {
-    font-size: 10px;
-    padding: 1px 6px;
-  }
-
-  .pagination-btn {
     padding: 4px 8px;
     font-size: 11px;
     min-width: 28px;
   }
 
+  .entries-selector {
+    font-size: 12px;
+  }
+
   .entries-selector select {
     font-size: 11px;
-    padding: 2px 6px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-table {
+    font-size: 10px;
+  }
+
+  .products-table th,
+  .products-table td {
+    padding: 4px 6px;
+  }
+
+  .products-table th:nth-child(2),
+  .products-table td:nth-child(2) {
+    min-width: 80px;
+  }
+
+  .tab-btn {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .price-cell {
+    font-size: 10px;
+  }
+
+  .specs-cell {
+    font-size: 9px;
+  }
+
+  .product-sku {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  .pagination-btn {
+    padding: 3px 6px;
+    font-size: 10px;
+    min-width: 24px;
+  }
+
+  .entries-selector select {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .branch-cell .branch-name {
+    font-size: 10px;
+  }
+
+  .branch-cell .branch-location {
+    font-size: 8px;
+  }
+
+  .btn-action {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+
+  .stock-quantity {
+    font-size: 11px;
+  }
+
+  .stock-badge {
+    font-size: 7px;
+    padding: 0 4px;
   }
 }
 
 /* ============================================ */
-/* BRANCH COLUMN */
+/* HIDE SPECS & SKU ON MOBILE                 */
+/* ============================================ */
+
+@media (max-width: 768px) {
+  .products-table th:nth-child(6),
+  .products-table td:nth-child(6),
+  .products-table th:nth-child(7),
+  .products-table td:nth-child(7),
+  .products-table th:nth-child(8),
+  .products-table td:nth-child(8),
+  .products-table th:nth-child(10),
+  .products-table td:nth-child(10) {
+    display: none;
+  }
+}
+
+/* ============================================ */
+/* HEADER RIGHT                                */
 /* ============================================ */
 
 .products-header .header-right {
@@ -742,101 +1005,34 @@
 }
 
 .btn-action.btn-restock {
-  background: #e9ecef;
-  color: #04000a;
+  background: #faf5ff;
+  color: #6b46c1;
 }
 
 .btn-action.btn-restock:hover {
-  background: #0105f3;
+  background: #6b46c1;
   color: white;
-  transform: scale(1.1);
 }
 
-.action-buttons {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+/* ============================================ */
+/* SCROLLBAR                                   */
+/* ============================================ */
+
+.table-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
 }
 
-/* Branch Column */
-.branch-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.branch-cell .branch-name {
-  font-weight: 500;
-  color: #0a0a0a;
-  font-size: 13px;
-}
-
-.branch-cell .branch-location {
-  font-size: 11px;
-  color: #6c757d;
-}
-
-.branch-cell .no-branch {
-  font-size: 12px;
-  color: #6c757d;
-  font-style: italic;
-}
-
-.products-table th {
-  white-space: nowrap;
-}
-
-/* Branch Cell with Currency */
-.branch-cell .branch-currency {
-  font-size: 11px;
-  font-weight: 600;
-  color: #0d6efd;
-  background: #cfe2ff;
-  padding: 0 8px;
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
   border-radius: 4px;
-  display: inline-block;
-  width: fit-content;
 }
 
-/* Price Cell with Currency */
-.price-cell {
-  font-weight: 600;
-  color: #0a0a0a;
-  font-size: 14px;
-  white-space: nowrap;
+.table-container::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
 }
 
-.price-cell .price-symbol {
-  font-weight: 700;
-  color: #0d6efd;
-  margin-right: 2px;
-}
-
-.price-cell .price-amount {
-  font-weight: 600;
-  color: #0a0a0a;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .branch-cell .branch-location {
-    font-size: 10px;
-  }
-  
-  .branch-cell .branch-name {
-    font-size: 12px;
-  }
-
-  .branch-cell .branch-currency {
-    font-size: 10px;
-    padding: 0 6px;
-  }
-  
-  .price-cell {
-    font-size: 12px;
-  }
-  
-  .price-cell .price-symbol {
-    font-size: 11px;
-  }
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }
