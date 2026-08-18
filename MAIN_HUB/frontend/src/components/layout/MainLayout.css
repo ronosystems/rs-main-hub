@@ -428,17 +428,19 @@
 }
 
 /* ============================================
-   MAIN CONTENT AREA - FIXED FOOTER AT BOTTOM
+   MAIN CONTENT AREA - WITH FIXED FOOTER
    ============================================ */
 .rs-main {
   flex: 1;
   margin-top: 70px;
   margin-left: 280px;
-  min-height: calc(100vh - 70px);
+  margin-bottom: 60px; /* Space for fixed footer */
+  min-height: calc(100vh - 70px - 60px);
   transition: margin-left 0.3s ease;
   display: flex;
   flex-direction: column;
   background: #f0f4f8;
+  overflow-y: auto;
 }
 
 .rs-main.sidebar-closed {
@@ -456,7 +458,7 @@
    ============================================ */
 .rs-content-header {
   position: sticky;
-  top: 70px;
+  top: 0;
   background: white;
   padding: 20px 30px;
   border-bottom: 2px solid #00d4ff;
@@ -520,28 +522,44 @@
 }
 
 /* ============================================
-   MAIN CONTENT BODY - EXPANDS TO FILL SPACE
+   MAIN CONTENT BODY - SCROLLABLE
    ============================================ */
 .rs-content-body {
   flex: 1;
   padding: 25px 30px;
   background: #f0f4f8;
+  overflow-y: auto;
 }
 
 /* ============================================
-   FOOTER - ALWAYS AT BOTTOM
+   FIXED FOOTER - ALWAYS VISIBLE AT BOTTOM
    ============================================ */
 .rs-footer {
-  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
   background: #0a0a0a;
-  padding: 15px 30px;
+  padding: 0 30px;
   border-top: 2px solid #00d4ff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
   color: #a0aec0;
-  margin-top: auto;
+  z-index: 100;
+  margin-left: 280px; /* Match sidebar width */
+  transition: margin-left 0.3s ease;
+}
+
+.rs-main.sidebar-closed ~ .rs-footer {
+  margin-left: 70px;
+}
+
+/* When sidebar is closed, footer should shift */
+.rs-main.sidebar-closed + .rs-footer {
+  margin-left: 70px;
 }
 
 .rs-footer .footer-left {
@@ -591,12 +609,14 @@
     padding: 15px;
   }
   .rs-footer {
-    flex-direction: column;
-    gap: 5px;
-    text-align: center;
-    padding: 10px 15px;
+    margin-left: 0 !important;
+    padding: 0 15px;
+    height: 50px;
     font-size: 0.75rem;
-    margin-top: auto;
+  }
+  .rs-main {
+    margin-bottom: 50px;
+    margin-left: 0 !important;
   }
 }
 
@@ -685,10 +705,11 @@
 
   .rs-main {
     margin-top: 60px;
+    margin-bottom: 50px;
   }
 
   .rs-content-header {
-    top: 60px;
+    top: 0;
     padding: 12px 15px;
   }
 
@@ -702,16 +723,16 @@
 
   .rs-footer {
     font-size: 0.7rem;
-    padding: 8px 12px;
-    flex-direction: column;
+    padding: 0 12px;
+    height: 50px;
+    flex-direction: row;
     gap: 4px;
     text-align: center;
-    margin-top: auto;
   }
 
   .rs-footer .footer-right {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 2px;
   }
 
@@ -799,8 +820,8 @@
 
   .rs-footer {
     font-size: 0.65rem;
-    padding: 6px 10px;
-    margin-top: auto;
+    padding: 0 8px;
+    height: 45px;
   }
 }
 
@@ -840,9 +861,16 @@
 
   .rs-main {
     margin-left: 0 !important;
+    margin-bottom: 50px !important;
   }
 
   .rs-main.sidebar-closed {
     margin-left: 0 !important;
+    margin-bottom: 50px !important;
+  }
+
+  .rs-footer {
+    margin-left: 0 !important;
+    left: 0 !important;
   }
 }
