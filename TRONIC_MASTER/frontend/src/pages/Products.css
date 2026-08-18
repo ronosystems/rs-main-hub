@@ -44,7 +44,7 @@
 .btn-primary:hover {
   background: #0b5ed7;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  box-shadow: 0 4px 12px rgb(0, 0, 0);
 }
 
 /* Tabs */
@@ -55,7 +55,8 @@
   background: #f8f9fa;
   border-radius: 10px;
   padding: 4px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #000000fd;
+  box-shadow: #0a0a0a1a 0px 1px 2px 0px;
   flex-wrap: wrap;
 }
 
@@ -66,7 +67,7 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #6c757d;
+  color: #00f7ff;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -75,14 +76,14 @@
 }
 
 .tab-btn:hover {
-  background: rgba(13, 110, 253, 0.05);
+  background: rgb(0, 102, 255);
   color: #0a0a0a;
 }
 
 .tab-btn.active {
   background: white;
   color: #0d6efd;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgb(0, 0, 0);
 }
 
 .tab-btn .tab-count {
@@ -95,7 +96,7 @@
 }
 
 .tab-btn.active .tab-count {
-  background: rgba(13, 110, 253, 0.1);
+  background: rgb(255, 255, 255);
   color: #0d6efd;
 }
 
@@ -116,7 +117,7 @@
 .search-input {
   width: 100%;
   padding: 10px 14px;
-  border: 2px solid #e9ecef;
+  border: 2px solid #000000fd;
   border-radius: 8px;
   font-size: 14px;
   transition: border-color 0.2s;
@@ -130,7 +131,7 @@
 .btn-refresh {
   padding: 10px 16px;
   background: #f8f9fa;
-  border: 2px solid #e9ecef;
+  border: 2px solid #000000fd;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
@@ -149,8 +150,8 @@
   overflow-x: auto;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.986);
+  border: 1px solid #000000fd;
 }
 
 .products-table {
@@ -161,15 +162,15 @@
 }
 
 .products-table thead {
-  background: #f8fafc;
-  border-bottom: 2px solid #e9ecef;
+  background: #1900ff;
+  border-bottom: 2px solid #000000fd;
 }
 
 .products-table th {
   padding: 10px 12px;
   text-align: left;
   font-weight: 600;
-  color: #1a202c;
+  color: #00040c;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -177,15 +178,15 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #f8fafc;
+  background: #00d3f8;
 }
 
 .products-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid #f1f3f5;
+  border-bottom: 1px solid #000000fd;
   vertical-align: middle;
   font-size: 13px;
-  color: #2d3748;
+  color: #000308;
 }
 
 .products-table tbody tr {
