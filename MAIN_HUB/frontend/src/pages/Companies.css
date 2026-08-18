@@ -3,9 +3,13 @@
 .companies-page {
   max-width: 2000px;
   margin: 0 auto;
+  padding: 0 16px;
 }
 
-/* Header - Matching Roles.css */
+/* ============================================ */
+/* HEADER                                      */
+/* ============================================ */
+
 .companies-header {
   display: flex;
   justify-content: space-between;
@@ -35,7 +39,10 @@
   gap: 10px;
 }
 
-/* Stats - Matching Roles.css */
+/* ============================================ */
+/* STATS CARDS                                 */
+/* ============================================ */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -51,6 +58,7 @@
   align-items: center;
   gap: 16px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
 }
 
 .stat-icon {
@@ -61,6 +69,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .stat-icon svg {
@@ -85,7 +94,10 @@
   color: #718096;
 }
 
-/* Buttons - Matching Roles.css */
+/* ============================================ */
+/* BUTTONS                                     */
+/* ============================================ */
+
 .btn-primary {
   padding: 10px 24px;
   border-radius: 8px;
@@ -132,22 +144,28 @@
   transform: translateY(-2px);
 }
 
-/* Table Container */
+/* ============================================ */
+/* TABLE                                       */
+/* ============================================ */
+
 .table-container {
   background: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
+  border: 1px solid #e9ecef;
 }
 
 .companies-table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 14px;
 }
 
 .companies-table thead {
   background: #f7fafc;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .companies-table th {
@@ -157,8 +175,12 @@
   color: #4a5568;
   font-size: 0.8rem;
   text-transform: uppercase;
-  border-bottom: 2px solid #e2e8f0;
+  letter-spacing: 0.5px;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f7fafc;
 }
 
 .companies-table td {
@@ -168,9 +190,21 @@
   vertical-align: middle;
 }
 
+.companies-table tbody tr {
+  transition: background 0.15s ease;
+}
+
 .companies-table tbody tr:hover {
   background: #f7fafc;
 }
+
+.companies-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================ */
+/* TABLE CELLS                                 */
+/* ============================================ */
 
 .company-code {
   font-family: 'Courier New', monospace;
@@ -193,7 +227,10 @@
   color: #0a0a0a;
 }
 
-/* Badges */
+/* ============================================ */
+/* BADGES                                      */
+/* ============================================ */
+
 .badge {
   display: inline-block;
   padding: 4px 12px;
@@ -253,7 +290,10 @@
   color: #9b2c2c;
 }
 
-/* Admin Info */
+/* ============================================ */
+/* ADMIN INFO                                  */
+/* ============================================ */
+
 .admin-info {
   display: flex;
   flex-direction: column;
@@ -271,72 +311,288 @@
   color: #718096;
 }
 
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+/* ============================================ */
+/* ACTION MENU BUTTON (Three Dots)             */
+/* ============================================ */
 
-.btn-action {
+.btn-action-menu {
   width: 32px;
   height: 32px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #4a5568;
   cursor: pointer;
   transition: all 0.2s;
-  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.btn-action:hover {
+.btn-action-menu:hover {
+  background: #e2e8f0;
+  color: #0d6efd;
   transform: scale(1.1);
 }
 
-.btn-action.btn-view {
-  background: #bee3f8;
-  color: #2a69ac;
-}
-.btn-action.btn-view:hover {
-  background: #90cdf4;
-}
-
-.btn-action.btn-edit {
-  background: #feebc8;
-  color: #975a16;
-}
-.btn-action.btn-edit:hover {
-  background: #fbd38d;
-}
-
-.btn-action.btn-deactivate {
-  background: #feebc8;
-  color: #975a16;
-}
-.btn-action.btn-deactivate:hover {
-  background: #fbd38d;
-}
-
-.btn-action.btn-reactivate {
-  background: #c6f6d5;
-  color: #155724;
-}
-.btn-action.btn-reactivate:hover {
-  background: #9ae6b4;
-}
-
-.btn-action.btn-delete {
-  background: #fed7d7;
-  color: #9b2c2c;
-}
-.btn-action.btn-delete:hover {
-  background: #feb2b2;
+.btn-action-menu svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
 }
 
 /* ============================================ */
-/* DETAIL MODAL STYLES - FIXED                 */
+/* ACTION MODAL - FIXED                        */
+/* ============================================ */
+
+.action-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+.action-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.action-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 2px solid #f0f2f5;
+  flex-shrink: 0;
+}
+
+.action-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.action-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-modal-close:hover {
+  background: #f7fafc;
+  color: #dc3545;
+}
+
+.action-modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.action-modal-body {
+  padding: 20px 24px;
+}
+
+.action-company-info {
+  padding: 14px 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  border: 1px solid #e9ecef;
+}
+
+.action-company-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+
+.action-company-details {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.action-company-code {
+  background: #e9ecef;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+/* ============================================ */
+/* ACTION BUTTONS GRID - FIXED                 */
+/* ============================================ */
+
+.action-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  min-height: 80px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.action-btn-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.action-btn-desc {
+  font-size: 10px;
+  color: #a0aec0;
+  margin-top: 2px;
+}
+
+/* View Button */
+.action-btn-view {
+  border-color: #e2e8f0;
+}
+
+.action-btn-view:hover {
+  border-color: #4a6cf7;
+  background: #f0f4ff;
+}
+
+.action-btn-view:hover .action-btn-label {
+  color: #4a6cf7;
+}
+
+/* Edit Button */
+.action-btn-edit {
+  border-color: #e2e8f0;
+}
+
+.action-btn-edit:hover {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.action-btn-edit:hover .action-btn-label {
+  color: #f59e0b;
+}
+
+/* Deactivate Button */
+.action-btn-deactivate {
+  border-color: #e2e8f0;
+}
+
+.action-btn-deactivate:hover {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.action-btn-deactivate:hover .action-btn-label {
+  color: #f59e0b;
+}
+
+/* Reactivate Button */
+.action-btn-reactivate {
+  border-color: #e2e8f0;
+}
+
+.action-btn-reactivate:hover {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.action-btn-reactivate:hover .action-btn-label {
+  color: #10b981;
+}
+
+/* Delete Button */
+.action-btn-delete {
+  border-color: #e2e8f0;
+}
+
+.action-btn-delete:hover {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.action-btn-delete:hover .action-btn-label {
+  color: #ef4444;
+}
+
+.action-modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid #f0f2f5;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.action-modal-cancel {
+  padding: 8px 20px;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a5568;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.action-modal-cancel:hover {
+  background: #e2e8f0;
+}
+
+/* ============================================ */
+/* VIEW DETAIL MODAL                           */
 /* ============================================ */
 
 .modal-overlay {
@@ -422,7 +678,10 @@
   gap: 10px;
 }
 
-/* Company Detail Grid */
+/* ============================================ */
+/* COMPANY DETAIL GRID                         */
+/* ============================================ */
+
 .company-detail-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -470,7 +729,10 @@
   padding: 2px 10px;
 }
 
-/* Modal Animation */
+/* ============================================ */
+/* ANIMATIONS                                  */
+/* ============================================ */
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -487,7 +749,10 @@
   }
 }
 
-/* Pagination */
+/* ============================================ */
+/* PAGINATION                                  */
+/* ============================================ */
+
 .pagination-container {
   display: flex;
   justify-content: space-between;
@@ -565,7 +830,15 @@
   cursor: not-allowed;
 }
 
-/* Empty State */
+.pagination-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================ */
+/* EMPTY STATE                                 */
+/* ============================================ */
+
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -588,7 +861,10 @@
   margin: 0 0 16px 0;
 }
 
-/* Loading State */
+/* ============================================ */
+/* LOADING STATE                               */
+/* ============================================ */
+
 .loading-container {
   text-align: center;
   padding: 60px 20px;
@@ -610,7 +886,10 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Alert */
+/* ============================================ */
+/* ALERT                                       */
+/* ============================================ */
+
 .alert {
   padding: 14px 18px;
   border-radius: 8px;
@@ -632,7 +911,24 @@
   align-items: center;
 }
 
-/* Responsive */
+.alert-icon svg {
+  stroke: #e53e3e;
+  width: 20px;
+  height: 20px;
+}
+
+/* ============================================ */
+/* RESPONSIVE                                  */
+/* ============================================ */
+
+@media (max-width: 1024px) {
+  .companies-table th,
+  .companies-table td {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 768px) {
   .companies-header {
     flex-direction: column;
@@ -650,6 +946,25 @@
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
   .company-detail-grid {
@@ -671,8 +986,8 @@
 
   .companies-table th,
   .companies-table td {
-    padding: 10px 12px;
-    font-size: 0.85rem;
+    padding: 8px 12px;
+    font-size: 0.8rem;
   }
 
   .pagination-container {
@@ -691,14 +1006,36 @@
     flex-wrap: wrap;
   }
 
-  .action-buttons {
-    gap: 4px;
+  .action-buttons-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
 
-  .btn-action {
+  .action-btn {
+    padding: 12px 10px;
+    min-height: 60px;
+  }
+
+  .action-btn-icon {
+    font-size: 20px;
+  }
+
+  .action-btn-label {
+    font-size: 12px;
+  }
+
+  .action-btn-desc {
+    display: none;
+  }
+
+  .btn-action-menu {
     width: 28px;
     height: 28px;
-    font-size: 12px;
+  }
+
+  .btn-action-menu svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -708,11 +1045,11 @@
   }
 
   .stat-card {
-    padding: 14px;
+    padding: 12px;
   }
 
   .stat-value {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .modal-header {
@@ -738,296 +1075,25 @@
   .companies-table th,
   .companies-table td {
     padding: 6px 8px;
+    font-size: 0.7rem;
+  }
+
+  .company-code {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+  }
+
+  .badge {
+    font-size: 0.6rem;
+    padding: 2px 8px;
+  }
+
+  .admin-name {
     font-size: 0.75rem;
   }
 
-  .action-buttons {
-    gap: 2px;
-  }
-
-  .btn-action {
-    width: 24px;
-    height: 24px;
-    font-size: 10px;
-  }
-}
-
-/* ============================================ */
-/* ACTION MODAL - Professional Action Menu     */
-/* ============================================ */
-
-/* Action Menu Button (Three Dots) */
-.btn-action-menu {
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 8px;
-  background: #f8fafc;
-  color: #4a5568;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-action-menu:hover {
-  background: #e2e8f0;
-  color: #0d6efd;
-  transform: scale(1.1);
-}
-
-.btn-action-menu svg {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-}
-
-/* Action Modal Overlay */
-.action-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: fadeIn 0.2s ease;
-}
-
-.action-modal {
-  background: white;
-  border-radius: 16px;
-  max-width: 520px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.3s ease;
-}
-
-.action-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 24px;
-  border-bottom: 2px solid #f0f2f5;
-}
-
-.action-modal-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1a202c;
-}
-
-.action-modal-close {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #a0aec0;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-modal-close:hover {
-  background: #f7fafc;
-  color: #dc3545;
-}
-
-.action-modal-close svg {
-  width: 20px;
-  height: 20px;
-}
-
-.action-modal-body {
-  padding: 24px;
-}
-
-.action-company-info {
-  padding: 16px;
-  background: #f8fafc;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #e9ecef;
-}
-
-.action-company-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a202c;
-  margin-bottom: 4px;
-}
-
-.action-company-details {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 13px;
-  color: #4a5568;
-}
-
-.action-company-code {
-  background: #e9ecef;
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-}
-
-.action-buttons-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.action-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 12px;
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  text-align: center;
-}
-
-.action-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.action-btn:active {
-  transform: translateY(0);
-}
-
-.action-btn-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-
-.action-btn-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a202c;
-}
-
-.action-btn-desc {
-  font-size: 11px;
-  color: #a0aec0;
-  margin-top: 2px;
-}
-
-/* View Button */
-.action-btn-view {
-  border-color: #e2e8f0;
-}
-
-.action-btn-view:hover {
-  border-color: #4a6cf7;
-  background: #f0f4ff;
-}
-
-.action-btn-view:hover .action-btn-label {
-  color: #4a6cf7;
-}
-
-/* Edit Button */
-.action-btn-edit {
-  border-color: #e2e8f0;
-}
-
-.action-btn-edit:hover {
-  border-color: #f59e0b;
-  background: #fffbeb;
-}
-
-.action-btn-edit:hover .action-btn-label {
-  color: #f59e0b;
-}
-
-/* Deactivate Button */
-.action-btn-deactivate {
-  border-color: #e2e8f0;
-}
-
-.action-btn-deactivate:hover {
-  border-color: #f59e0b;
-  background: #fffbeb;
-}
-
-.action-btn-deactivate:hover .action-btn-label {
-  color: #f59e0b;
-}
-
-/* Reactivate Button */
-.action-btn-reactivate {
-  border-color: #e2e8f0;
-}
-
-.action-btn-reactivate:hover {
-  border-color: #10b981;
-  background: #ecfdf5;
-}
-
-.action-btn-reactivate:hover .action-btn-label {
-  color: #10b981;
-}
-
-/* Delete Button */
-.action-btn-delete {
-  border-color: #e2e8f0;
-}
-
-.action-btn-delete:hover {
-  border-color: #ef4444;
-  background: #fef2f2;
-}
-
-.action-btn-delete:hover .action-btn-label {
-  color: #ef4444;
-}
-
-.action-modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid #f0f2f5;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.action-modal-cancel {
-  padding: 8px 24px;
-  background: #f0f2f5;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #4a5568;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.action-modal-cancel:hover {
-  background: #e2e8f0;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .action-buttons-grid {
-    grid-template-columns: 1fr;
+  .admin-email {
+    font-size: 0.65rem;
   }
 
   .action-modal {
@@ -1036,36 +1102,59 @@
     margin: 10px;
   }
 
+  .action-modal-body {
+    padding: 14px;
+  }
+
   .action-company-name {
     font-size: 14px;
   }
 
+  .action-buttons-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
   .action-btn {
-    padding: 14px 12px;
+    padding: 10px 12px;
     flex-direction: row;
-    gap: 12px;
+    gap: 10px;
+    min-height: 48px;
   }
 
   .action-btn-icon {
-    font-size: 24px;
+    font-size: 18px;
     margin-bottom: 0;
   }
 
-  .action-btn-desc {
-    display: none;
-  }
-
   .action-btn-label {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .btn-action-menu {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 
   .btn-action-menu svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .pagination-btn {
+    min-width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+    padding: 0 4px;
+  }
+
+  .entries-selector select {
+    font-size: 0.75rem;
+    padding: 2px 4px;
+  }
+
+  .pagination-info {
+    font-size: 0.75rem;
+    gap: 8px;
   }
 }
