@@ -302,8 +302,8 @@
 }
 
 .product-identifier {
-  font-size: 20px;
-  color: #00050e;
+  font-size: 15px;
+  color: #ff0000;
   font-family: 'Courier New', monospace;
   background: #f8fafc;
   padding: 1px 6px;
@@ -349,8 +349,8 @@
 
 .sku-cell {
   font-family: 'Courier New', monospace;
-  font-size: 20px;
-  color: #00050e;
+  font-size: 15px;
+  color: #ff0000;
   background: #f8fafc;
   padding: 2px 8px;
   border-radius: 4px;
