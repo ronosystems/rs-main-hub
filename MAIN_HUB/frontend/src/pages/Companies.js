@@ -263,6 +263,7 @@ const Companies = () => {
   // ACTION MODAL HANDLERS
   // ============================================
   const openActionModal = (company) => {
+    console.log('Opening action modal for:', company);
     setActionCompany(company);
     setShowActionModal(true);
   };
