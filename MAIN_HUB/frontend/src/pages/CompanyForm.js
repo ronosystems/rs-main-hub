@@ -52,7 +52,6 @@ const CompanyForm = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
-  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   const getAuthToken = () => {
     return localStorage.getItem('token');

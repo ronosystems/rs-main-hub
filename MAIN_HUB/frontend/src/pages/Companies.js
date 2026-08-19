@@ -1,3 +1,5 @@
+// /home/kk/RS/MAIN HUB/frontend/src/pages/Companies.js
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -142,12 +144,21 @@ const Companies = () => {
   };
 
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
-  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   // Get auth token
   const getAuthToken = () => {
     return localStorage.getItem('token');
   };
+
+  // ✅ Hardcoded permission checks based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  
+  // ✅ Hardcoded permissions
+  const canCreate = isSuperAdmin || isAdmin;
+  const canEdit = isSuperAdmin || isAdmin;
+  const canDelete = isSuperAdmin; // Only Super Admin can delete
 
   // Get status badge class
   const getStatusBadge = (status) => {
@@ -376,18 +387,6 @@ const Companies = () => {
     return projectTypesMap[typeKey]?.name || typeKey;
   };
 
-  // ✅ Hardcoded permission checks based on role
-  const userRole = user?.role?.toLowerCase();
-  const isSuperAdmin = userRole === 'super_admin';
-  const isAdmin = userRole === 'admin';
-  const isManager = userRole === 'manager';
-  const isStaff = userRole === 'staff';
-  
-  // ✅ Super Admin and Admin can do everything
-  const canCreate = isSuperAdmin || isAdmin;
-  const canEdit = isSuperAdmin || isAdmin;
-  const canDelete = isSuperAdmin; // Only Super Admin can delete
-
   // Pagination handlers
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
@@ -426,6 +425,17 @@ const Companies = () => {
 
   // Breadcrumbs
   const breadcrumbs = ['Home', 'Companies'];
+
+  if (loading) {
+    return (
+      <MainLayout title="Companies" breadcrumbs={breadcrumbs}>
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading companies...</p>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout title="Companies" breadcrumbs={breadcrumbs}>
@@ -505,152 +515,142 @@ const Companies = () => {
           </div>
         )}
 
-        {/* Loading State */}
-        {loading ? (
-          <div className="loading-container">
-            <div className="spinner"></div>
-            <p>Loading companies...</p>
-          </div>
-        ) : (
-          <>
-            {/* Companies Table */}
-            <div className="table-container">
-              {companies.length === 0 ? (
-                <div className="empty-state">
-                  <span className="empty-icon">
-                    <Icons.Empty />
-                  </span>
-                  <h3>No Companies Found</h3>
-                  <p>Start by creating your first company</p>
-                  {canCreate && (
-                    <button 
-                      className="btn btn-primary" 
-                      onClick={() => navigate('/companies/create')}
-                    >
-                      <Icons.Create />
-                      Create Company
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <table className="companies-table">
-                  <thead>
-                    <tr>
-                      <th>Code</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Project Type</th>
-                      <th>Plan</th>
-                      <th>Status</th>
-                      <th>Admin</th>
-                      <th>Created</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {companies.map((company) => (
-                      <tr key={company._id}>
-                        <td>
-                          <span className="company-code">{company.code || 'N/A'}</span>
-                        </td>
-                        <td>
-                          <div className="company-name-cell">
-                            <strong>{company.name || 'N/A'}</strong>
-                          </div>
-                        </td>
-                        <td>{company.email || 'N/A'}</td>
-                        <td>
-                          <span className="badge badge-project">
-                            {getProjectTypeDisplayName(company.projectType)}
-                          </span>
-                        </td>
-                        <td>
-                          <span className={`badge ${getPlanTypeBadge(company.planType || company.plan?.name)}`}>
-                            {company.planType || company.plan?.name || 'N/A'}
-                          </span>
-                        </td>
-                        <td>
-                          <span className={`badge ${getStatusBadge(company.status)}`}>
-                            {company.status || 'N/A'}
-                          </span>
-                        </td>
-                        <td>
-                          <div className="admin-info">
-                            <span className="admin-name">{company.adminUser?.name || 'N/A'}</span>
-                            <span className="admin-email">{company.adminUser?.email || 'N/A'}</span>
-                          </div>
-                        </td>
-                        <td>{formatDate(company.createdAt)}</td>
-                        <td>
-                          <button 
-                            className="btn-action-menu"
-                            onClick={() => openActionModal(company)}
-                            title="Actions"
-                          >
-                            <Icons.ThreeDots />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+        {/* Companies Table */}
+        <div className="table-container">
+          {companies.length === 0 ? (
+            <div className="empty-state">
+              <span className="empty-icon">
+                <Icons.Empty />
+              </span>
+              <h3>No Companies Found</h3>
+              <p>Start by creating your first company</p>
+              {canCreate && (
+                <button 
+                  className="btn btn-primary" 
+                  onClick={() => navigate('/companies/create')}
+                >
+                  <Icons.Create />
+                  Create Company
+                </button>
               )}
             </div>
+          ) : (
+            <table className="companies-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Project Type</th>
+                  <th>Plan</th>
+                  <th>Status</th>
+                  <th>Admin</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {companies.map((company) => (
+                  <tr key={company._id}>
+                    <td>
+                      <span className="company-code">{company.code || 'N/A'}</span>
+                    </td>
+                    <td>
+                      <div className="company-name-cell">
+                        <strong>{company.name || 'N/A'}</strong>
+                      </div>
+                    </td>
+                    <td>{company.email || 'N/A'}</td>
+                    <td>
+                      <span className="badge badge-project">
+                        {getProjectTypeDisplayName(company.projectType)}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge ${getPlanTypeBadge(company.planType || company.plan?.name)}`}>
+                        {company.planType || company.plan?.name || 'N/A'}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`badge ${getStatusBadge(company.status)}`}>
+                        {company.status || 'N/A'}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="admin-info">
+                        <span className="admin-name">{company.adminUser?.name || 'N/A'}</span>
+                        <span className="admin-email">{company.adminUser?.email || 'N/A'}</span>
+                      </div>
+                    </td>
+                    <td>{formatDate(company.createdAt)}</td>
+                    <td>
+                      <button 
+                        className="btn-action-menu"
+                        onClick={() => openActionModal(company)}
+                        title="Actions"
+                      >
+                        <Icons.ThreeDots />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
 
-            {/* Pagination */}
-            {companies.length > 0 && (
-              <div className="pagination-container">
-                <div className="pagination-info">
-                  <span>
-                    Showing {Math.min((currentPage - 1) * entriesPerPage + 1, totalCompanies)} to {Math.min(currentPage * entriesPerPage, totalCompanies)} of {totalCompanies} entries
-                  </span>
-                  <div className="entries-selector">
-                    <label>Show</label>
-                    <select value={entriesPerPage} onChange={handleEntriesChange}>
-                      {[5, 10, 25, 50, 100].map(n => (
-                        <option key={n} value={n}>{n}</option>
-                      ))}
-                    </select>
-                    <label>entries</label>
-                  </div>
-                </div>
-
-                <div className="pagination-controls">
-                  <button
-                    className="pagination-btn"
-                    onClick={() => handlePageChange(1)}
-                    disabled={currentPage === 1 || totalPages === 0}
-                  >
-                    <Icons.ChevronsLeft />
-                  </button>
-                  <button
-                    className="pagination-btn"
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1 || totalPages === 0}
-                  >
-                    <Icons.ChevronLeft />
-                  </button>
-
-                  {renderPaginationButtons()}
-
-                  <button
-                    className="pagination-btn"
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages || totalPages === 0}
-                  >
-                    <Icons.ChevronRight />
-                  </button>
-                  <button
-                    className="pagination-btn"
-                    onClick={() => handlePageChange(totalPages)}
-                    disabled={currentPage === totalPages || totalPages === 0}
-                  >
-                    <Icons.ChevronsRight />
-                  </button>
-                </div>
+        {/* Pagination */}
+        {companies.length > 0 && (
+          <div className="pagination-container">
+            <div className="pagination-info">
+              <span>
+                Showing {Math.min((currentPage - 1) * entriesPerPage + 1, totalCompanies)} to {Math.min(currentPage * entriesPerPage, totalCompanies)} of {totalCompanies} entries
+              </span>
+              <div className="entries-selector">
+                <label>Show</label>
+                <select value={entriesPerPage} onChange={handleEntriesChange}>
+                  {[5, 10, 25, 50, 100].map(n => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+                <label>entries</label>
               </div>
-            )}
-          </>
+            </div>
+
+            <div className="pagination-controls">
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1 || totalPages === 0}
+              >
+                <Icons.ChevronsLeft />
+              </button>
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1 || totalPages === 0}
+              >
+                <Icons.ChevronLeft />
+              </button>
+
+              {renderPaginationButtons()}
+
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                <Icons.ChevronRight />
+              </button>
+              <button
+                className="pagination-btn"
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                <Icons.ChevronsRight />
+              </button>
+            </div>
+          </div>
         )}
 
         {/* ============================================ */}

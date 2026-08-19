@@ -118,7 +118,6 @@ const ProjectCompanies = () => {
   };
 
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
-  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
   // Get project type from URL params OR query params
   const getProjectType = useCallback(() => {

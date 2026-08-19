@@ -38,7 +38,7 @@ const UsersForm = () => {
   const isSuperAdmin = userRole === 'super_admin';
   const isAdmin = userRole === 'admin';
   const isManager = userRole === 'manager';
-  const isStaff = userRole === 'staff';
+  // ✅ REMOVED: const isStaff = userRole === 'staff';
 
   // ✅ Can manage users - Super Admin and Admin only
   const canManageUsers = isSuperAdmin || isAdmin;

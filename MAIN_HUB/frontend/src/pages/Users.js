@@ -11,7 +11,7 @@ const Users = () => {
   const { user: currentUser } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // ✅ REMOVED: const [loading, setLoading] = useState(true);
   const [formSuccess, setFormSuccess] = useState('');
   const [activeTab, setActiveTab] = useState('system');
   const [searchTerm, setSearchTerm] = useState('');
@@ -152,8 +152,6 @@ const Users = () => {
       setUsers(usersData.data || []);
     } catch (error) {
       console.error('Error loading users:', error);
-    } finally {
-      setLoading(false);
     }
   }, []);
 
@@ -162,7 +160,7 @@ const Users = () => {
   const isSuperAdmin = userRole === 'super_admin';
   const isAdmin = userRole === 'admin';
   const isManager = userRole === 'manager';
-  const isStaff = userRole === 'staff';
+  // ✅ REMOVED: const isStaff = userRole === 'staff';
 
   // ✅ Can view users - Super Admin and Admin only
   const canViewUsers = isSuperAdmin || isAdmin;
@@ -173,8 +171,6 @@ const Users = () => {
       return;
     }
     loadData();
-    // ✅ Set loading to false after load
-    setLoading(false);
   }, [canViewUsers, navigate, loadData]);
 
   // Reset to page 1 when filters change
@@ -336,9 +332,6 @@ const Users = () => {
   const filterRoles = getFilterRoles();
 
   const getStatusColor = (isActive) => isActive ? '#00b894' : '#e17055';
-
-  // ✅ NO SPINNER - Just return null or render immediately
-  // if (loading) { ... } - REMOVED
 
   return (
     <MainLayout title="Users Management" breadcrumbs={['Home', 'Users']}>

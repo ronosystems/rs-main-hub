@@ -21,7 +21,7 @@ export const usePermissions = () => {
 export const PermissionProvider = ({ children }) => {
   const { user } = useAuth();
   const [permissions, setPermissions] = useState({});
-  const [loading, setLoading] = useState(false); // ✅ Changed to false
+
   const [error, setError] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
   
@@ -176,7 +176,6 @@ export const PermissionProvider = ({ children }) => {
   // Memoize the context value
   const value = useMemo(() => ({
     permissions,
-    loading,
     error,
     hasPermission,
     hasAnyPermission,
@@ -190,7 +189,7 @@ export const PermissionProvider = ({ children }) => {
     getRoleConfig: getRoleByKey,
     // Helper to get all roles
     getAllRoles: () => Object.values(ROLES)
-  }), [permissions, loading, error, hasPermission, hasAnyPermission, hasAllPermissions, refreshPermissions, isInitialized, getUserRoleLevel, hasRoleLevel, getUserRoleInfo]);
+  }), [permissions, error, hasPermission, hasAnyPermission, hasAllPermissions, refreshPermissions, isInitialized, getUserRoleLevel, hasRoleLevel, getUserRoleInfo]);
 
   return (
     <PermissionContext.Provider value={value}>

@@ -81,7 +81,7 @@ const Reports = () => {
   const isSuperAdmin = userRole === 'super_admin';
   const isAdmin = userRole === 'admin';
   const isManager = userRole === 'manager';
-  const isStaff = userRole === 'staff';
+  // ✅ REMOVED: const isStaff = userRole === 'staff';
 
   // ✅ Can view reports - Super Admin, Admin, and Manager
   const canViewReports = isSuperAdmin || isAdmin || isManager;
