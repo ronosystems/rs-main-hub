@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { usePermissions } from '../../context/PermissionContext';
+import LoadingSpinner from '../LoadingSpinner';
 import './MainLayout.css';
 
 const MainLayout = ({ children, title, breadcrumbs }) => {
@@ -134,7 +135,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     };
   }, [API_URL, STATIC_URL]);
 
-  // ✅ Fetch real notifications from the backend (only once)
+  // Fetch real notifications from the backend (only once)
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!user) return;
@@ -189,7 +190,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     };
   }, [user, API_URL]);
 
-  // ✅ Fetch real calendar events (only once)
+  // Fetch real calendar events (only once)
   useEffect(() => {
     const fetchCalendarEvents = async () => {
       if (!user) return;
@@ -304,7 +305,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     setShowNotifications(false);
   };
 
-  // ✅ Mark notification as read (with API call)
+  // Mark notification as read (with API call)
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('token');
@@ -326,7 +327,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     }
   };
 
-  // ✅ Mark all as read (with API call)
+  // Mark all as read (with API call)
   const markAllAsRead = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -624,6 +625,13 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     if (user?.email) return user.email.split('@')[0];
     return 'User';
   };
+
+  // ✅ Show loading spinner while permissions are loading
+  if (permissionsLoading || !permissions) {
+    return (
+      <LoadingSpinner message="Loading your dashboard..." />
+    );
+  }
 
   return (
     <div className="rs-layout">
