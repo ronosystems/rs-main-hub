@@ -13,8 +13,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   console.log('🔒 PrivateRoute - User role:', user?.role);
   console.log('🔒 PrivateRoute - Allowed roles:', allowedRoles);
 
+  // ✅ NO SPINNER - Just return null while loading
   if (loading) {
-    return <div className="loading-spinner">Loading...</div>;
+    return null;
   }
 
   if (!isAuthenticated) {

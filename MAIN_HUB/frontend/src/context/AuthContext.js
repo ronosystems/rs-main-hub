@@ -7,12 +7,11 @@ const AuthContext = createContext();
 
 const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
 
-
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // ✅ Start as true
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   // Set axios headers when token changes
@@ -29,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (!token) {
         console.log('🔐 No token found, user not authenticated');
-        setLoading(false);
+        setLoading(false); // ✅ Set to false when no token
         return;
       }
 
@@ -45,7 +44,6 @@ export const AuthProvider = ({ children }) => {
         console.log('👤 Loaded user data:', userData);
         console.log('👤 User role:', userData?.role);
         
-        // Ensure user has an _id
         if (userData && !userData._id && userData.id) {
           userData._id = userData.id;
         }
@@ -57,7 +55,7 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
       } finally {
-        setLoading(false);
+        setLoading(false); // ✅ Set to false after loading completes
       }
     };
 
@@ -97,20 +95,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getDashboardPath = () => {
-    console.log('🔍 getDashboardPath called, user:', user);
-    console.log('🔍 User role:', user?.role);
-    
-    if (!user) {
-      console.log('🔍 No user, returning /login');
-      return '/login';
-    }
+    if (!user) return '/login';
     
     const role = user.role?.toLowerCase();
-    console.log('🔍 Normalized role:', role);
-    
-    // ============================================
-    // ✅ SUPER ADMIN AND ADMIN HAVE THEIR OWN DASHBOARDS
-    // ============================================
     const paths = {
       'super_admin': '/super-admin',
       'admin': '/admin',
@@ -118,10 +105,7 @@ export const AuthProvider = ({ children }) => {
       'staff': '/staff'
     };
     
-    // Default to /login for unknown roles
-    const path = paths[role] || '/login';
-    console.log('🔍 Returning path:', path);
-    return path;
+    return paths[role] || '/login';
   };
 
   const value = {

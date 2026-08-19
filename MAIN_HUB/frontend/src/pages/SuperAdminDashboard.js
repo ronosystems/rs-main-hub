@@ -15,7 +15,7 @@ const SuperAdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // ✅ REMOVED loading state - no spinner
 
   // Icon components
   const Icons = {
@@ -59,8 +59,6 @@ const SuperAdminDashboard = () => {
 
   const loadData = async () => {
     try {
-      setLoading(true);
-      
       console.log('🔍 Loading dashboard data...');
       
       const [usersData, companiesData, projectsData] = await Promise.all([
@@ -88,8 +86,6 @@ const SuperAdminDashboard = () => {
       
     } catch (error) {
       console.error('❌ Error loading data:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,7 +100,7 @@ const SuperAdminDashboard = () => {
     return companies.filter(c => c.project === project.type || c.projectType === project.type);
   };
 
-  // ✅ Get user count for a company
+  // Get user count for a company
   const getUserCountForCompany = (companyId) => {
     return users.filter(u => u.company === companyId || u.company?._id === companyId).length;
   };
@@ -131,13 +127,7 @@ const SuperAdminDashboard = () => {
         }))
     : [];
 
-  if (loading) {
-    return (
-      <MainLayout title="Super Admin Dashboard" breadcrumbs={['Home', 'Dashboard']}>
-        <div className="loading-state">Loading dashboard...</div>
-      </MainLayout>
-    );
-  }
+  // ✅ REMOVED loading check - always render
 
   return (
     <MainLayout title="Super Admin Dashboard" breadcrumbs={['Home', 'Dashboard']}>

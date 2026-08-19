@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import MainLayout from '../components/layout/MainLayout';
 import { userService } from '../services/userService';
 import { companyService } from '../services/companyService';
@@ -14,7 +13,6 @@ const UsersForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user: currentUser } = useAuth();
-  const { hasPermission } = usePermissions();
   
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -35,18 +33,31 @@ const UsersForm = () => {
     companyRole: 'company_staff'
   });
 
+  // ✅ Hardcoded permission checks based on role
+  const userRole = currentUser?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  const isManager = userRole === 'manager';
+  const isStaff = userRole === 'staff';
+
+  // ✅ Can manage users - Super Admin and Admin only
+  const canManageUsers = isSuperAdmin || isAdmin;
+
   // ✅ Get allowed roles based on current user's role
   const getAllowedRoles = useCallback(() => {
-    if (currentUser?.role === 'super_admin') {
+    if (isSuperAdmin) {
       return ['super_admin', 'admin', 'manager', 'staff', 'guest'];
     }
-    if (currentUser?.role === 'admin') {
+    if (isAdmin) {
       return ['manager', 'staff', 'guest'];
     }
+    if (isManager) {
+      return ['guest'];
+    }
     return ['guest'];
-  }, [currentUser?.role]);
+  }, [isSuperAdmin, isAdmin, isManager]);
 
-  // ✅ Get allowed company roles (for TRONIC_MASTER users)
+  // ✅ Get allowed company roles (for Guest users)
   const getAllowedCompanyRoles = useCallback(() => {
     return [
       { value: 'company_admin', label: 'Company Admin' },
@@ -62,6 +73,13 @@ const UsersForm = () => {
     const allowedRoles = getAllowedRoles();
     return allowedRoles.includes(role);
   }, [getAllowedRoles]);
+
+  // ✅ Redirect if user doesn't have permission
+  useEffect(() => {
+    if (!canManageUsers) {
+      navigate('/dashboard');
+    }
+  }, [canManageUsers, navigate]);
 
   // ✅ Fetch dropdown data (companies and projects)
   const fetchDropdownData = useCallback(async () => {
@@ -293,8 +311,6 @@ const UsersForm = () => {
     navigate('/users');
   };
 
-  const canManageUsers = hasPermission('manageUsers') || currentUser?.role === 'super_admin' || currentUser?.role === 'admin';
-
   if (!canManageUsers) {
     navigate('/dashboard');
     return null;
@@ -335,7 +351,7 @@ const UsersForm = () => {
         )}
 
         <form onSubmit={handleSubmit} className="users-form">
-          {/* ✅ ROW 1: Full Name, Email, Password */}
+          {/* ROW 1: Full Name, Email, Password */}
           <div className="form-row">
             <div className="form-group">
               <label>Full Name <span className="required">*</span></label>
@@ -378,7 +394,7 @@ const UsersForm = () => {
             </div>
           </div>
 
-          {/* ✅ ROW 2: Phone, System Role, Company Role */}
+          {/* ROW 2: Phone, System Role, Company Role */}
           <div className="form-row">
             <div className="form-group">
               <label>Phone Number</label>
@@ -404,14 +420,14 @@ const UsersForm = () => {
                   </option>
                 ))}
               </select>
-              {currentUser?.role === 'admin' && (
+              {isAdmin && (
                 <small className="form-hint" style={{ color: '#4a6cf7' }}>
                   ℹ️ Admin can only assign Manager, Staff, or Guest roles
                 </small>
               )}
             </div>
 
-            {/* ✅ Company Role field - only visible for Guest (project) users */}
+            {/* Company Role field - only visible for Guest users */}
             {formData.role === 'guest' ? (
               <div className="form-group">
                 <label>Company Role</label>
@@ -441,7 +457,7 @@ const UsersForm = () => {
             )}
           </div>
 
-          {/* ✅ ROW 3: Project Role, Company, Project */}
+          {/* ROW 3: Project Role, Company, Project */}
           <div className="form-row">
             <div className="form-group">
               <label>Project Role</label>

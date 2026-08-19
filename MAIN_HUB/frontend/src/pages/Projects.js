@@ -2,14 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import { useAuth } from '../context/AuthContext';
 import MainLayout from '../components/layout/MainLayout';
 import { projectService } from '../services/projectService';
 import { companyService } from '../services/companyService';
 import './Projects.css';
 
 const Projects = () => {
-  //const { user } = useAuth(); // ✅ Removed the unused 'currentUser' alias
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [companies, setCompanies] = useState([]);

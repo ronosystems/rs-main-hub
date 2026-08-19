@@ -2,14 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import MainLayout from '../components/layout/MainLayout';
-import { getRoleByKey, getRoleHierarchy, PERMISSION_GROUPS } from '../config/roles'; // ✅ Removed ROLES and getAllRoles
+import { getRoleByKey, getRoleHierarchy, PERMISSION_GROUPS } from '../config/roles';
 import './Roles.css';
 
 const Roles = () => {
   const { user } = useAuth();
-  const { hasPermission, refreshPermissions } = usePermissions();
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -50,6 +48,14 @@ const Roles = () => {
         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
       </svg>
     ),
+    Delete: () => (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
+    ),
     Close: () => (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/>
@@ -64,11 +70,19 @@ const Roles = () => {
     )
   };
 
+  // ✅ Hardcoded permission checks based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  
+  // ✅ Can manage roles - Super Admin only (or Super Admin + Admin if needed)
+  const canManageRoles = isSuperAdmin || isAdmin;
+
   useEffect(() => {
     loadRoles();
   }, []);
 
-  // ✅ Load roles from config
+  // Load roles from config
   const loadRoles = async () => {
     try {
       setLoading(true);
@@ -92,7 +106,7 @@ const Roles = () => {
     }
   };
 
-  // ✅ Get default permissions for a new role
+  // Get default permissions for a new role
   const getDefaultPermissions = () => {
     const defaultRole = getRoleByKey('guest');
     return defaultRole ? { ...defaultRole.permissions } : {
@@ -150,7 +164,6 @@ const Roles = () => {
       setEditingRole(null);
       resetForm();
       loadRoles();
-      refreshPermissions();
     } catch (error) {
       alert(error.message || 'Failed to save role');
     }
@@ -178,7 +191,6 @@ const Roles = () => {
         // For now, we're using config-based roles
         alert('Roles are managed in the config file. To delete, remove from config.');
         loadRoles();
-        refreshPermissions();
       } catch (error) {
         alert(error.response?.data?.message || 'Failed to delete role');
       }
@@ -208,7 +220,7 @@ const Roles = () => {
     });
   };
 
-  // ✅ Get permission groups from config
+  // Get permission groups from config
   const permissionGroups = Object.entries(PERMISSION_GROUPS).map(([key, group]) => ({
     title: group.label,
     icon: group.icon,
@@ -225,9 +237,6 @@ const Roles = () => {
       </MainLayout>
     );
   }
-
-  // Check if user has permission to manage roles
-  const canManageRoles = hasPermission('manageRoles') || hasPermission('createRoles') || user?.role === 'super_admin';
 
   return (
     <MainLayout title="Roles & Permissions" breadcrumbs={['Home', 'Roles']}>

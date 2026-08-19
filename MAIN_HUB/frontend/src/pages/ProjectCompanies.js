@@ -4,14 +4,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import { projectService } from '../services/projectService';
 import MainLayout from '../components/layout/MainLayout';
 import './ProjectCompanies.css';
 
 const ProjectCompanies = () => {
   const { user } = useAuth();
-  const { hasPermission } = usePermissions();
   const navigate = useNavigate();
   const location = useLocation();
   const { projectId } = useParams();
@@ -281,7 +279,6 @@ const ProjectCompanies = () => {
     }
   };
 
-  // ✅ FIXED: Added fetchProjectCompanies to dependency array
   useEffect(() => {
     fetchProjectCompanies();
   }, [fetchProjectCompanies]);
@@ -306,9 +303,14 @@ const ProjectCompanies = () => {
     return filtered;
   };
 
-  // Check permissions
-  const canEdit = hasPermission('editCompanies') || user?.role === 'super_admin' || user?.role === 'admin';
-  const canDelete = hasPermission('deleteCompanies') || user?.role === 'super_admin';
+  // ✅ Hardcoded permission checks based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  
+  // ✅ Hardcoded permissions
+  const canEdit = isSuperAdmin || isAdmin;
+  const canDelete = isSuperAdmin;
 
   const filteredCompanies = getFilteredCompanies();
   

@@ -1,15 +1,13 @@
 // /home/kk/RS/MAIN HUB/frontend/src/pages/Settings.js
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'; // ✅ Added useCallback
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import './Settings.css';
 
 const Settings = () => {
   const { user } = useAuth();
-  const { hasPermission, permissions } = usePermissions();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('general');
   const [loading, setLoading] = useState(false);
@@ -22,22 +20,20 @@ const Settings = () => {
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
   const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
+  // ✅ Hardcoded permission check based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  const canViewSettings = isSuperAdmin || isAdmin;
+
   // ✅ Check if user has permission to view settings
   useEffect(() => {
-    if (!permissions) {
-      console.log('⏳ Settings: Waiting for permissions to load...');
-      return;
-    }
-
-    const canViewSettings = hasPermission('viewSettings') || user?.role === 'super_admin';
-    console.log('🔍 Settings - Can view settings:', canViewSettings);
-
     if (!canViewSettings) {
       console.log('🚫 Settings: No permission, redirecting to dashboard');
       navigate('/dashboard');
       return;
     }
-  }, [permissions, hasPermission, user, navigate]);
+  }, [canViewSettings, navigate]);
 
   // General Settings
   const [generalSettings, setGeneralSettings] = useState({
@@ -162,7 +158,7 @@ const Settings = () => {
     )
   };
 
-  // ✅ Fetch system settings from server - wrapped in useCallback
+  // Fetch system settings from server - wrapped in useCallback
   const fetchSystemSettings = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
@@ -211,7 +207,7 @@ const Settings = () => {
     } catch (error) {
       console.error('Error fetching system settings:', error);
     }
-  }, [API_URL, STATIC_URL]); // ✅ Added dependencies
+  }, [API_URL, STATIC_URL]);
 
   // Load saved settings from localStorage (fallback) and server
   useEffect(() => {
@@ -238,7 +234,7 @@ const Settings = () => {
 
     // Then fetch from server
     fetchSystemSettings();
-  }, [fetchSystemSettings]); // ✅ Added fetchSystemSettings as dependency
+  }, [fetchSystemSettings]);
 
   // Logo upload handlers
   const handleLogoUpload = async (e) => {
@@ -434,6 +430,11 @@ const Settings = () => {
       setTimeout(() => setSuccess(''), 3000);
     }, 1000);
   };
+
+  // If user doesn't have permission, show nothing (redirect will happen)
+  if (!canViewSettings) {
+    return null;
+  }
 
   return (
     <MainLayout title="Settings" breadcrumbs={['Home', 'Settings']}>

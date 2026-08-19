@@ -20,8 +20,8 @@ export const usePermissions = () => {
 
 export const PermissionProvider = ({ children }) => {
   const { user } = useAuth();
-  const [permissions, setPermissions] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [permissions, setPermissions] = useState({});
+  const [loading, setLoading] = useState(false); // ✅ Changed to false
   const [error, setError] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
   
@@ -47,7 +47,7 @@ export const PermissionProvider = ({ children }) => {
   // Load permissions from config
   const loadPermissions = useCallback(async () => {
     try {
-      setLoading(true);
+      // ✅ No loading state - just load immediately
       setError(null);
       
       console.log('🔄 Loading permissions from config for user:', user?._id || user?.email);
@@ -56,9 +56,8 @@ export const PermissionProvider = ({ children }) => {
       
       if (!user) {
         if (isMountedRef.current) {
-          setPermissions(null);
+          setPermissions({});
           setIsInitialized(true);
-          setLoading(false);
         }
         return;
       }
@@ -71,7 +70,6 @@ export const PermissionProvider = ({ children }) => {
       if (isMountedRef.current) {
         setPermissions(rolePermissions);
         setIsInitialized(true);
-        setLoading(false);
       }
 
     } catch (error) {
@@ -82,7 +80,6 @@ export const PermissionProvider = ({ children }) => {
         setPermissions(guestRole ? guestRole.permissions : {});
         setIsInitialized(true);
         setError(error.message);
-        setLoading(false);
       }
     }
   }, [user, getPermissionsForRole]);
@@ -94,9 +91,8 @@ export const PermissionProvider = ({ children }) => {
     if (user) {
       loadPermissions();
     } else {
-      setPermissions(null);
+      setPermissions({});
       setIsInitialized(true);
-      setLoading(false);
     }
 
     return () => {
@@ -256,9 +252,8 @@ export const useRequireRoleLevel = (requiredLevel) => {
   }), [hasRoleLevel, requiredLevel, loading]);
 };
 
-// ✅ Custom hook to get permission summary for a role - FIXED
+// ✅ Custom hook to get permission summary for a role
 export const usePermissionSummary = (roleKey) => {
-  // Move getRoleByKey inside the useMemo to avoid dependency issues
   return useMemo(() => {
     const role = getRoleByKey(roleKey);
     if (!role) return null;
@@ -274,7 +269,7 @@ export const usePermissionSummary = (roleKey) => {
       disabled,
       permissions
     };
-  }, [roleKey]); // ✅ roleKey is the dependency
+  }, [roleKey]);
 };
 
 export default PermissionContext;

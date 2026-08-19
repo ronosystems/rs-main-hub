@@ -2,13 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import MainLayout from '../components/layout/MainLayout';
 import './Companies.css';
 
 const Companies = () => {
   const { user } = useAuth();
-  const { hasPermission } = usePermissions();
   const navigate = useNavigate();
   
   const [companies, setCompanies] = useState([]);
@@ -378,10 +376,17 @@ const Companies = () => {
     return projectTypesMap[typeKey]?.name || typeKey;
   };
 
-  // Check permissions
-  const canCreate = hasPermission('createCompanies') || user?.role === 'super_admin' || user?.role === 'admin';
-  const canEdit = hasPermission('editCompanies') || user?.role === 'super_admin' || user?.role === 'admin';
-  const canDelete = hasPermission('deleteCompanies') || user?.role === 'super_admin';
+  // ✅ Hardcoded permission checks based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  const isManager = userRole === 'manager';
+  const isStaff = userRole === 'staff';
+  
+  // ✅ Super Admin and Admin can do everything
+  const canCreate = isSuperAdmin || isAdmin;
+  const canEdit = isSuperAdmin || isAdmin;
+  const canDelete = isSuperAdmin; // Only Super Admin can delete
 
   // Pagination handlers
   const handlePageChange = (page) => {
@@ -710,7 +715,7 @@ const Companies = () => {
                     </button>
                   )}
 
-                  {user?.role === 'super_admin' && (
+                  {isSuperAdmin && (
                     <button 
                       className="action-btn action-btn-delete"
                       onClick={() => handlePermanentDeleteCompany(actionCompany._id)}

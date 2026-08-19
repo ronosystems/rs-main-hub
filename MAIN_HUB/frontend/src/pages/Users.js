@@ -3,14 +3,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import MainLayout from '../components/layout/MainLayout';
 import { userService } from '../services/userService';
 import './Users.css';
 
 const Users = () => {
   const { user: currentUser } = useAuth();
-  const { hasPermission, loading: permissionsLoading } = usePermissions();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,12 +17,12 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   
-  // ✅ Pagination state
+  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
 
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'http://localhost:5000';
-  const TRONIC_API_URL = process.env.REACT_APP_TRONIC_API_URL || 'http://localhost:5002';
+  const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
+  const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
   const systemRoles = ['super_admin', 'admin', 'manager', 'staff'];
 
   // Icons
@@ -128,8 +126,8 @@ const Users = () => {
   };
 
   const getAvatarColor = (name) => {
-    if (!name) return '#6c5ce7';
-    const colors = ['#6c5ce7', '#00b894', '#0984e3', '#fdcb6e', '#e17055', '#00cec9', '#fd79a8', '#a29bfe', '#55efc4', '#fdcb6e'];
+    if (!name) return '#0051ff';
+    const colors = ['#1e00ff', '#00b894', '#0984e3', '#fdcb6e', '#e17055', '#00cec9', '#fd79a8', '#043300', '#55efc4', '#fdcb6e'];
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
@@ -142,15 +140,14 @@ const Users = () => {
     if (user.profilePicture.startsWith('http://') || user.profilePicture.startsWith('https://')) {
       return user.profilePicture;
     }
-    if (user.project === 'TRONIC_MASTER') {
-      return `${TRONIC_API_URL}${user.profilePicture}`;
+    if (user.project === 'MAIN_HUB') {
+      return `${API_URL}${user.profilePicture}`;
     }
     return `${STATIC_URL}${user.profilePicture}`;
   };
 
   const loadData = useCallback(async () => {
     try {
-      setLoading(true);
       const usersData = await userService.getUsers();
       setUsers(usersData.data || []);
     } catch (error) {
@@ -160,12 +157,25 @@ const Users = () => {
     }
   }, []);
 
+  // ✅ Hardcoded permission checks based on role
+  const userRole = currentUser?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  const isManager = userRole === 'manager';
+  const isStaff = userRole === 'staff';
+
+  // ✅ Can view users - Super Admin and Admin only
+  const canViewUsers = isSuperAdmin || isAdmin;
+
   useEffect(() => {
-    if (permissionsLoading) return;
-    const canViewUsers = hasPermission('viewUsers') || currentUser?.role === 'super_admin' || currentUser?.role === 'admin';
-    if (!canViewUsers) { navigate('/dashboard'); return; }
+    if (!canViewUsers) {
+      navigate('/dashboard');
+      return;
+    }
     loadData();
-  }, [permissionsLoading, hasPermission, currentUser, navigate, loadData]);
+    // ✅ Set loading to false after load
+    setLoading(false);
+  }, [canViewUsers, navigate, loadData]);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -180,14 +190,15 @@ const Users = () => {
     return getCompanyUsers();
   };
 
+  // ✅ Hardcoded permission checks for user management
   const canManageUser = (user) => {
-    if (currentUser?.role === 'super_admin') return true;
-    if (currentUser?.role === 'admin') return user.role !== 'super_admin';
-    if (currentUser?.role === 'manager') return user.role === 'staff' || user.role === 'guest';
+    if (isSuperAdmin) return true;
+    if (isAdmin) return user.role !== 'super_admin';
+    if (isManager) return user.role === 'staff' || user.role === 'guest';
     return false;
   };
 
-  const canCreateUser = () => currentUser?.role === 'super_admin' || currentUser?.role === 'admin';
+  const canCreateUser = () => isSuperAdmin || isAdmin;
 
   const handleDelete = async (id) => {
     const userToDelete = users.find(u => u._id === id);
@@ -254,7 +265,7 @@ const Users = () => {
     return names[role] || role || 'Staff';
   };
 
-  // ✅ Get filtered users
+  // Get filtered users
   const filteredUsers = getFilteredUsers().filter(user => {
     const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -265,14 +276,14 @@ const Users = () => {
     return matchesSearch && matchesRole;
   });
 
-  // ✅ Pagination calculations
+  // Pagination calculations
   const totalItems = filteredUsers.length;
   const totalPages = Math.ceil(totalItems / entriesPerPage);
   const startIndex = (currentPage - 1) * entriesPerPage;
   const endIndex = Math.min(startIndex + entriesPerPage, totalItems);
   const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
-  // ✅ Pagination handlers
+  // Pagination handlers
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -283,7 +294,7 @@ const Users = () => {
     setCurrentPage(1);
   };
 
-  // ✅ Render pagination buttons
+  // Render pagination buttons
   const renderPaginationButtons = () => {
     const buttons = [];
     const maxVisible = 5;
@@ -326,16 +337,8 @@ const Users = () => {
 
   const getStatusColor = (isActive) => isActive ? '#00b894' : '#e17055';
 
-  if (loading || permissionsLoading) {
-    return (
-      <MainLayout title="Users Management" breadcrumbs={['Home', 'Users']}>
-        <div className="loading-state">
-          <div className="loading-spinner"></div>
-          <p>Loading users...</p>
-        </div>
-      </MainLayout>
-    );
-  }
+  // ✅ NO SPINNER - Just return null or render immediately
+  // if (loading) { ... } - REMOVED
 
   return (
     <MainLayout title="Users Management" breadcrumbs={['Home', 'Users']}>
@@ -371,7 +374,6 @@ const Users = () => {
         {/* Stats Cards */}
         <div className="users-stats">
           <div className="stat-card stat-system">
-            <div className="stat-icon">👑</div>
             <div className="stat-info">
               <span className="stat-number">{systemUsersCount}</span>
               <span className="stat-label">System Users</span>
@@ -379,7 +381,6 @@ const Users = () => {
             <div className="stat-trend">System administrators</div>
           </div>
           <div className="stat-card stat-company">
-            <div className="stat-icon">🏢</div>
             <div className="stat-info">
               <span className="stat-number">{companyUsersCount}</span>
               <span className="stat-label">Company Users</span>
@@ -387,7 +388,6 @@ const Users = () => {
             <div className="stat-trend">Company staff members</div>
           </div>
           <div className="stat-card stat-active">
-            <div className="stat-icon">✅</div>
             <div className="stat-info">
               <span className="stat-number">{activeUsersCount}</span>
               <span className="stat-label">Active</span>
@@ -395,7 +395,6 @@ const Users = () => {
             <div className="stat-trend">Currently active</div>
           </div>
           <div className="stat-card stat-inactive">
-            <div className="stat-icon">⏸️</div>
             <div className="stat-info">
               <span className="stat-number">{inactiveUsersCount}</span>
               <span className="stat-label">Inactive</span>
@@ -603,7 +602,7 @@ const Users = () => {
           )}
         </div>
 
-        {/* ✅ Pagination */}
+        {/* Pagination */}
         {filteredUsers.length > 0 && (
           <div className="pagination-container">
             <div className="pagination-info">

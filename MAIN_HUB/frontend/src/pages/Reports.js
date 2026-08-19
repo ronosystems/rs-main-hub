@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { usePermissions } from '../context/PermissionContext';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../components/layout/MainLayout';
 import { userService } from '../services/userService';
@@ -12,7 +11,6 @@ import './Reports.css';
 
 const Reports = () => {
   const { user } = useAuth();
-  const { hasPermission, permissions } = usePermissions();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -78,7 +76,20 @@ const Reports = () => {
     )
   };
 
-  // ✅ Wrap loadData in useCallback
+  // ✅ Hardcoded permission checks based on role
+  const userRole = user?.role?.toLowerCase();
+  const isSuperAdmin = userRole === 'super_admin';
+  const isAdmin = userRole === 'admin';
+  const isManager = userRole === 'manager';
+  const isStaff = userRole === 'staff';
+
+  // ✅ Can view reports - Super Admin, Admin, and Manager
+  const canViewReports = isSuperAdmin || isAdmin || isManager;
+
+  // ✅ Can view users - Super Admin and Admin only
+  const canViewUsers = isSuperAdmin || isAdmin;
+
+  // Wrap loadData in useCallback
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -87,13 +98,11 @@ const Reports = () => {
       let companiesData = { data: [] };
       let projectsData = { data: [] };
       
-      // ✅ Only fetch users if user has viewUsers permission
-      const canViewUsers = hasPermission('viewUsers') || user?.role === 'super_admin';
-      
+      // Only fetch users if user has permission (Super Admin or Admin)
       if (canViewUsers) {
         console.log('📊 Reports - Fetching users (has permission)');
         try {
-          usersData = await userService.getUsersSafe();
+          usersData = await userService.getUsers();
           console.log('✅ Reports - Users loaded:', usersData.data?.length || 0);
         } catch (error) {
           console.warn('⚠️ Reports - Could not load users:', error.message);
@@ -106,7 +115,7 @@ const Reports = () => {
       // Always fetch companies
       console.log('📊 Reports - Fetching companies');
       try {
-        companiesData = await companyService.getCompaniesSafe();
+        companiesData = await companyService.getCompanies();
         console.log('✅ Reports - Companies loaded:', companiesData.data?.length || 0);
       } catch (error) {
         console.warn('⚠️ Reports - Could not load companies:', error.message);
@@ -115,7 +124,7 @@ const Reports = () => {
       // Always fetch projects
       console.log('📊 Reports - Fetching projects');
       try {
-        projectsData = await projectService.getProjectsSafe();
+        projectsData = await projectService.getProjects();
         console.log('✅ Reports - Projects loaded:', projectsData.data?.length || 0);
       } catch (error) {
         console.warn('⚠️ Reports - Could not load projects:', error.message);
@@ -138,27 +147,18 @@ const Reports = () => {
     } finally {
       setLoading(false);
     }
-  }, [hasPermission, user]);
+  }, [canViewUsers]);
 
   // Check permissions when component mounts
   useEffect(() => {
-    if (!permissions) {
-      console.log('⏳ Reports: Waiting for permissions to load...');
-      return;
-    }
-
-    const canViewReports = hasPermission('viewReports');
-    console.log('🔍 Reports - Can view reports:', canViewReports);
-    console.log('🔍 Reports - User role:', user?.role);
-
-    if (!canViewReports && user?.role !== 'super_admin') {
+    if (!canViewReports) {
       console.log('🚫 Reports: No permission, redirecting to dashboard');
       navigate('/dashboard');
       return;
     }
 
     loadData();
-  }, [permissions, hasPermission, user, navigate, loadData]);
+  }, [canViewReports, navigate, loadData]);
 
   // Stats
   const totalUsers = users.length;

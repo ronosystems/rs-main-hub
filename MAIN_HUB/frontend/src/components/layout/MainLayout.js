@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { usePermissions } from '../../context/PermissionContext';
-import LoadingSpinner from '../LoadingSpinner';
 import './MainLayout.css';
 
 const MainLayout = ({ children, title, breadcrumbs }) => {
   const { user, logout } = useAuth();
-  const { hasPermission, refreshPermissions, permissions, loading: permissionsLoading } = usePermissions();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [permissionsLoaded, setPermissionsLoaded] = useState(false);
-  const [showSpinner, setShowSpinner] = useState(true);
   
   // System Settings
   const [systemLogo, setSystemLogo] = useState(null);
@@ -31,17 +26,13 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
   const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
 
-  // Force spinner to show for at least 5 seconds
+  // Update CSS variables when colors change
   useEffect(() => {
-    if (!permissionsLoading && permissions) {
-      // Wait at least 5 seconds before hiding spinner
-      const timer = setTimeout(() => {
-        setShowSpinner(false);
-      }, 5000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [permissionsLoading, permissions]);
+    document.documentElement.style.setProperty('--primary-color', primaryColor);
+    document.documentElement.style.setProperty('--sidebar-color', sidebarColor);
+    const rgb = hexToRgb(primaryColor);
+    document.documentElement.style.setProperty('--primary-rgb', rgb);
+  }, [primaryColor, sidebarColor]);
 
   // Load system settings from server
   useEffect(() => {
@@ -148,7 +139,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     };
   }, [API_URL, STATIC_URL]);
 
-  // Fetch real notifications from the backend (only once)
+  // Fetch real notifications from the backend
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!user) return;
@@ -197,13 +188,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     };
 
     fetchNotifications();
-    
-    return () => {
-      // Clean up any intervals
-    };
   }, [user, API_URL]);
 
-  // Fetch real calendar events (only once)
+  // Fetch real calendar events
   useEffect(() => {
     const fetchCalendarEvents = async () => {
       if (!user) return;
@@ -250,15 +237,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     if (diffDays < 7) return `${diffDays} days ago`;
     return date.toLocaleDateString();
   };
-
-  // Refresh permissions only once when user logs in
-  useEffect(() => {
-    if (user && !permissionsLoaded) {
-      console.log('🔄 MainLayout: Initial permissions load');
-      refreshPermissions();
-      setPermissionsLoaded(true);
-    }
-  }, [user, refreshPermissions, permissionsLoaded]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -318,7 +296,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     setShowNotifications(false);
   };
 
-  // Mark notification as read (with API call)
+  // Mark notification as read
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem('token');
@@ -340,7 +318,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     }
   };
 
-  // Mark all as read (with API call)
+  // Mark all as read
   const markAllAsRead = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -530,101 +508,51 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     )
   };
 
-  // All possible menu items with permissions
-  const allMenuItems = [
-    { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard', permission: 'viewDashboard' },
-    { icon: 'Projects', label: 'Projects', path: '/projects', permission: 'viewProjects' },
-    { icon: 'Companies', label: 'Companies', path: '/companies', permission: 'viewCompanies' },
-    { icon: 'Plans', label: 'Plans', path: '/plans', permission: 'viewPlans' },
-    { icon: 'Users', label: 'Users', path: '/users', permission: 'viewUsers' },
-    { icon: 'Roles', label: 'Roles', path: '/roles', permission: 'manageRoles' },
-    { icon: 'Reports', label: 'Reports', path: '/reports', permission: 'viewReports' },
-    { icon: 'Settings', label: 'Settings', path: '/settings', permission: 'viewSettings' },
-  ];
-
-  // Get menu items based on hardcoded permissions - REMOVED SPINNER LOGIC
+  // Hardcoded menu items based on role
   const getMenuItems = () => {
-    // If permissions are still loading, show only dashboard
-    if (permissionsLoading || !permissions) {
-      console.log('⏳ Permissions still loading, showing only dashboard...');
-      return allMenuItems
-        .filter(item => item.label === 'Dashboard')
-        .map(item => ({
-          ...item,
-          path: user?.role === 'manager' ? '/manager' : 
-                user?.role === 'admin' ? '/admin' : 
-                user?.role === 'staff' ? '/staff' : '/dashboard'
-        }));
-    }
-
-    console.log('🔍 ===== DEBUGGING PERMISSIONS =====');
-    console.log('🔍 User role:', user?.role);
-    console.log('🔍 Permissions loaded:', !!permissions);
-
-    if (user?.role === 'super_admin' || user?.role === 'Super Admin') {
-      console.log('👑 Super Admin - showing all menu items');
-      return allMenuItems.map(item => ({
-        ...item,
-        path: `/super-admin${item.path}`
-      }));
-    }
-
-    const pathMap = {
-      admin: {
-        '/dashboard': '/admin',
-        '/projects': '/admin/projects',
-        '/companies': '/admin/companies',
-        '/users': '/admin/users',
-        '/reports': '/admin/reports'
-      },
-      manager: {
-        '/dashboard': '/manager',
-        '/projects': '/manager/projects',
-        '/companies': '/manager/companies',
-        '/reports': '/manager/reports'
-      },
-      staff: {
-        '/dashboard': '/staff',
-        '/projects': '/staff/projects'
-      }
+    const role = user?.role?.toLowerCase();
+    
+    const roleMenus = {
+      super_admin: [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/super-admin/dashboard' },
+        { icon: 'Projects', label: 'Projects', path: '/super-admin/projects' },
+        { icon: 'Companies', label: 'Companies', path: '/super-admin/companies' },
+        { icon: 'Plans', label: 'Plans', path: '/super-admin/plans' },
+        { icon: 'Users', label: 'Users', path: '/super-admin/users' },
+        { icon: 'Roles', label: 'Roles', path: '/super-admin/roles' },
+        { icon: 'Reports', label: 'Reports', path: '/super-admin/reports' },
+        { icon: 'Settings', label: 'Settings', path: '/settings' }
+      ],
+      admin: [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/admin/dashboard' },
+        { icon: 'Projects', label: 'Projects', path: '/admin/projects' },
+        { icon: 'Companies', label: 'Companies', path: '/admin/companies' },
+        { icon: 'Plans', label: 'Plans', path: '/admin/plans' },
+        { icon: 'Users', label: 'Users', path: '/admin/users' },
+        { icon: 'Reports', label: 'Reports', path: '/admin/reports' }
+      ],
+      manager: [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/manager/dashboard' },
+        { icon: 'Projects', label: 'Projects', path: '/manager/projects' },
+        { icon: 'Companies', label: 'Companies', path: '/manager/companies' },
+        { icon: 'Users', label: 'Users', path: '/manager/users' },
+        { icon: 'Reports', label: 'Reports', path: '/manager/reports' }
+      ],
+      staff: [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/staff/dashboard' },
+        { icon: 'Projects', label: 'Projects', path: '/staff/projects' },
+        { icon: 'Companies', label: 'Companies', path: '/staff/companies' }
+      ]
     };
 
-    const rolePaths = pathMap[user?.role?.toLowerCase()] || {};
+    const defaultMenu = [
+      { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' }
+    ];
 
-    const filteredItems = allMenuItems
-      .filter(item => {
-        if (item.label === 'Dashboard') return true;
-        const hasAccess = hasPermission(item.permission);
-        console.log(`  📌 ${item.label}: ${hasAccess ? '✅ SHOW' : '❌ HIDE'} (${item.permission})`);
-        return hasAccess;
-      })
-      .map(item => ({
-        ...item,
-        path: rolePaths[item.path] || `/${item.path}`
-      }));
-
-    console.log('📋 Final menu items:', filteredItems.map(i => i.label));
-    return filteredItems;
+    return roleMenus[role] || defaultMenu;
   };
 
   const menuItems = getMenuItems();
-
-  // Dynamic styles based on settings
-  const navbarStyle = {
-    background: `linear-gradient(135deg, #0a0a0a, #1a1a1a)`,
-    borderBottom: `3px solid ${primaryColor}`
-  };
-
-  const sidebarStyle = {
-    background: sidebarColor || '#ffffff',
-    borderRight: '1px solid #e2e8f0'
-  };
-
-  const activeItemStyle = {
-    background: `rgba(${hexToRgb(primaryColor)}, 0.1)`,
-    color: primaryColor,
-    borderLeft: `3px solid ${primaryColor}`
-  };
 
   function hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -633,24 +561,16 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
       '0, 212, 255';
   }
 
-  // Get the user's display name
   const getUserDisplayName = () => {
     if (user?.name) return user.name;
     if (user?.email) return user.email.split('@')[0];
     return 'User';
   };
 
-  // ✅ Show loading spinner for at least 5 seconds
-  if (showSpinner || permissionsLoading || !permissions) {
-    return (
-      <LoadingSpinner message="Loading your dashboard..." />
-    );
-  }
-
   return (
     <div className="rs-layout">
       {/* ========== FIXED TOP NAVBAR ========== */}
-      <nav className="rs-navbar" style={navbarStyle}>
+      <nav className="rs-navbar">
         <div className="navbar-left">
           <button className="sidebar-toggle-btn" onClick={toggleSidebar}>
             <Icons.Menu />
@@ -662,7 +582,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
                   src={systemLogo} 
                   alt="System Logo" 
                   className="logo-img" 
-                  style={{ width: '36px', height: '36px', borderRadius: '8px', objectFit: 'contain' }}
                 />
               ) : (
                 <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -679,29 +598,17 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
 
         <div className="navbar-right">
           <div className="navbar-user">
-            <span className="user-avatar" style={{ 
-              background: primaryColor, 
-              color: '#ffffff',
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+            <span className="user-avatar">
               {displayProfilePicture ? (
                 <img 
                   src={displayProfilePicture} 
                   alt={user?.name || 'User'} 
-                  style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }}
                 />
               ) : (
-                <span style={{ fontSize: '14px', fontWeight: 'bold' }}>
-                  {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                </span>
+                <span>{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
               )}
             </span>
-            <span className="user-name" style={{ color: '#ffffff', fontWeight: '500' }}>
+            <span className="user-name">
               {user?.name || 'Admin'}
             </span>
             <span className={`user-role ${getRoleBadgeClass(user?.role)}`}>
@@ -722,7 +629,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
               )}
             </button>
             
-            {/* Notification Dropdown */}
             {showNotifications && (
               <div className="notification-dropdown">
                 <div className="dropdown-header">
@@ -785,7 +691,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
               <Icons.Calendar />
             </button>
             
-            {/* Calendar Dropdown */}
             {showCalendar && (
               <div className="calendar-dropdown">
                 <div className="calendar-header">
@@ -851,43 +756,18 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
       </nav>
 
       {/* ========== FIXED SIDEBAR ========== */}
-      <aside className={`rs-sidebar ${sidebarOpen ? 'open' : 'closed'}`} style={sidebarStyle}>
+      <aside className={`rs-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <div className="sidebar-brand">
-            <div className="welcome-sidebar-header" style={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              width: '100%',
-              padding: '8px 0',
-              textAlign: 'center'
-            }}>
-              <span className="welcome-icon-header" style={{ marginBottom: '8px' }}>
+            <div className="welcome-sidebar-header">
+              <span className="welcome-icon-header">
                 <Icons.Welcome />
               </span>
-              <div className="welcome-text-container" style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center',
-                width: '100%'
-              }}>
-                <div className="welcome-greeting" style={{ 
-                  fontSize: '1.1rem', 
-                  fontWeight: '700', 
-                  color: '#0a0a0a',
-                  letterSpacing: '0.5px',
-                  lineHeight: '1.3'
-                }}>
+              <div className="welcome-text-container">
+                <div className="welcome-greeting">
                   {getGreeting()}
                 </div>
-                <div className="welcome-name" style={{ 
-                  fontSize: '0.9rem', 
-                  fontWeight: '500', 
-                  color: '#1a1a2e',
-                  opacity: '0.85',
-                  marginTop: '2px'
-                }}>
+                <div className="welcome-name">
                   {getUserDisplayName()}
                 </div>
               </div>
@@ -902,11 +782,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
                 key={index}
                 to={item.path}
                 className={`sidebar-item ${window.location.pathname === item.path ? 'active' : ''}`}
-                style={window.location.pathname === item.path ? activeItemStyle : {}}
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(item.path);
-                }}
               >
                 <span className="sidebar-icon">
                   {IconComponent && <IconComponent />}
@@ -922,37 +797,24 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
           <div 
             className="sidebar-profile-link" 
             onClick={handleProfileClick}
-            style={{ cursor: 'pointer' }}
           >
             <div className="sidebar-user">
-              <span className="user-avatar" style={{
-                background: primaryColor,
-                color: '#ffffff',
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <span className="user-avatar">
                 {displayProfilePicture ? (
                   <img 
                     src={displayProfilePicture} 
                     alt={user?.name || 'User'} 
-                    style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
                   />
                 ) : (
-                  <span style={{ fontSize: '16px', fontWeight: 'bold' }}>
-                    {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                  </span>
+                  <span>{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
                 )}
               </span>
               {sidebarOpen && (
                 <div className="user-info">
-                  <div className="user-name" style={{ color: '#0a0a0a', fontWeight: '600' }}>
+                  <div className="user-name">
                     {user?.name || 'Admin'}
                   </div>
-                  <div className="user-role" style={{ color: '#4a5568', fontSize: '0.7rem' }}>
+                  <div className="user-role">
                     {user?.role || 'User'}
                   </div>
                 </div>
@@ -974,7 +836,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
 
       {/* ========== MAIN CONTENT AREA ========== */}
       <main className={`rs-main ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-        <div className="rs-content-header" style={{ borderBottom: `2px solid ${primaryColor}` }}>
+        <div className="rs-content-header">
           <div className="header-left">
             <h1 className="header-title">{title || 'Dashboard'}</h1>
             {breadcrumbs && (
@@ -991,7 +853,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
             )}
           </div>
           <div className="header-right">
-            {/* Buttons removed from here - they are in the navbar now */}
+            {/* Buttons removed - they are in navbar */}
           </div>
         </div>
 
@@ -999,7 +861,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
           {children}
         </div>
 
-        <footer className="rs-footer" style={{ borderTop: `2px solid ${primaryColor}` }}>
+        <footer className="rs-footer">
           <div className="footer-left">
             © {new Date().getFullYear()} {platformName} - All Rights Reserved
           </div>
@@ -1010,656 +872,10 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
           </div>
         </footer>
       </main>
-
-      <style>{`
-        .system-logo {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .system-logo .logo-img {
-          width: 36px;
-          height: 36px;
-          border-radius: 8px;
-          object-fit: contain;
-        }
-        .system-logo svg {
-          width: 36px;
-          height: 36px;
-        }
-        .system-logo-small {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .system-logo-small .logo-img {
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
-          object-fit: contain;
-        }
-        .system-logo-small svg {
-          width: 32px;
-          height: 32px;
-        }
-        
-        /* Welcome Sidebar Header Styles */
-        .welcome-sidebar-header {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          padding: 8px 0;
-          text-align: center;
-        }
-        
-        .welcome-icon-header {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 8px;
-        }
-        
-        .welcome-icon-header svg {
-          width: 28px;
-          height: 28px;
-          stroke: #0a0a0a;
-        }
-        
-        .welcome-text-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-        }
-        
-        .welcome-greeting {
-          font-size: 1.1rem;
-          font-weight: 700;
-          color: #0a0a0a;
-          letter-spacing: 0.5px;
-          line-height: 1.3;
-        }
-        
-        .welcome-name {
-          font-size: 0.9rem;
-          font-weight: 500;
-          color: #1a1a2e;
-          opacity: 0.85;
-          margin-top: 2px;
-        }
-        
-        .rs-sidebar.closed .welcome-sidebar-header {
-          padding: 8px 0;
-        }
-        
-        .rs-sidebar.closed .welcome-text-container {
-          display: none;
-        }
-        
-        .rs-sidebar.closed .welcome-icon-header {
-          margin-bottom: 0;
-        }
-        
-        .rs-sidebar.closed .welcome-icon-header svg {
-          width: 32px;
-          height: 32px;
-        }
-
-        .breadcrumb-active {
-          color: ${primaryColor} !important;
-        }
-        .sidebar-item.active {
-          background: rgba(${hexToRgb(primaryColor)}, 0.1) !important;
-          color: ${primaryColor} !important;
-          borderLeft: 3px solid ${primaryColor} !important;
-        }
-        .sidebar-item {
-          color: #4a5568 !important;
-        }
-        .sidebar-item:hover {
-          background: rgba(${hexToRgb(primaryColor)}, 0.05) !important;
-          color: ${primaryColor} !important;
-        }
-        .btn-primary {
-          background: ${primaryColor} !important;
-        }
-        .btn-primary:hover {
-          background: ${primaryColor}dd !important;
-        }
-        .sidebar-icon svg {
-          width: 20px;
-          height: 20px;
-          color: #4a5568;
-        }
-        .sidebar-item:hover .sidebar-icon svg {
-          color: ${primaryColor};
-        }
-        .sidebar-item.active .sidebar-icon svg {
-          color: ${primaryColor};
-        }
-        .navbar-user .user-avatar svg {
-          width: 20px;
-          height: 20px;
-        }
-        .navbar-logout svg {
-          width: 18px;
-          height: 18px;
-          margin-right: 6px;
-        }
-        .header-btn svg {
-          width: 20px;
-          height: 20px;
-        }
-        .sidebar-toggle-btn svg {
-          width: 24px;
-          height: 24px;
-        }
-        .sidebar-footer .user-name {
-          color: #0a0a0a !important;
-          font-weight: 600;
-        }
-        .sidebar-footer .user-role {
-          color: #4a5568 !important;
-        }
-        .sidebar-brand .brand-text {
-          color: ${sidebarColor === '#ffffff' || sidebarColor === '#f0f4f8' ? '#0a0a0a' : '#ffffff'} !important;
-        }
-        .sidebar-header {
-          border-bottom: 1px solid #e2e8f0 !important;
-          padding: 16px 15px !important;
-        }
-        .sidebar-footer {
-          border-top: 1px solid #e2e8f0 !important;
-          padding: 12px 15px;
-          transition: all 0.2s;
-        }
-        .sidebar-footer:hover {
-          background: rgba(0, 212, 255, 0.05);
-        }
-        .sidebar-profile-link {
-          display: block;
-          width: 100%;
-          text-decoration: none;
-          cursor: pointer;
-        }
-        .sidebar-user {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .user-info {
-          flex: 1;
-          overflow: hidden;
-        }
-        .profile-arrow {
-          margin-left: auto;
-          color: #a0aec0;
-          transition: transform 0.2s;
-        }
-        .sidebar-footer:hover .profile-arrow {
-          transform: translateX(4px);
-          color: ${primaryColor};
-        }
-        .profile-avatar-img {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-        .rs-sidebar.closed .sidebar-user {
-          justify-content: center;
-        }
-        .rs-sidebar.closed .profile-arrow {
-          display: none;
-        }
-        .rs-sidebar.closed .user-info {
-          display: none;
-        }
-        .rs-sidebar.closed .sidebar-profile-link {
-          display: flex;
-          justify-content: center;
-        }
-        .rs-sidebar.closed .sidebar-user {
-          gap: 0;
-        }
-        .rs-sidebar.closed .user-avatar {
-          width: 40px !important;
-          height: 40px !important;
-          font-size: 18px !important;
-        }
-        .rs-sidebar.closed .user-avatar svg {
-          width: 24px;
-          height: 24px;
-        }
-        .rs-sidebar.closed .profile-avatar-img {
-          width: 40px;
-          height: 40px;
-        }
-        
-        /* Navbar user avatar styles */
-        .navbar-user .user-avatar {
-          background: ${primaryColor} !important;
-          color: #ffffff !important;
-          width: 32px !important;
-          height: 32px !important;
-          border-radius: 50% !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          font-weight: bold !important;
-          font-size: 14px !important;
-        }
-        .navbar-user .user-avatar img {
-          width: 32px !important;
-          height: 32px !important;
-          border-radius: 50% !important;
-          object-fit: cover !important;
-        }
-        .navbar-user .user-avatar svg {
-          display: none !important;
-        }
-        .navbar-user .user-name {
-          color: #ffffff !important;
-          font-weight: 500 !important;
-        }
-
-        /* Notification & Calendar Styles */
-        .notification-wrapper,
-        .calendar-wrapper {
-          position: relative;
-          display: inline-block;
-        }
-
-        .notification-btn,
-        .calendar-btn {
-          position: relative;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          color: white;
-          padding: 8px 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .notification-btn:hover,
-        .calendar-btn:hover {
-          background: rgba(0, 212, 255, 0.2);
-          border-color: ${primaryColor};
-        }
-
-        .notification-badge {
-          position: absolute;
-          top: -6px;
-          right: -6px;
-          background: #dc3545;
-          color: white;
-          font-size: 10px;
-          font-weight: 700;
-          min-width: 18px;
-          height: 18px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 4px;
-          border: 2px solid #0a0a0a;
-        }
-
-        /* Notification Dropdown */
-        .notification-dropdown,
-        .calendar-dropdown {
-          position: absolute;
-          top: calc(100% + 8px);
-          right: 0;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-          min-width: 320px;
-          max-width: 400px;
-          z-index: 1000;
-          overflow: hidden;
-          border: 1px solid rgba(0, 0, 0, 0.08);
-          animation: slideDown 0.2s ease;
-        }
-
-        .calendar-dropdown {
-          min-width: 340px;
-          max-width: 380px;
-        }
-
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .dropdown-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 14px 18px;
-          border-bottom: 1px solid #e2e8f0;
-        }
-
-        .dropdown-title {
-          font-size: 0.95rem;
-          font-weight: 600;
-          color: #0a0a0a;
-        }
-
-        .mark-all-btn {
-          font-size: 0.75rem;
-          color: ${primaryColor};
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-weight: 500;
-          padding: 4px 8px;
-          border-radius: 4px;
-          transition: background 0.2s;
-        }
-
-        .mark-all-btn:hover {
-          background: rgba(0, 212, 255, 0.1);
-        }
-
-        .notification-list {
-          max-height: 300px;
-          overflow-y: auto;
-        }
-
-        .notification-list::-webkit-scrollbar {
-          width: 4px;
-        }
-
-        .notification-list::-webkit-scrollbar-track {
-          background: #f7fafc;
-        }
-
-        .notification-list::-webkit-scrollbar-thumb {
-          background: #cbd5e0;
-          border-radius: 4px;
-        }
-
-        .notification-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 18px;
-          cursor: pointer;
-          transition: background 0.2s;
-          border-bottom: 1px solid #f7fafc;
-        }
-
-        .notification-item:hover {
-          background: #f7fafc;
-        }
-
-        .notification-item.unread {
-          background: #ebf8ff;
-        }
-
-        .notification-item.unread:hover {
-          background: #dbeafe;
-        }
-
-        .notification-content {
-          flex: 1;
-        }
-
-        .notification-title {
-          font-size: 0.85rem;
-          color: #0a0a0a;
-          font-weight: 500;
-        }
-
-        .notification-time {
-          font-size: 0.7rem;
-          color: #a0aec0;
-          margin-top: 2px;
-        }
-
-        .notification-dot {
-          width: 8px;
-          height: 8px;
-          background: ${primaryColor};
-          border-radius: 50%;
-          flex-shrink: 0;
-          margin-left: 10px;
-        }
-
-        .empty-notifications {
-          padding: 30px 20px;
-          text-align: center;
-          color: #a0aec0;
-        }
-
-        .empty-notifications span {
-          font-size: 2rem;
-          display: block;
-          margin-bottom: 8px;
-        }
-
-        .empty-notifications p {
-          font-size: 0.9rem;
-          margin: 0;
-        }
-
-        .dropdown-footer {
-          padding: 10px 18px;
-          border-top: 1px solid #e2e8f0;
-          text-align: center;
-        }
-
-        .view-all-btn {
-          font-size: 0.8rem;
-          color: ${primaryColor};
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-weight: 500;
-          padding: 6px 12px;
-          border-radius: 4px;
-          transition: background 0.2s;
-        }
-
-        .view-all-btn:hover {
-          background: rgba(0, 212, 255, 0.1);
-        }
-
-        /* Calendar Styles */
-        .calendar-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 14px 18px;
-          border-bottom: 1px solid #e2e8f0;
-        }
-
-        .calendar-month {
-          font-size: 0.95rem;
-          font-weight: 600;
-          color: #0a0a0a;
-        }
-
-        .calendar-nav {
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 4px 8px;
-          border-radius: 4px;
-          transition: background 0.2s;
-          color: #4a5568;
-          display: flex;
-          align-items: center;
-        }
-
-        .calendar-nav:hover {
-          background: #f7fafc;
-        }
-
-        .calendar-nav svg {
-          width: 18px;
-          height: 18px;
-          stroke: #4a5568;
-        }
-
-        .calendar-grid {
-          display: grid;
-          grid-template-columns: repeat(7, 1fr);
-          padding: 10px 14px;
-          gap: 2px;
-        }
-
-        .calendar-weekday {
-          text-align: center;
-          font-size: 0.7rem;
-          font-weight: 600;
-          color: #4a5568;
-          padding: 6px 0;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .calendar-day {
-          text-align: center;
-          padding: 6px 0;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.2s;
-          position: relative;
-          min-height: 40px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .calendar-day:hover {
-          background: #f7fafc;
-        }
-
-        .calendar-day.empty {
-          cursor: default;
-        }
-
-        .calendar-day.empty:hover {
-          background: none;
-        }
-
-        .calendar-day.today {
-          background: ${primaryColor};
-          color: white;
-        }
-
-        .calendar-day.today .day-number {
-          color: white;
-        }
-
-        .calendar-day.today:hover {
-          background: ${primaryColor}dd;
-        }
-
-        .calendar-day .day-number {
-          font-size: 0.8rem;
-          font-weight: 500;
-          color: #0a0a0a;
-        }
-
-        .calendar-day.has-event .day-number {
-          font-weight: 700;
-        }
-
-        .calendar-day:not(.today) .day-number {
-          color: #0a0a0a;
-        }
-
-        .event-indicators {
-          display: flex;
-          gap: 2px;
-          margin-top: 2px;
-        }
-
-        .event-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          display: inline-block;
-        }
-
-        .calendar-footer {
-          padding: 10px 18px;
-          border-top: 1px solid #e2e8f0;
-          text-align: center;
-        }
-
-        .today-date {
-          font-size: 0.8rem;
-          color: #0a0a0a;
-          font-weight: 500;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-          .notification-dropdown,
-          .calendar-dropdown {
-            position: fixed;
-            top: 70px;
-            right: 10px;
-            left: 10px;
-            min-width: unset;
-            max-width: unset;
-            width: auto;
-          }
-
-          .notification-btn,
-          .calendar-btn {
-            padding: 6px 10px;
-          }
-
-          .navbar-right {
-            gap: 8px;
-          }
-
-          .calendar-grid {
-            padding: 8px 10px;
-          }
-
-          .calendar-day {
-            min-height: 34px;
-            padding: 4px 0;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .notification-dropdown,
-          .calendar-dropdown {
-            right: 5px;
-            left: 5px;
-          }
-
-          .calendar-day {
-            min-height: 30px;
-            font-size: 0.7rem;
-          }
-        }
-      `}</style>
     </div>
   );
 };
 
-// Helper function for role badge class
 function getRoleBadgeClass(role) {
   const roleMap = {
     'super_admin': 'badge-super-admin',
