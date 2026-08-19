@@ -12,6 +12,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [permissionsLoaded, setPermissionsLoaded] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   
   // System Settings
   const [systemLogo, setSystemLogo] = useState(null);
@@ -29,6 +30,18 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
 
   const API_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com/api';
   const STATIC_URL = 'https://main-hub-api-ea52e89c5128.herokuapp.com';
+
+  // Force spinner to show for at least 5 seconds
+  useEffect(() => {
+    if (!permissionsLoading && permissions) {
+      // Wait at least 5 seconds before hiding spinner
+      const timer = setTimeout(() => {
+        setShowSpinner(false);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [permissionsLoading, permissions]);
 
   // Load system settings from server
   useEffect(() => {
@@ -529,8 +542,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     { icon: 'Settings', label: 'Settings', path: '/settings', permission: 'viewSettings' },
   ];
 
-  // Get menu items based on hardcoded permissions
+  // Get menu items based on hardcoded permissions - REMOVED SPINNER LOGIC
   const getMenuItems = () => {
+    // If permissions are still loading, show only dashboard
     if (permissionsLoading || !permissions) {
       console.log('⏳ Permissions still loading, showing only dashboard...');
       return allMenuItems
@@ -626,8 +640,8 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return 'User';
   };
 
-  // ✅ Show loading spinner while permissions are loading
-  if (permissionsLoading || !permissions) {
+  // ✅ Show loading spinner for at least 5 seconds
+  if (showSpinner || permissionsLoading || !permissions) {
     return (
       <LoadingSpinner message="Loading your dashboard..." />
     );
