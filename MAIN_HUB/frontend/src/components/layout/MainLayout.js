@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './MainLayout.css';
@@ -9,6 +9,16 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Dropdown refs
+  const userDropdownRef = useRef(null);
+  const notificationRef = useRef(null);
+  const calendarRef = useRef(null);
+  
+  // Dropdown states
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  
   // System Settings
   const [systemLogo, setSystemLogo] = useState(null);
   const [platformName, setPlatformName] = useState('RONOSYSTEMS HUB');
@@ -16,8 +26,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [sidebarColor, setSidebarColor] = useState('#0a0a0a');
 
   // Notification and Calendar states
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -33,6 +41,23 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     const rgb = hexToRgb(primaryColor);
     document.documentElement.style.setProperty('--primary-rgb', rgb);
   }, [primaryColor, sidebarColor]);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setShowUserDropdown(false);
+      }
+      if (notificationRef.current && !notificationRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+      if (calendarRef.current && !calendarRef.current.contains(e.target)) {
+        setShowCalendar(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   // Load system settings from server
   useEffect(() => {
@@ -250,20 +275,6 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (showNotifications && !e.target.closest('.notification-wrapper')) {
-        setShowNotifications(false);
-      }
-      if (showCalendar && !e.target.closest('.calendar-wrapper')) {
-        setShowCalendar(false);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [showNotifications, showCalendar]);
-
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -276,6 +287,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   // Handle profile click - navigate to profile settings
   const handleProfileClick = (e) => {
     e.preventDefault();
+    setShowUserDropdown(false);
     navigate('/profile');
     if (isMobile) {
       setSidebarOpen(false);
@@ -287,6 +299,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     e.stopPropagation();
     setShowNotifications(!showNotifications);
     setShowCalendar(false);
+    setShowUserDropdown(false);
   };
 
   // Toggle calendar dropdown
@@ -294,6 +307,14 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     e.stopPropagation();
     setShowCalendar(!showCalendar);
     setShowNotifications(false);
+    setShowUserDropdown(false);
+  };
+
+  // Toggle user dropdown
+  const toggleUserDropdown = () => {
+    setShowUserDropdown(!showUserDropdown);
+    setShowNotifications(false);
+    setShowCalendar(false);
   };
 
   // Mark notification as read
@@ -505,6 +526,24 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
         <path d="M2 17l10 5 10-5"/>
         <path d="M2 12l10 5 10-5"/>
       </svg>
+    ),
+    ChevronDown: () => (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    ),
+    Profile: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    ),
+    Help: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
     )
   };
 
@@ -597,27 +636,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
         </div>
 
         <div className="navbar-right">
-          <div className="navbar-user">
-            <span className="user-avatar">
-              {displayProfilePicture ? (
-                <img 
-                  src={displayProfilePicture} 
-                  alt={user?.name || 'User'} 
-                />
-              ) : (
-                <span>{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
-              )}
-            </span>
-            <span className="user-name">
-              {user?.name || 'Admin'}
-            </span>
-            <span className={`user-role ${getRoleBadgeClass(user?.role)}`}>
-              {user?.role || 'User'}
-            </span>
-          </div>
-          
-          {/* Notification Button */}
-          <div className="notification-wrapper">
+
+          {/* ========== NOTIFICATION BUTTON ========== */}
+          <div className="notification-wrapper" ref={notificationRef}>
             <button 
               className="header-btn notification-btn" 
               onClick={toggleNotifications}
@@ -681,8 +702,8 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
             )}
           </div>
 
-          {/* Calendar Button */}
-          <div className="calendar-wrapper">
+          {/* ========== CALENDAR BUTTON ========== */}
+          <div className="calendar-wrapper" ref={calendarRef}>
             <button 
               className="header-btn calendar-btn" 
               onClick={toggleCalendar}
@@ -748,10 +769,71 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
             )}
           </div>
 
-          <button className="navbar-logout" onClick={handleLogout}>
-            <Icons.Logout />
-            Logout
-          </button>
+          {/* ========== USER DROPDOWN ========== */}
+          <div className="navbar-user-dropdown" ref={userDropdownRef}>
+            <button 
+              className="user-dropdown-btn"
+              onClick={toggleUserDropdown}
+            >
+              <span className="user-avatar">
+                {displayProfilePicture ? (
+                  <img 
+                    src={displayProfilePicture} 
+                    alt={user?.name || 'User'} 
+                  />
+                ) : (
+                  <span>{user?.name?.charAt(0)?.toUpperCase() || 'U'}</span>
+                )}
+              </span>
+              <span className="user-name">
+                {user?.name || 'Admin'}
+              </span>
+              <span className={`user-role ${getRoleBadgeClass(user?.role)}`}>
+                {user?.role || 'User'}
+              </span>
+              <Icons.ChevronDown />
+            </button>
+
+            {showUserDropdown && (
+              <div className="user-dropdown-menu">
+                <div className="dropdown-user-info">
+                  <div className="dropdown-user-name">{user?.name || 'User'}</div>
+                  <div className="dropdown-user-email">{user?.email || ''}</div>
+                  <div className="dropdown-user-role">
+                    <span className={`role-badge ${getRoleBadgeClass(user?.role)}`}>
+                      {user?.role || 'User'}
+                    </span>
+                  </div>
+                </div>
+                <div className="dropdown-divider"></div>
+                <Link 
+                  to="/profile" 
+                  className="dropdown-item"
+                  onClick={() => setShowUserDropdown(false)}
+                >
+                  <Icons.Profile />
+                  <span>Profile</span>
+                </Link>
+                <Link 
+                  to="/support" 
+                  className="dropdown-item"
+                  onClick={() => setShowUserDropdown(false)}
+                >
+                  <Icons.Help />
+                  <span>Help</span>
+                </Link>
+                <div className="dropdown-divider"></div>
+                <button 
+                  className="dropdown-item dropdown-logout"
+                  onClick={handleLogout}
+                >
+                  <Icons.Logout />
+                  <span>Logout</span>
+                </button>
+              </div>
+            )}
+          </div>
+
         </div>
       </nav>
 

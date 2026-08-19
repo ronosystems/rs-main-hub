@@ -92,23 +92,42 @@
   letter-spacing: 1px;
 }
 
+/* ============================================
+   NAVBAR RIGHT - DROPDOWNS
+   ============================================ */
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
-.navbar-user {
+/* ============================================
+   USER DROPDOWN
+   ============================================ */
+.navbar-user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 6px 15px 6px 8px;
-  border-radius: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  padding: 4px 14px 4px 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
 }
 
-.navbar-user .user-avatar {
+.user-dropdown-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.user-dropdown-btn .user-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -117,27 +136,28 @@
   justify-content: center;
   font-weight: bold;
   font-size: 14px;
-  color: rgb(0, 68, 255);
+  color: white;
   flex-shrink: 0;
   overflow: hidden;
   background: var(--primary-color);
 }
 
-.navbar-user .user-avatar img {
+.user-dropdown-btn .user-avatar img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.navbar-user .user-name {
-  font-size: 0.9rem;
+.user-dropdown-btn .user-name {
+  font-size: 0.85rem;
   font-weight: 500;
-  color: #0011ff;
+  color: #ffffff;
+  white-space: nowrap;
 }
 
-.navbar-user .user-role {
-  font-size: 0.65rem;
+.user-dropdown-btn .user-role {
+  font-size: 0.6rem;
   padding: 2px 10px;
   border-radius: 12px;
   font-weight: 600;
@@ -145,6 +165,479 @@
   letter-spacing: 0.3px;
 }
 
+.user-dropdown-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.user-dropdown-btn:hover svg {
+  stroke: #ffffff;
+}
+
+/* User Dropdown Menu */
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  min-width: 240px;
+  padding: 8px;
+  z-index: 1000;
+  border: 1px solid #2d2d44;
+  animation: slideDown 0.25s ease;
+}
+
+.dropdown-user-info {
+  padding: 12px 14px;
+  border-bottom: 1px solid #2d2d44;
+  margin-bottom: 4px;
+}
+
+.dropdown-user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dropdown-user-email {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  margin-top: 2px;
+}
+
+.dropdown-user-role {
+  margin-top: 6px;
+}
+
+.dropdown-user-role .role-badge {
+  font-size: 0.65rem;
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.dropdown-divider {
+  border-top: 1px solid #2d2d44;
+  margin: 4px 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: #e2e8f0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--primary-color);
+}
+
+.dropdown-item svg {
+  width: 18px;
+  height: 18px;
+  stroke: #a0aec0;
+}
+
+.dropdown-item:hover svg {
+  stroke: var(--primary-color);
+}
+
+.dropdown-logout {
+  color: #fc8181;
+}
+
+.dropdown-logout:hover {
+  background: rgba(252, 129, 129, 0.1);
+  color: #fc8181;
+}
+
+.dropdown-logout:hover svg {
+  stroke: #fc8181;
+}
+
+/* ============================================
+   ✅ NOTIFICATION & CALENDAR - ALWAYS BLUE
+   ============================================ */
+.notification-wrapper,
+.calendar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-btn,
+.calendar-btn {
+  position: relative;
+  background: rgba(0, 212, 255, 0.12);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: white !important;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-btn:hover,
+.calendar-btn:hover {
+  background: rgba(0, 212, 255, 0.25);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* ✅ ICONS - ALWAYS BLUE */
+.notification-btn svg,
+.calendar-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--primary-color) !important;
+}
+
+.notification-btn:hover svg,
+.calendar-btn:hover svg {
+  stroke: var(--primary-color) !important;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #dc3545;
+  color: #ffffff !important;
+  font-size: 9px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  border: 2px solid #0a0a0a;
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.3);
+}
+
+/* Notification Dropdown */
+.notification-dropdown,
+.calendar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  min-width: 340px;
+  max-width: 400px;
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid #2d2d44;
+  animation: slideDown 0.25s ease;
+}
+
+.calendar-dropdown {
+  min-width: 340px;
+  max-width: 380px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.dropdown-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mark-all-btn {
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.mark-all-btn:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.notification-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background: #2d2d44;
+  border-radius: 4px;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.notification-item:hover {
+  background: #252540;
+}
+
+.notification-item.unread {
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.notification-item.unread:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.notification-time {
+  font-size: 0.7rem;
+  color: #718096;
+  margin-top: 2px;
+}
+
+.notification-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-left: 10px;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+}
+
+.empty-notifications {
+  padding: 30px 20px;
+  text-align: center;
+  color: #718096;
+}
+
+.empty-notifications span {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.empty-notifications p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.dropdown-footer {
+  padding: 10px 18px;
+  border-top: 1px solid #2d2d44;
+  text-align: center;
+}
+
+.view-all-btn {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.view-all-btn:hover {
+  background: rgba(0, 212, 255, 0.1);
+}
+
+/* ============================================
+   CALENDAR STYLES
+   ============================================ */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid #2d2d44;
+}
+
+.calendar-month {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.calendar-nav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  color: #a0aec0;
+  display: flex;
+  align-items: center;
+}
+
+.calendar-nav:hover {
+  background: #2d2d44;
+  color: #ffffff;
+}
+
+.calendar-nav svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 10px 14px;
+  gap: 2px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #718096;
+  padding: 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.calendar-day {
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-day:hover {
+  background: #2d2d44;
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day.empty:hover {
+  background: none;
+}
+
+.calendar-day.today {
+  background: var(--primary-color);
+  color: #0a0a0a;
+}
+
+.calendar-day.today .day-number {
+  color: #0a0a0a;
+}
+
+.calendar-day.today:hover {
+  background: var(--primary-color);
+  opacity: 0.85;
+}
+
+.calendar-day .day-number {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+.calendar-day.has-event .day-number {
+  font-weight: 700;
+}
+
+.event-indicators {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.event-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.calendar-footer {
+  padding: 10px 18px;
+  border-top: 1px solid #2d2d44;
+  text-align: center;
+}
+
+.today-date {
+  font-size: 0.8rem;
+  color: #718096;
+  font-weight: 500;
+}
+
+/* ============================================
+   ROLE BADGES
+   ============================================ */
 .badge-super-admin {
   background: #dc3545;
   color: white;
@@ -170,32 +663,6 @@
   color: white;
 }
 
-.navbar-logout {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 8px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.navbar-logout:hover {
-  background: #dc3545;
-  border-color: #dc3545;
-  transform: scale(1.02);
-}
-
-.navbar-logout svg {
-  width: 18px;
-  height: 18px;
-  margin-right: 6px;
-}
-
 /* ============================================
    FIXED SIDEBAR - WHITE TEXT
    ============================================ */
@@ -203,7 +670,7 @@
   position: fixed;
   top: 70px;
   left: 0;
-  bottom: 60px; /* Leave space for footer */
+  bottom: 60px;
   width: 280px;
   background: var(--sidebar-color) !important;
   border-right: 1px solid #2d3748;
@@ -300,7 +767,6 @@
   overflow-y: auto;
 }
 
-/* ✅ SIDEBAR ITEMS - WHITE TEXT */
 .sidebar-item {
   display: flex;
   align-items: center;
@@ -386,7 +852,7 @@
    ============================================ */
 .sidebar-footer {
   border-top: 1px solid #2d3748 !important;
-  border-bottom: #00d4ff 2px solid !important;
+  border-bottom: 2px solid var(--primary-color) !important;
   padding: 12px 15px;
   transition: all 0.2s;
   cursor: pointer;
@@ -427,7 +893,7 @@
   justify-content: center;
   font-weight: bold;
   font-size: 16px;
-  color: rgb(17, 0, 255);
+  color: white;
   flex-shrink: 0;
   overflow: hidden;
   background: var(--primary-color);
@@ -621,43 +1087,7 @@
   height: 60px;
   background: #0a0a0a;
   padding: 0 30px;
-  border-top: 2px solid #00d4ff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: #ffffff;
-  z-index: 100;
-  /* ✅ REMOVE margin-left */
-  margin-left: 0;
-  transition: none;
-}
-
-.rs-footer .footer-left {
-  color: #a0aec0;
-}
-
-.rs-footer .footer-right span {
-  color: #a0aec0;
-}
-
-.rs-footer .footer-right .footer-separator {
-  color: #28a745;
-  margin: 0 10px;
-}
-
-/* ============================================
-   FIXED FOOTER - ALWAYS VISIBLE AT BOTTOM
-   ============================================ */
-.rs-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #0a0a0a;
-  padding: 0 30px;
-  border-top: 2px solid #00d4ff;
+  border-top: 2px solid var(--primary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -678,384 +1108,6 @@
 .rs-footer .footer-right .footer-separator {
   color: #28a745;
   margin: 0 10px;
-}
-
-/* ============================================
-   RESPONSIVE FOOTER
-   ============================================ */
-@media (max-width: 768px) {
-  .rs-footer {
-    padding: 0 15px;
-    height: 50px;
-    font-size: 0.75rem;
-    flex-direction: row;
-    gap: 4px;
-  }
-
-  .rs-footer .footer-right {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-  }
-
-  .rs-footer .footer-separator {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .rs-footer {
-    font-size: 0.65rem;
-    padding: 0 8px;
-    height: 45px;
-  }
-}
-
-/* ============================================
-   NOTIFICATION & CALENDAR DROPDOWNS
-   ============================================ */
-.notification-wrapper,
-.calendar-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.notification-btn,
-.calendar-btn {
-  position: relative;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.notification-btn:hover,
-.calendar-btn:hover {
-  background: rgba(0, 212, 255, 0.2);
-  border-color: var(--primary-color);
-}
-
-.notification-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  background: #dc3545;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
-  border: 2px solid #0a0a0a;
-}
-
-.notification-dropdown,
-.calendar-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  min-width: 320px;
-  max-width: 400px;
-  z-index: 1000;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  animation: slideDown 0.2s ease;
-}
-
-.calendar-dropdown {
-  min-width: 340px;
-  max-width: 380px;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dropdown-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.dropdown-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #0a0a0a;
-}
-
-.mark-all-btn {
-  font-size: 0.75rem;
-  color: var(--primary-color);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-.mark-all-btn:hover {
-  background: rgba(0, 212, 255, 0.1);
-}
-
-.notification-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notification-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.notification-list::-webkit-scrollbar-track {
-  background: #f7fafc;
-}
-
-.notification-list::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 4px;
-}
-
-.notification-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 18px;
-  cursor: pointer;
-  transition: background 0.2s;
-  border-bottom: 1px solid #f7fafc;
-}
-
-.notification-item:hover {
-  background: #f7fafc;
-}
-
-.notification-item.unread {
-  background: #ebf8ff;
-}
-
-.notification-item.unread:hover {
-  background: #dbeafe;
-}
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-title {
-  font-size: 0.85rem;
-  color: #0a0a0a;
-  font-weight: 500;
-}
-
-.notification-time {
-  font-size: 0.7rem;
-  color: #a0aec0;
-  margin-top: 2px;
-}
-
-.notification-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--primary-color);
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-left: 10px;
-}
-
-.empty-notifications {
-  padding: 30px 20px;
-  text-align: center;
-  color: #a0aec0;
-}
-
-.empty-notifications span {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.empty-notifications p {
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.dropdown-footer {
-  padding: 10px 18px;
-  border-top: 1px solid #e2e8f0;
-  text-align: center;
-}
-
-.view-all-btn {
-  font-size: 0.8rem;
-  color: var(--primary-color);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background 0.2s;
-}
-
-.view-all-btn:hover {
-  background: rgba(0, 212, 255, 0.1);
-}
-
-/* Calendar Styles */
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 18px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.calendar-month {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #0a0a0a;
-}
-
-.calendar-nav {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background 0.2s;
-  color: #4a5568;
-  display: flex;
-  align-items: center;
-}
-
-.calendar-nav:hover {
-  background: #f7fafc;
-}
-
-.calendar-nav svg {
-  width: 18px;
-  height: 18px;
-  stroke: #4a5568;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  padding: 10px 14px;
-  gap: 2px;
-}
-
-.calendar-weekday {
-  text-align: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #4a5568;
-  padding: 6px 0;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.calendar-day {
-  text-align: center;
-  padding: 6px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-  min-height: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.calendar-day:hover {
-  background: #f7fafc;
-}
-
-.calendar-day.empty {
-  cursor: default;
-}
-
-.calendar-day.empty:hover {
-  background: none;
-}
-
-.calendar-day.today {
-  background: var(--primary-color);
-  color: white;
-}
-
-.calendar-day.today .day-number {
-  color: white;
-}
-
-.calendar-day.today:hover {
-  background: var(--primary-color);
-  opacity: 0.9;
-}
-
-.calendar-day .day-number {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #0a0a0a;
-}
-
-.calendar-day.has-event .day-number {
-  font-weight: 700;
-}
-
-.calendar-day:not(.today) .day-number {
-  color: #0a0a0a;
-}
-
-.event-indicators {
-  display: flex;
-  gap: 2px;
-  margin-top: 2px;
-}
-
-.event-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.calendar-footer {
-  padding: 10px 18px;
-  border-top: 1px solid #e2e8f0;
-  text-align: center;
-}
-
-.today-date {
-  font-size: 0.8rem;
-  color: #0a0a0a;
-  font-weight: 500;
 }
 
 /* ============================================
@@ -1077,33 +1129,16 @@
     height: 28px !important;
   }
 
-  .navbar-user {
-    padding: 4px 8px;
-  }
-
-  .navbar-user .user-name {
+  .user-dropdown-btn .user-name {
     display: none;
   }
 
-  .navbar-user .user-role {
+  .user-dropdown-btn .user-role {
     display: none;
   }
 
   .navbar-right {
     gap: 6px;
-  }
-
-  .navbar-logout {
-    padding: 6px 12px;
-    font-size: 0.75rem;
-  }
-
-  .navbar-logout span {
-    display: none;
-  }
-
-  .navbar-logout svg {
-    margin-right: 0;
   }
 
   .sidebar-toggle-btn {
@@ -1173,10 +1208,41 @@
   }
 
   .rs-footer {
-    margin-left: 0 !important;
     padding: 0 15px;
     height: 50px;
     font-size: 0.75rem;
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  .rs-footer .footer-right {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+  }
+
+  .rs-footer .footer-separator {
+    display: none;
+  }
+
+  .notification-dropdown,
+  .calendar-dropdown {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    left: 10px;
+    min-width: unset;
+    max-width: unset;
+    width: auto;
+  }
+
+  .calendar-grid {
+    padding: 8px 10px;
+  }
+
+  .calendar-day {
+    min-height: 34px;
+    padding: 4px 0;
   }
 }
 
@@ -1196,35 +1262,31 @@
     font-size: 0.9rem;
   }
 
-  .navbar-user .user-avatar {
+  .user-dropdown-btn .user-avatar {
     width: 28px !important;
     height: 28px !important;
     font-size: 12px !important;
   }
 
-  .navbar-user .user-avatar img {
+  .user-dropdown-btn .user-avatar img {
     width: 28px !important;
     height: 28px !important;
   }
 
-  .navbar-logout {
-    padding: 4px 8px;
+  .user-dropdown-menu {
+    min-width: 200px;
+    right: -10px;
+  }
+
+  .notification-dropdown,
+  .calendar-dropdown {
+    right: 5px;
+    left: 5px;
+  }
+
+  .calendar-day {
+    min-height: 30px;
     font-size: 0.7rem;
-  }
-
-  .header-btn {
-    padding: 4px 6px;
-  }
-
-  .notification-btn,
-  .calendar-btn {
-    padding: 4px 6px;
-  }
-
-  .notification-btn svg,
-  .calendar-btn svg {
-    width: 16px;
-    height: 16px;
   }
 
   .rs-sidebar {
@@ -1251,16 +1313,5 @@
     font-size: 0.65rem;
     padding: 0 8px;
     height: 45px;
-  }
-
-  .notification-dropdown,
-  .calendar-dropdown {
-    right: 5px;
-    left: 5px;
-  }
-
-  .calendar-day {
-    min-height: 30px;
-    font-size: 0.7rem;
   }
 }
