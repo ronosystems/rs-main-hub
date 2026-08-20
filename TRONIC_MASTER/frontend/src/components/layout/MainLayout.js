@@ -35,29 +35,28 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [originalUser, setOriginalUser] = useState(null);
   const [showSupportBanner, setShowSupportBanner] = useState(true);
 
-  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
+  // ============================================
+  // ✅ FIXED: STATIC_URL for images
+  // ============================================
+  const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api.herokuapp.com';
 
   // ============================================
-  // IMAGE URL HELPERS
+  // ✅ FIXED: Image URL Helpers
   // ============================================
-  const getFullImageUrl = (path) => {
-    if (!path) return null;
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-      return path;
-    }
-    if (path.startsWith('/uploads')) {
-      return `${STATIC_URL}${path}`;
-    }
-    return `${STATIC_URL}/uploads/${path}`;
-  };
-
   const getFullProfilePictureUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
+    if (path.startsWith('/api/uploads')) {
+      return `${STATIC_URL}${path}`;
+    }
     if (path.startsWith('/uploads')) {
       return `${STATIC_URL}${path}`;
+    }
+    // If it contains uploads but doesn't start with /
+    if (path.includes('uploads')) {
+      return `${STATIC_URL}/${path}`;
     }
     return `${STATIC_URL}/uploads/profile-pictures/${path}`;
   };
@@ -67,11 +66,14 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
+    if (path.startsWith('/api/uploads')) {
+      return `${STATIC_URL}${path}`;
+    }
     if (path.startsWith('/uploads')) {
       return `${STATIC_URL}${path}`;
     }
-    if (path.includes('logos') || path.includes('logo')) {
-      return `${STATIC_URL}/uploads/${path}`;
+    if (path.includes('uploads')) {
+      return `${STATIC_URL}/${path}`;
     }
     return `${STATIC_URL}/uploads/logos/${path}`;
   };
@@ -293,7 +295,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const menuItems = getMenuItems();
 
   // ============================================
-  // LOAD COMPANY LOGO FROM USER CONTEXT
+  // ✅ FIXED: LOAD COMPANY LOGO
   // ============================================
   useEffect(() => {
     if (user?.company?.logo) {
@@ -308,7 +310,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   }, [user]);
 
   // ============================================
-  // LOAD PLATFORM NAME FROM USER CONTEXT
+  // LOAD PLATFORM NAME
   // ============================================
   useEffect(() => {
     if (user?.company?.name) {
@@ -410,7 +412,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   };
 
   // ============================================
-  // DISPLAY PROFILE PICTURE
+  // ✅ FIXED: DISPLAY PROFILE PICTURE
   // ============================================
   const displayProfilePicture = user?.profilePicture ? getFullProfilePictureUrl(user.profilePicture) : null;
 
@@ -418,6 +420,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   console.log('👤 User from DB:', user);
   console.log('👤 Profile Picture path:', user?.profilePicture);
   console.log('📸 Full Profile URL:', displayProfilePicture);
+  console.log('📸 STATIC_URL:', STATIC_URL);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
