@@ -1,7 +1,8 @@
+// /home/kk/RS/TRONIC_MASTER/frontend/src/components/layout/MainLayout.js
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getMenuForRole } from '../../config/roles';
 import './MainLayout.css';
 
 const MainLayout = ({ children, title, breadcrumbs }) => {
@@ -35,6 +36,45 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [showSupportBanner, setShowSupportBanner] = useState(true);
 
   const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
+
+  // ============================================
+  // IMAGE URL HELPERS
+  // ============================================
+  const getFullImageUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    if (path.startsWith('/uploads')) {
+      return `${STATIC_URL}${path}`;
+    }
+    return `${STATIC_URL}/uploads/${path}`;
+  };
+
+  const getFullProfilePictureUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    if (path.startsWith('/uploads')) {
+      return `${STATIC_URL}${path}`;
+    }
+    return `${STATIC_URL}/uploads/profile-pictures/${path}`;
+  };
+
+  const getCompanyLogoUrl = (path) => {
+    if (!path) return null;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    if (path.startsWith('/uploads')) {
+      return `${STATIC_URL}${path}`;
+    }
+    if (path.includes('logos') || path.includes('logo')) {
+      return `${STATIC_URL}/uploads/${path}`;
+    }
+    return `${STATIC_URL}/uploads/logos/${path}`;
+  };
 
   // ============================================
   // CHECK FOR SUPPORT MODE
@@ -111,10 +151,8 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
       return;
     }
 
-    // Get current menu items
     const currentMenu = getMenuItems();
     
-    // Search through menu items
     const results = currentMenu.filter(item => 
       item.label.toLowerCase().includes(query.toLowerCase()) ||
       item.path.toLowerCase().includes(query.toLowerCase())
@@ -184,7 +222,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     setShowSupportBanner(false);
   };
 
-  // ===== GET MENU BASED ON USER ROLE =====
+  // ============================================
+  // ✅ HARDCODED MENU ITEMS BASED ON ROLE
+  // ============================================
   const getMenuItems = () => {
     if (!user) {
       return [
@@ -192,40 +232,84 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
       ];
     }
 
-    const role = user.companyRole || 'company_staff';
-    const menu = getMenuForRole(role);
+    const role = user.companyRole || user?.role || 'company_staff';
     
-    const enhancedMenu = [];
+    const roleMenus = {
+      'company_admin': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'POS', label: 'POS', path: '/pos' },
+        { icon: 'Branches', label: 'Branches', path: '/branches' },
+        { icon: 'Products', label: 'Products', path: '/products' },
+        { icon: 'Sales', label: 'Sales', path: '/sales' },
+        { icon: 'Reports', label: 'Reports', path: '/reports' },
+        { icon: 'Users', label: 'Users', path: '/users' },
+        { icon: 'Roles', label: 'Roles', path: '/roles' },
+        { icon: 'Settings', label: 'Settings', path: '/settings' }
+      ],
+      'company_manager': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'POS', label: 'POS', path: '/pos' },
+        { icon: 'Branches', label: 'Branches', path: '/branches' },
+        { icon: 'Products', label: 'Products', path: '/products' },
+        { icon: 'Sales', label: 'Sales', path: '/sales' },
+        { icon: 'Reports', label: 'Reports', path: '/reports' },
+        { icon: 'Users', label: 'Users', path: '/users' }
+      ],
+      'company_cashier': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'POS', label: 'POS', path: '/pos' },
+        { icon: 'Products', label: 'Products', path: '/products' },
+        { icon: 'Sales', label: 'Sales', path: '/sales' }
+      ],
+      'company_agent': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'POS', label: 'POS', path: '/pos' },
+        { icon: 'Products', label: 'Products', path: '/products' },
+        { icon: 'Sales', label: 'Sales', path: '/sales' }
+      ],
+      'company_staff': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'Products', label: 'Products', path: '/products' }
+      ],
+      'super_admin': [
+        { icon: 'Dashboard', label: 'Dashboard', path: '/dashboard' },
+        { icon: 'POS', label: 'POS', path: '/pos' },
+        { icon: 'Branches', label: 'Branches', path: '/branches' },
+        { icon: 'Products', label: 'Products', path: '/products' },
+        { icon: 'Sales', label: 'Sales', path: '/sales' },
+        { icon: 'Reports', label: 'Reports', path: '/reports' },
+        { icon: 'Users', label: 'Users', path: '/users' },
+        { icon: 'Roles', label: 'Roles', path: '/roles' },
+        { icon: 'Settings', label: 'Settings', path: '/settings' }
+      ]
+    };
+
+    const menu = roleMenus[role] || roleMenus['company_staff'];
     
-    menu.forEach(item => {
-      enhancedMenu.push(item);
-      
-      if (item.label === 'Products') {
-        enhancedMenu.push(
-          { icon: 'Electronics', label: 'Electronics', path: '/products/electronics' },
-          { icon: 'Accessories', label: 'Accessories', path: '/products/accessories' }
-        );
-      }
-    });
-    
-    return enhancedMenu;
+    console.log(`📋 Menu items for ${role}:`, menu.map(i => i.label));
+    return menu;
   };
 
   const menuItems = getMenuItems();
 
-  // ===== LOAD COMPANY LOGO FROM USER CONTEXT =====
+  // ============================================
+  // LOAD COMPANY LOGO FROM USER CONTEXT
+  // ============================================
   useEffect(() => {
     if (user?.company?.logo) {
-      const logoUrl = user.company.logo.startsWith('http') 
-        ? user.company.logo 
-        : `${STATIC_URL}${user.company.logo}`;
+      const logoUrl = getCompanyLogoUrl(user.company.logo);
+      console.log('📸 Company Logo from DB:', user.company.logo);
+      console.log('📸 Full Logo URL:', logoUrl);
       setCompanyLogo(logoUrl);
     } else {
+      console.log('ℹ️ No company logo in DB');
       setCompanyLogo(null);
     }
-  }, [user, STATIC_URL]);
+  }, [user]);
 
-  // ===== LOAD PLATFORM NAME FROM USER CONTEXT =====
+  // ============================================
+  // LOAD PLATFORM NAME FROM USER CONTEXT
+  // ============================================
   useEffect(() => {
     if (user?.company?.name) {
       setPlatformName(user.company.name);
@@ -244,16 +328,14 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   useEffect(() => {
     const handleSettingsUpdated = (e) => {
       if (e.detail?.logo) {
-        const logoUrl = e.detail.logo.startsWith('http') 
-          ? e.detail.logo 
-          : `${STATIC_URL}${e.detail.logo}`;
+        const logoUrl = getCompanyLogoUrl(e.detail.logo);
         setCompanyLogo(logoUrl);
       }
     };
 
     window.addEventListener('settingsUpdated', handleSettingsUpdated);
     return () => window.removeEventListener('settingsUpdated', handleSettingsUpdated);
-  }, [STATIC_URL]);
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -267,6 +349,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Handle resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -279,20 +362,9 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-
-  // Add this after the existing useEffect hooks
-useEffect(() => {
-  const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768);
-    if (window.innerWidth <= 768) {
-      setSidebarOpen(false);
-    }
-  };
-  handleResize();
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
-
+  // ============================================
+  // HANDLERS
+  // ============================================
   const handleLogout = () => {
     const isSupportMode = localStorage.getItem('loginAsCompany') === 'true';
     
@@ -337,15 +409,15 @@ useEffect(() => {
     return 'TRONIC_MASTER';
   };
 
-  const getFullProfilePictureUrl = (path) => {
-    if (!path) return null;
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-      return path;
-    }
-    return `${STATIC_URL}${path}`;
-  };
-
+  // ============================================
+  // DISPLAY PROFILE PICTURE
+  // ============================================
   const displayProfilePicture = user?.profilePicture ? getFullProfilePictureUrl(user.profilePicture) : null;
+
+  // Debug logs
+  console.log('👤 User from DB:', user);
+  console.log('👤 Profile Picture path:', user?.profilePicture);
+  console.log('📸 Full Profile URL:', displayProfilePicture);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -401,32 +473,6 @@ useEffect(() => {
         <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/>
       </svg>
     ),
-    Phones: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-        <line x1="12" y1="18" x2="12.01" y2="18"/>
-        <path d="M8 6h8"/>
-      </svg>
-    ),
-    Electronics: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-        <line x1="8" y1="12" x2="16" y2="12"/>
-        <line x1="8" y1="8" x2="10" y2="8"/>
-        <line x1="14" y1="8" x2="16" y2="8"/>
-        <line x1="8" y1="16" x2="16" y2="16"/>
-        <path d="M4 4v16"/>
-        <path d="M20 4v16"/>
-      </svg>
-    ),
-    Accessories: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-        <path d="M2 17l10 5 10-5"/>
-        <path d="M2 12l10 5 10-5"/>
-        <path d="M12 22V7"/>
-      </svg>
-    ),
     Sales: () => (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="12" y1="1" x2="12" y2="23"/>
@@ -439,14 +485,6 @@ useEffect(() => {
         <line x1="8" y1="12" x2="16" y2="12"/>
         <line x1="8" y1="8" x2="12" y2="8"/>
         <line x1="8" y1="16" x2="14" y2="16"/>
-      </svg>
-    ),
-    Revenues: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="12" y1="1" x2="12" y2="23"/>
-        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-        <path d="M7 12l2 2 2-2"/>
-        <path d="M17 12l-2 2-2-2"/>
       </svg>
     ),
     Users: () => (
@@ -465,14 +503,6 @@ useEffect(() => {
         <path d="M12 22V7"/>
         <path d="M7 10l5 2.5 5-2.5"/>
         <path d="M7 14l5 2.5 5-2.5"/>
-      </svg>
-    ),
-    Profile: () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-        <path d="M12 11v4"/>
-        <path d="M10 13h4"/>
       </svg>
     ),
     Settings: () => (
@@ -512,60 +542,10 @@ useEffect(() => {
         <line x1="21" y1="12" x2="9" y2="12"/>
       </svg>
     ),
-    Admin: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <path d="M12 8v4"/>
-        <path d="M12 16h.01"/>
-      </svg>
-    ),
-    Manager: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-        <path d="M16 3.13a4 4 0 010 7.75"/>
-      </svg>
-    ),
-    Cashier: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="20" height="16" rx="2"/>
-        <path d="M8 8h8"/>
-        <path d="M8 12h6"/>
-        <path d="M8 16h4"/>
-      </svg>
-    ),
-    Agent: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-        <line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-    ),
-    Staff: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-    ),
-    LogoutIcon: () => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
-        <polyline points="16 17 21 12 16 7"/>
-        <line x1="21" y1="12" x2="9" y2="12"/>
-      </svg>
-    ),
-    ExternalLink: () => (
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
-        <polyline points="15 3 21 3 21 9"/>
-        <line x1="10" y1="14" x2="21" y2="3"/>
-      </svg>
-    ),
     Support: () => (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
         <line x1="12" y1="17" x2="12.01" y2="17"/>
       </svg>
     ),
@@ -578,8 +558,21 @@ useEffect(() => {
     HelpIcon: () => (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
         <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+    ),
+    Search: () => (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    ),
+    ExternalLink: () => (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
       </svg>
     ),
     ReturnIcon: () => (
@@ -590,16 +583,10 @@ useEffect(() => {
     ),
     ExitIcon: () => (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
         <path d="M12 12v4"/>
         <path d="M15 15l-3-3-3 3"/>
-      </svg>
-    ),
-    Search: () => (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
     )
   };
@@ -854,6 +841,17 @@ useEffect(() => {
                     background: 'white',
                     padding: '2px'
                   }}
+                  onError={(e) => {
+                    console.log('❌ Failed to load company logo:', companyLogo);
+                    e.target.style.display = 'none';
+                    const parent = e.target.parentElement;
+                    const fallback = document.createElement('span');
+                    fallback.textContent = companyNameDisplay.charAt(0).toUpperCase();
+                    fallback.style.fontSize = '20px';
+                    fallback.style.fontWeight = 'bold';
+                    fallback.style.color = 'white';
+                    parent.appendChild(fallback);
+                  }}
                 />
               ) : (
                 <span style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}>
@@ -882,7 +880,6 @@ useEffect(() => {
             )}
           </div>
         </div>
-
 
         <div className="navbar-right">
           {/* ============================================ */}
@@ -982,6 +979,10 @@ useEffect(() => {
                       height: '32px', 
                       borderRadius: '50%', 
                       objectFit: 'cover' 
+                    }}
+                    onError={(e) => {
+                      console.log('❌ Failed to load profile image:', displayProfilePicture);
+                      e.target.style.display = 'none';
                     }}
                   />
                 ) : (
