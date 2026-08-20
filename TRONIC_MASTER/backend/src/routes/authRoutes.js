@@ -11,6 +11,15 @@ const { protect } = require('../middleware/auth');
 // ✅ Use the SAME JWT_SECRET as MAIN HUB
 const JWT_SECRET = process.env.JWT_SECRET || 'hub_super_secret_key_2026';
 
+// ✅ MAIN_HUB API URL for profile pictures
+const MAIN_HUB_API_URL = process.env.MAIN_HUB_API_URL || 'http://localhost:5000';
+
+// Helper function to get profile picture URL
+const getProfilePictureUrl = (profilePictureId) => {
+    if (!profilePictureId) return null;
+    return `${MAIN_HUB_API_URL}/api/images/${profilePictureId}`;
+};
+
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -146,7 +155,8 @@ router.post('/login', async (req, res) => {
                 companyRole: user.companyRole || 'company_staff',
                 projectRole: user.projectRole || 'staff',
                 phone: user.phone || '',
-                profilePicture: user.profilePicture || '',
+                // ✅ CHANGED: Use MAIN_HUB API for profile picture
+                profilePicture: getProfilePictureUrl(user.profilePicture),
                 company: {
                     id: company._id,
                     name: company.name,
@@ -188,7 +198,8 @@ router.get('/me', protect, async (req, res) => {
                 projectRole: user.projectRole || 'staff',
                 company: company,
                 phone: user.phone || '',
-                profilePicture: user.profilePicture || ''
+                // ✅ CHANGED: Use MAIN_HUB API for profile picture
+                profilePicture: getProfilePictureUrl(user.profilePicture)
             }
         });
     } catch (error) {
@@ -219,7 +230,8 @@ router.post('/validate', protect, async (req, res) => {
                 projectRole: user.projectRole || 'staff',
                 company: company,
                 phone: user.phone || '',
-                profilePicture: user.profilePicture || ''
+                // ✅ CHANGED: Use MAIN_HUB API for profile picture
+                profilePicture: getProfilePictureUrl(user.profilePicture)
             }
         });
     } catch (error) {

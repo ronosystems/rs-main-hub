@@ -1,5 +1,3 @@
-// /home/kk/RS/MAIN HUB/backend/src/models/User.js
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -12,17 +10,24 @@ const UserSchema = new mongoose.Schema({
         enum: ['super_admin', 'admin', 'manager', 'staff', 'guest'],
         default: 'guest'
     },
-    project: { type: String },  // Changed from ObjectId to String
+    project: { type: String },
     company: { type: mongoose.Schema.Types.ObjectId, ref: 'Company' },
     
-    // ✅ ADDED: Company Role for project users (TRONIC_MASTER)
+    // ✅ CHANGED: profilePicture now stores Image ObjectId
+    profilePicture: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Image',
+        default: null
+    },
+    
+    // Keep avatar for backward compatibility (optional)
+    avatar: { type: String, default: '' },
+    
     companyRole: { 
         type: String, 
         enum: ['company_admin', 'company_manager', 'company_cashier', 'company_agent', 'company_staff'],
         default: 'company_staff'
     },
-    
-    // Project Role for project users
     projectRole: { 
         type: String, 
         enum: ['admin', 'manager', 'staff'],
@@ -30,8 +35,6 @@ const UserSchema = new mongoose.Schema({
     },
     phone: { type: String, default: '' },
     department: { type: String, default: '' },
-    profilePicture: { type: String, default: '' },
-    avatar: { type: String },
     isActive: { type: Boolean, default: true },
     lastLogin: { type: Date, default: null },
     settings: {
@@ -58,15 +61,25 @@ UserSchema.methods.comparePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
 };
 
-// Virtual for full profile picture URL
+// ✅ NEW: Method to get profile picture URL
+UserSchema.methods.getProfilePictureUrl = async function() {
+    if (!this.profilePicture) return null;
+    const Image = mongoose.model('Image');
+    const image = await Image.findById(this.profilePicture);
+    return image ? image.dataUrl : null;
+};
+
+// ✅ NEW: Method to get profile picture as buffer
+UserSchema.methods.getProfilePictureBuffer = async function() {
+    if (!this.profilePicture) return null;
+    const Image = mongoose.model('Image');
+    const image = await Image.findById(this.profilePicture);
+    return image ? image.data : null;
+};
+
+// Virtual for backward compatibility
 UserSchema.virtual('profilePictureUrl').get(function() {
-    if (this.profilePicture) {
-        return this.profilePicture;
-    }
-    if (this.avatar) {
-        return this.avatar;
-    }
-    return null;
+    return this.profilePicture ? `/api/images/${this.profilePicture}` : null;
 });
 
 // Ensure virtuals are included in JSON output

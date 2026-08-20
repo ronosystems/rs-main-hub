@@ -171,6 +171,13 @@ const CompanySchema = new mongoose.Schema({
         }
     },
 
+    // ✅ ADDED: Logo stored as Image reference
+    logo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Image',
+        default: null
+    },
+
     // ========== METADATA ==========
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -294,6 +301,19 @@ CompanySchema.methods.getSubscriptionStatus = function() {
         daysRemaining: daysRemaining
     };
 };
+
+// ✅ ADDED: Method to get logo URL
+CompanySchema.methods.getLogoUrl = async function() {
+    if (!this.logo) return null;
+    const Image = mongoose.model('Image');
+    const image = await Image.findById(this.logo);
+    return image ? image.dataUrl : null;
+};
+
+// ✅ ADDED: Virtual for logo URL
+CompanySchema.virtual('logoUrl').get(function() {
+    return this.logo ? `/api/images/${this.logo}` : null;
+});
 
 // ========== STATIC METHODS ==========
 

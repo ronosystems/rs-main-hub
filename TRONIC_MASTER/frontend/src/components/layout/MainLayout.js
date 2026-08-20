@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import ProfileImage from '../ProfileImage'; // ✅ ADD THIS
 import './MainLayout.css';
 
 const MainLayout = ({ children, title, breadcrumbs }) => {
@@ -36,6 +37,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   const [showSupportBanner, setShowSupportBanner] = useState(true);
 
   const STATIC_URL = process.env.REACT_APP_STATIC_URL || 'https://tronic-master-api-6805dcc3ffa8.herokuapp.com';
+  const MAIN_HUB_API_URL = process.env.REACT_APP_MAIN_HUB_API_URL || 'http://localhost:5000'; // ✅ ADD THIS
 
   // ============================================
   // IMAGE URL HELPERS
@@ -51,11 +53,17 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     return `${STATIC_URL}/uploads/${path}`;
   };
 
+  // ✅ UPDATED: Use MAIN_HUB API for profile pictures
   const getFullProfilePictureUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
+    // If it's a MongoDB ObjectId (24 hex chars), use MAIN_HUB API
+    if (/^[a-f0-9]{24}$/.test(path)) {
+      return `${MAIN_HUB_API_URL}/api/images/${path}`;
+    }
+    // Fallback for old format
     if (path.startsWith('/uploads')) {
       return `${STATIC_URL}${path}`;
     }
@@ -410,14 +418,14 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
   };
 
   // ============================================
-  // DISPLAY PROFILE PICTURE
+  // DISPLAY PROFILE PICTURE - ✅ UPDATED
   // ============================================
-  const displayProfilePicture = user?.profilePicture ? getFullProfilePictureUrl(user.profilePicture) : null;
+  // Now using ProfileImage component instead of img tag
+  const userInitial = user?.name?.charAt(0)?.toUpperCase() || 'U';
 
   // Debug logs
   console.log('👤 User from DB:', user);
-  console.log('👤 Profile Picture path:', user?.profilePicture);
-  console.log('📸 Full Profile URL:', displayProfilePicture);
+  console.log('👤 Profile Picture ID:', user?.profilePicture);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -551,7 +559,7 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
     ),
     UserIcon: () => (
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
       </svg>
     ),
@@ -956,38 +964,24 @@ const MainLayout = ({ children, title, breadcrumbs }) => {
                 e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
               }}
             >
+              {/* ✅ UPDATED: Use ProfileImage component */}
               <span className="user-avatar" style={{ 
-                background: 'rgb(247, 119, 0)',
-                color: '#ffffff',
                 width: '32px',
                 height: '32px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: 'bold',
-                fontSize: '14px',
                 overflow: 'hidden',
-                border: '2px solid rgba(14, 1, 1, 0.95)'
+                border: '2px solid rgba(14, 1, 1, 0.95)',
+                background: '#f77700'
               }}>
-                {displayProfilePicture ? (
-                  <img 
-                    src={displayProfilePicture} 
-                    alt={user?.name || 'User'} 
-                    style={{ 
-                      width: '32px', 
-                      height: '32px', 
-                      borderRadius: '50%', 
-                      objectFit: 'cover' 
-                    }}
-                    onError={(e) => {
-                      console.log('❌ Failed to load profile image:', displayProfilePicture);
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  user?.name?.charAt(0)?.toUpperCase() || 'U'
-                )}
+                <ProfileImage 
+                  imageId={user?.profilePicture} 
+                  alt={user?.name || 'User'}
+                  size={32}
+                  fallbackText={user?.name || 'U'}
+                />
               </span>
               <span className="user-name-display" style={{ 
                 fontSize: '13px', 

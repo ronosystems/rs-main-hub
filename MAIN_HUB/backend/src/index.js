@@ -14,6 +14,7 @@ const syncRoutes = require('./routes/syncRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const calendarRoutes = require('./routes/calendarRoutes');
+const imageRoutes = require('./routes/imageRoutes'); // ✅ ADDED
 
 dotenv.config();
 
@@ -87,6 +88,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/super-admin/settings', settingsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/calendar', calendarRoutes);
+app.use('/api/images', imageRoutes); // ✅ ADDED
 
 // ============================================
 // HEALTH CHECK
@@ -114,7 +116,8 @@ app.get('/', (req, res) => {
             sync: '/api/sync',
             settings: '/api/settings',
             notifications: '/api/notifications',
-            calendar: '/api/calendar'
+            calendar: '/api/calendar',
+            images: '/api/images' // ✅ ADDED
         }
     });
 });
@@ -152,6 +155,7 @@ connectDB().then(() => {
         console.log(`🌐 http://localhost:${PORT}\n`);
         console.log(`🔗 CORS enabled for: ${corsOptions.origin}`);
         console.log(`📅 Calendar API available at: http://localhost:${PORT}/api/calendar`);
+        console.log(`🖼️  Image API available at: http://localhost:${PORT}/api/images`); // ✅ ADDED
     });
 }).catch(err => {
     console.error('❌ Database connection failed:', err);

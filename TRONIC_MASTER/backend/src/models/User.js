@@ -1,5 +1,3 @@
-// /home/kk/RS/TRONIC_MASTER/backend/src/models/User.js
-
 const mongoose = require('mongoose');
 
 // Company-specific roles for TRONIC_MASTER
@@ -47,7 +45,6 @@ const userSchema = new mongoose.Schema({
     // ============================================================
     // ========== ASSIGNED BRANCHES (for Managers) ================
     // ============================================================
-    // Company Managers can be assigned to multiple branches
     assignedBranches: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Branch',
@@ -57,7 +54,6 @@ const userSchema = new mongoose.Schema({
     // ============================================================
     // ========== ASSIGNED PHONES (for Agents) ====================
     // ============================================================
-    // Company Agents can be assigned specific phones
     assignedPhones: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
@@ -72,7 +68,13 @@ const userSchema = new mongoose.Schema({
     },
     phone: { type: String, default: '' },
     department: { type: String, default: '' },
-    profilePicture: { type: String, default: '' },
+    
+    // ✅ CHANGED: profilePicture now stores Image ID from MAIN_HUB
+    profilePicture: { 
+        type: String,  // Stores ObjectId as string reference to MAIN_HUB Image
+        default: '' 
+    },
+    
     avatar: { type: String },
     isActive: { type: Boolean, default: true },
     lastLogin: { type: Date, default: null },
@@ -83,6 +85,20 @@ const userSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+// ✅ NEW: Virtual for profile picture URL from MAIN_HUB
+userSchema.virtual('profilePictureUrl').get(function() {
+    if (!this.profilePicture) return null;
+    const MAIN_HUB_API_URL = process.env.MAIN_HUB_API_URL || 'http://localhost:5000';
+    return `${MAIN_HUB_API_URL}/api/images/${this.profilePicture}`;
+});
+
+// ✅ NEW: Method to get profile picture URL
+userSchema.methods.getProfilePictureUrl = function() {
+    if (!this.profilePicture) return null;
+    const MAIN_HUB_API_URL = process.env.MAIN_HUB_API_URL || 'http://localhost:5000';
+    return `${MAIN_HUB_API_URL}/api/images/${this.profilePicture}`;
+};
+
 // ============================================
 // INDEXES
 // ============================================
@@ -90,8 +106,8 @@ userSchema.index({ company: 1, isActive: 1 });
 userSchema.index({ company: 1, branch: 1 });
 userSchema.index({ company: 1, companyRole: 1 });
 userSchema.index({ branch: 1, isActive: 1 });
-userSchema.index({ assignedBranches: 1 }); // NEW
-userSchema.index({ assignedPhones: 1 });   // NEW
+userSchema.index({ assignedBranches: 1 });
+userSchema.index({ assignedPhones: 1 });
 
 // ============================================
 // STATIC METHODS
@@ -185,9 +201,7 @@ userSchema.statics.getUsersWhoCanReceiveTransfer = async function(companyId, cur
     .sort({ name: 1 });
 };
 
-// ============================================================
-// NEW: Get managers for a branch
-// ============================================================
+// Get managers for a branch
 userSchema.statics.getManagersForBranch = async function(branchId) {
     return await this.find({
         companyRole: 'company_manager',
@@ -198,9 +212,7 @@ userSchema.statics.getManagersForBranch = async function(branchId) {
     .sort({ name: 1 });
 };
 
-// ============================================================
-// NEW: Get agents for a branch
-// ============================================================
+// Get agents for a branch
 userSchema.statics.getAgentsForBranch = async function(branchId) {
     return await this.find({
         companyRole: 'company_agent',
@@ -283,8 +295,7 @@ userSchema.methods.hasPhoneAccess = function(phoneId) {
         return true;
     }
     if (this.companyRole === 'company_manager') {
-        // Manager has access to phones in their assigned branches
-        return true; // Handled by branch filtering
+        return true;
     }
     if (this.companyRole === 'company_agent') {
         return this.assignedPhones?.some(id => id.toString() === phoneId.toString());
@@ -340,5 +351,9 @@ userSchema.methods.getPermissions = function() {
     };
     return permissions;
 };
+
+// Ensure virtuals are included in JSON output
+userSchema.set('toJSON', { virtuals: true });
+userSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model('User', userSchema);
